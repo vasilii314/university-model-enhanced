@@ -35,12 +35,19 @@ public class TestController {
         this.schoolService = schoolService;
         this.dptService = dptService;
     }
+
+
     
     @GetMapping("/schools")
     public String getDepartments() {
     	School school = schoolService.criteriaFindAll().get(0);
     	List<Department> dpts = school.getDepartments();
     	return school.getId() + school.getName() + " " + dpts.get(0).getId() + dpts.get(0).getName();
+    }
+
+    @GetMapping("/criteria")
+    public List<String> testCriteriaQuery() {
+        return dptService.criteriaFind();
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.Department;
+import com.example.task.entity.Department_;
 import com.example.task.entity.School;
 import com.example.task.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     	Root<School> root = criteriaQuery.from(School.class);
     	criteriaQuery.select(root);
     	return null;
+    }
+
+    public List<String> criteriaFind() {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<String> criteriaQuery = builder.createQuery(String.class);
+        Root<Department> root = criteriaQuery.from(Department.class);
+        criteriaQuery.select(root.get(Department_.name));
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     @Override
