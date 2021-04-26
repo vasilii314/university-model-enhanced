@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="admin" id="4">
+        <preConditions onFail="HALT">
+            <and>
+                <tableExists tableName="course_type"/>
+                <tableIsEmpty tableName="course_type"/>
+                <sqlCheck expectedResult="0">
+                	SELECT COUNT(*) FROM course_type
+                </sqlCheck>
+            </and>
+        </preConditions>
+        <insert tableName="course_type">
+            <column name="type" value="SOCIAL"/>
+        </insert>
+        <insert tableName="course_type">
+            <column name="type" value="MATHEMATICAL"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="admin" id="12">
+        <preConditions onFail="HALT">
+            <not>
+                <tableExists tableName="people_roles"/>
+            </not>
+        </preConditions>
+        <createTable tableName="people_roles">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="human_in_uni_id" type="int">
+            	 <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="int">
+            	<constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+        	ALTER TABLE people_roles ADD CONSTRAINT fk_human_in_dpt_human_id FOREIGN KEY (human_in_uni_id) REFERENCES people_in_university (id) ON UPDATE CASCADE;
+        	ALTER TABLE people_roles ADD CONSTRAINT fk_people_in_uni_role_id FOREIGN KEY (role_id) REFERENCES roles (id) ON UPDATE CASCADE; 
+        </sql>
+    </changeSet>
+</databaseChangeLog>

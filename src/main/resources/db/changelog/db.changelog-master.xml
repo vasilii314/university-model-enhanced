@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include  file="db/changelog/changelog-1-create-roles-table.xml"/>
+    <include  file="db/changelog/changelog-2-create-course-type-table.xml"/>
+    <include  file="db/changelog/changelog-3-insert-roles.xml"/>
+    <include  file="db/changelog/changelog-4-insert-course-types.xml"/>
+    <include  file="db/changelog/changelog-5-create-people-table.xml"/>
+    <include  file="db/changelog/changelog-6-create-school-table.xml"/>
+    <include  file="db/changelog/changelog-7-create-department-table.xml"/>
+    <include  file="db/changelog/changelog-8-create-course-table.xml"/>
+    <include  file="db/changelog/changelog-9-create-groups-table.xml"/>
+    <include  file="db/changelog/changelog-10-create-people-in-university-table.xml"/>
+    <include  file="db/changelog/changelog-11-create-people-in-departments-table.xml"/>
+    <include  file="db/changelog/changelog-12-create-people-roles-table.xml"/>
+    <include  file="db/changelog/changelog-13-create-table-students-in-groups.xml"/>
+    <include  file="db/changelog/changelog-14-create-table-student-grades.xml"/>
+</databaseChangeLog>

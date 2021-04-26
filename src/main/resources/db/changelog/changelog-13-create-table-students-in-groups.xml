@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="admin" id="13">
+        <preConditions onFail="HALT">
+            <not>
+                <tableExists tableName="students_in_groups"/>
+            </not>
+        </preConditions>
+        <createTable tableName="students_in_groups">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="student_id" type="int">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="group_id" type="int">
+            	<constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+        	ALTER TABLE students_in_groups ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id) REFERENCES people_in_university (id) ON UPDATE CASCADE;
+        	ALTER TABLE students_in_groups ADD CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES groups (id) ON UPDATE CASCADE;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

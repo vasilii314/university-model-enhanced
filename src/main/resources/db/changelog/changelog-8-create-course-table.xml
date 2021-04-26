@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="admin" id="8">
+        <preConditions onFail="HALT">
+        	<and>
+        		<not>
+                	<tableExists tableName="course"/>
+            	</not>
+            	<not>
+            		<indexExists indexName="idx_course_name"/>
+            	</not>
+        	</and>
+        </preConditions>
+        <createTable tableName="course">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="duration" type="int">
+            	<constraints nullable="false" />
+            </column>
+            <column name="course_type_id" type="int">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="department_id" type="int">
+            	<constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+        	ALTER TABLE course ADD CONSTRAINT fk_course_type FOREIGN KEY (course_type_id) REFERENCES course_type (id) ON UPDATE CASCADE;
+        	ALTER TABLE course ADD CONSTRAINT fk_course_dpt FOREIGN KEY (department_id) REFERENCES department (id) ON UPDATE CASCADE; 
+        	ALTER TABLE course ADD CONSTRAINT valid_duration CHECK(duration > 0);
+        	CREATE INDEX idx_course_name ON course (name);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

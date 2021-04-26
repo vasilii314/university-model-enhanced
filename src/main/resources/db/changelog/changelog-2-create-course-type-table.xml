@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="admin" id="2">
+        <preConditions onFail="HALT">
+            <not>
+                <tableExists tableName="course_type"/>
+            </not>
+        </preConditions>
+        <createTable tableName="course_type">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+        	ALTER TABLE course_type ADD CONSTRAINT valid_type CHECK(type IN ('SOCIAL', 'MATHEMATICAL'))
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="admin" id="5">
+        <preConditions onFail="HALT">
+        	<and>
+        		<not>
+                	<tableExists tableName="people"/>
+            	</not>
+            	<not>
+            		<indexExists indexName="idx_people_names"/>
+            	</not>
+        	</and>
+        </preConditions>
+        <createTable tableName="people">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="full_name" type="varchar(100)">
+                <constraints  nullable="false"/>
+            </column>
+            <column name="birth_date" type="timestamp">
+                <constraints  nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+        	CREATE INDEX idx_people_names ON people (full_name)
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="admin" id="14">
+        <preConditions onFail="HALT">
+            <not>
+                <tableExists tableName="student_grades"/>
+            </not>
+        </preConditions>
+        <createTable tableName="student_grades">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="student_id" type="int">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="course_id" type="int">
+            	<constraints nullable="false"/>
+            </column>
+            <column name="grade" type="int">
+            	<constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+        	ALTER TABLE student_grades ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id) REFERENCES students_in_groups (id) ON UPDATE CASCADE;
+        	ALTER TABLE student_grades ADD CONSTRAINT fk_course_id FOREIGN KEY (course_id) REFERENCES course (id) ON UPDATE CASCADE; 
+        	ALTER TABLE student_grades ADD CONSTRAINT valid_duration CHECK(grade BETWEEN 2 AND 5);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
