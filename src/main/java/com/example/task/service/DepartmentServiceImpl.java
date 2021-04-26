@@ -14,6 +14,7 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
@@ -42,6 +43,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         CriteriaQuery<String> criteriaQuery = builder.createQuery(String.class);
         Root<Department> root = criteriaQuery.from(Department.class);
         criteriaQuery.select(root.get(Department_.name));
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    public List<Department> criteriaJoinSchoolTable() {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Department> criteriaQuery = builder.createQuery(Department.class);
+        Root<Department> root = criteriaQuery.from(Department.class);
+        Join<Department, School> dptJoin = root.join(Department_.school);
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 

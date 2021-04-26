@@ -50,6 +50,15 @@ public class TestController {
         return dptService.criteriaFind();
     }
 
+    @GetMapping("/criteriajoin")
+    public List<Department> testCriteriaJoinQuery() {
+        List<Department> dptWithSchool = dptService.criteriaJoinSchoolTable();
+//        for (Department dpt:
+//             dptWithSchool) {
+//            dpt.getSchool().setDepartments(null);
+//        }
+        return dptWithSchool;
+    }
 
     @GetMapping("/hello")
     public String sayHello() {
