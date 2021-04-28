@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Human {
     private String fullName;
 
     @NotNull
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @OneToMany(mappedBy = "human", cascade = CascadeType.ALL)
     private List<HumanInUniversity> roles;
@@ -28,7 +29,7 @@ public class Human {
     public Human() {
     }
 
-    public Human(String fullName, Date birthDate) {
+    public Human(String fullName, LocalDate birthDate) {
         this.fullName = fullName;
         this.birthDate = birthDate;
     }
@@ -49,11 +50,11 @@ public class Human {
         this.fullName = fullName;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
