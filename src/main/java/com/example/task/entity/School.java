@@ -1,5 +1,7 @@
 package com.example.task.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,6 +21,7 @@ public class School {
     private String name;
 
     @OneToMany(mappedBy = "school", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Department> departments;
 
     public School() {

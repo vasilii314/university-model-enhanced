@@ -2,6 +2,7 @@ package com.example.task.service;
 
 import com.example.task.entity.School;
 import com.example.task.repository.SchoolRepository;
+import com.example.task.specification.SchoolSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,21 +20,27 @@ import javax.transaction.Transactional;
 public class SchoolServiceImpl implements SchoolService {
 
     private SchoolRepository schoolRepository;
-    
-    @Autowired
+
     private EntityManager entityManager;
 
     @Autowired
-    public SchoolServiceImpl(SchoolRepository schoolRepository) {
+    public SchoolServiceImpl(SchoolRepository schoolRepository, EntityManager entityManager) {
         this.schoolRepository = schoolRepository;
+        this.entityManager = entityManager;
     }
-    
-    public List<School> criteriaFindAll() {
-    	CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    	CriteriaQuery<School> criteriaQuery = builder.createQuery(School.class);
-    	Root<School> root = criteriaQuery.from(School.class);
-    	criteriaQuery.select(root);
-    	return entityManager.createQuery(criteriaQuery).getResultList();
+
+    @Override
+    public List<School> findAllCriteria() {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<School> criteriaQuery = builder.createQuery(School.class);
+        Root<School> root = criteriaQuery.from(School.class);
+        criteriaQuery.select(root);
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    @Override
+    public List<School> findAllWithConstraints(SchoolSpecification specification) {
+        return schoolRepository.findAll(specification);
     }
 
     @Override

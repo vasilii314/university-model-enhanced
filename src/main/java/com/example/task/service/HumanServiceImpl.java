@@ -2,9 +2,11 @@ package com.example.task.service;
 
 import com.example.task.entity.Human;
 import com.example.task.repository.HumanRepository;
+import com.example.task.specification.HumanSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +26,11 @@ public class HumanServiceImpl implements HumanService {
         List<Human> people = new ArrayList<>();
         humanRepository.findAll().forEach(people::add);
         return people;
+    }
+
+    @Override
+    public List<Human> findAllWithConstraints(HumanSpecification specification) {
+        return humanRepository.findAll(specification);
     }
 
     @Override
