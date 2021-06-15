@@ -23,11 +23,11 @@
                 <constraints  nullable="false"/>
             </column>
             <column name="school_id" type="int">
-            	<constraints nullable="false"/>
+            	<constraints nullable="true"/>
             </column>
         </createTable>
         <sql>
-        	ALTER TABLE department ADD CONSTRAINT fk_department_school FOREIGN KEY (school_id) REFERENCES school (id) ON UPDATE CASCADE;
+        	ALTER TABLE department ADD CONSTRAINT fk_department_school FOREIGN KEY (school_id) REFERENCES school (id) ON UPDATE CASCADE ON DELETE SET NULL;
         	CREATE INDEX idx_department_name ON department (name);
         </sql>
     </changeSet>

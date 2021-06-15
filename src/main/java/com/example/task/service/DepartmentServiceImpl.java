@@ -1,22 +1,18 @@
 package com.example.task.service;
 
 import com.example.task.entity.Department;
-import com.example.task.entity.Department_;
 import com.example.task.entity.School;
 import com.example.task.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -36,22 +32,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     	Root<School> root = criteriaQuery.from(School.class);
     	criteriaQuery.select(root);
     	return null;
-    }
-
-    public List<String> criteriaFind() {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<String> criteriaQuery = builder.createQuery(String.class);
-        Root<Department> root = criteriaQuery.from(Department.class);
-        criteriaQuery.select(root.get(Department_.name));
-        return entityManager.createQuery(criteriaQuery).getResultList();
-    }
-
-    public List<Department> criteriaJoinSchoolTable() {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Department> criteriaQuery = builder.createQuery(Department.class);
-        Root<Department> root = criteriaQuery.from(Department.class);
-        Join<Department, School> dptJoin = root.join(Department_.school);
-        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     @Override
@@ -74,5 +54,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public void deleteById(int id) {
         departmentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Department> findDepartmentsCriteria() {
+        return null;
     }
 }

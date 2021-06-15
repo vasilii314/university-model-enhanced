@@ -1,20 +1,21 @@
 package com.example.task.service;
 
+import com.example.task.criteria.SearchCriteria;
 import com.example.task.entity.School;
+import com.example.task.entity.School_;
+import com.example.task.json.filters.SchoolFilterRequest;
+import com.example.task.operations.SearchOperation;
 import com.example.task.repository.SchoolRepository;
 import com.example.task.specification.SchoolSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.transaction.Transactional;
 
 @Service
 public class SchoolServiceImpl implements SchoolService {
@@ -28,19 +29,13 @@ public class SchoolServiceImpl implements SchoolService {
         this.schoolRepository = schoolRepository;
         this.entityManager = entityManager;
     }
-
-    @Override
-    public List<School> findAllCriteria() {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<School> criteriaQuery = builder.createQuery(School.class);
-        Root<School> root = criteriaQuery.from(School.class);
-        criteriaQuery.select(root);
-        return entityManager.createQuery(criteriaQuery).getResultList();
-    }
-
-    @Override
-    public List<School> findAllWithConstraints(SchoolSpecification specification) {
-        return schoolRepository.findAll(specification);
+    
+    public List<School> criteriaFindAll() {
+    	CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    	CriteriaQuery<School> criteriaQuery = builder.createQuery(School.class);
+    	Root<School> root = criteriaQuery.from(School.class);
+    	criteriaQuery.select(root);
+    	return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     @Override
@@ -63,5 +58,37 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public void deleteById(int id) {
         schoolRepository.deleteById(id);
+    }
+
+    @Override
+    public List<School> findSchoolsByName(SchoolFilterRequest filter) {
+        SchoolSpecification specification = new SchoolSpecification();
+        specification.add(new SearchCriteria("name", filter.getSchoolName(), SearchOperation.MATCH));
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<School> criteriaQuery = builder.createQuery(School.class);
+        Root<School> root = criteriaQuery.from(School.class);
+        criteriaQuery.where(specification.toPredicate(root, criteriaQuery, builder));
+        return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    @Override
+    @Transactional
+    public int deleteSchoolByName(SchoolFilterRequest filter) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaDelete<School> criteriaDelete = builder.createCriteriaDelete(School.class);
+        Root<School> root = criteriaDelete.from(School.class);
+        criteriaDelete.where(builder.equal(root.get(School_.name), filter.getSchoolName()));
+        return entityManager.createQuery(criteriaDelete).executeUpdate();
+    }
+
+    @Override
+    @Transactional
+    public int updateSchoolByName(SchoolFilterRequest filter) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<School> criteriaUpdate = builder.createCriteriaUpdate(School.class);
+        Root<School> root = criteriaUpdate.from(School.class);
+        criteriaUpdate.set(School_.name, filter.getUpdates().getSchoolName());
+        criteriaUpdate.where(builder.equal(root.get(School_.name), filter.getSchoolName()));
+        return entityManager.createQuery(criteriaUpdate).executeUpdate();
     }
 }
