@@ -1,16 +1,12 @@
 package com.example.task.service;
 
 import com.example.task.entity.School;
-import com.example.task.specification.SchoolSpecification;
+import com.example.task.json.filters.SchoolFilterRequest;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface SchoolService {
-    List<School> findAll();
-    List<School> findAllCriteria();
-    List<School> findAllWithConstraints(SchoolSpecification specification);
-    Optional<School> findById(int id);
-    void save(School school);
-    void deleteById(int id);
+public interface SchoolService extends Service<School> {
+    List<School> findSchoolsByName(SchoolFilterRequest filter);
+    int deleteSchoolByName(SchoolFilterRequest filter);
+    int updateSchoolByName(SchoolFilterRequest filter);
 }

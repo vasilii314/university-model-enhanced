@@ -1,7 +1,7 @@
 package com.example.task.specification;
 
 import com.example.task.criteria.SearchCriteria;
-import com.example.task.entity.School;
+import com.example.task.entity.HumanInUniversity;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,10 +11,11 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SchoolSpecification implements Specification<School> {
+public class HumanInUniversitySpecification implements Specification<HumanInUniversity> {
+
     private List<SearchCriteria> criteriaList;
 
-    public SchoolSpecification() {
+    public HumanInUniversitySpecification() {
         this.criteriaList = new ArrayList<>();
     }
 
@@ -23,7 +24,7 @@ public class SchoolSpecification implements Specification<School> {
     }
 
     @Override
-    public Predicate toPredicate(Root<School> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(Root<HumanInUniversity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
         for (SearchCriteria criteria : criteriaList) {
             switch (criteria.getOperation()) {

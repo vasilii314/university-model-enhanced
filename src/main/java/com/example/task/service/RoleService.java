@@ -1,6 +1,5 @@
 package com.example.task.service;
 
-import com.example.task.entity.Department;
 import com.example.task.entity.Role;
 
 import java.util.List;
