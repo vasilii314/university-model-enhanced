@@ -8,14 +8,14 @@
         <preConditions onFail="HALT">
         	<and>
         		<not>
-                	<tableExists tableName="department"/>
+                	<tableExists tableName="departments"/>
            	 	</not>
            	 	<not>
            	 		<indexExists indexName="idx_department_name"/>
            	 	</not>
         	</and>
         </preConditions>
-        <createTable tableName="department">
+        <createTable tableName="departments">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -27,8 +27,8 @@
             </column>
         </createTable>
         <sql>
-        	ALTER TABLE department ADD CONSTRAINT fk_department_school FOREIGN KEY (school_id) REFERENCES school (id) ON UPDATE CASCADE ON DELETE SET NULL;
-        	CREATE INDEX idx_department_name ON department (name);
+        	ALTER TABLE departments ADD CONSTRAINT fk_department_school FOREIGN KEY (school_id) REFERENCES schools (id) ON UPDATE CASCADE ON DELETE SET NULL;
+        	CREATE INDEX idx_department_name ON departments (name);
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -63,15 +63,16 @@ public class HumanServiceImpl implements HumanService {
         CriteriaQuery<Human> criteriaQuery = builder.createQuery(Human.class);
         Root<Human> humanRoot = criteriaQuery.from(Human.class);
         Root<Role> roleRoot = criteriaQuery.from(Role.class);
-        Join<Human, HumanInUniversity> join1 = humanRoot.join(Human_.roles);
-        Join<HumanInUniversity, Role> join2 = join1.join(HumanInUniversity_.roles);
+        Join<Human, HumanInUniversity> join1 = humanRoot.join(Human_.occupations);
+        Join<HumanInUniversity, Role> join2 = join1.join(HumanInUniversity_.role);
+        Join<HumanInUniversity, Department> join3 = join1.join(HumanInUniversity_.department);
         Predicate fullNameRestriction = filter.getEmployeeFullName() != null ?
                 builder.like(humanRoot.get(Human_.fullName), "%" + filter.getEmployeeFullName() + "%") :
                 builder.like(humanRoot.get(Human_.fullName), "%");
         Predicate roleRestriction = filter.getRole() != null &&
                 (filter.getRole().equals(RoleEnum.POSTGRADUATE) || filter.getRole().equals(RoleEnum.PROFESSOR)) ?
-                        builder.equal(roleRoot.get(Role_.roleDescription), filter.getRole()) :
-                        roleRoot.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
+                builder.equal(roleRoot.get(Role_.roleDescription), filter.getRole()) :
+                roleRoot.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
         criteriaQuery.select(humanRoot).distinct(true);
         criteriaQuery.where(builder.and(fullNameRestriction, roleRestriction));
         return entityManager.createQuery(criteriaQuery).getResultList();
@@ -81,34 +82,69 @@ public class HumanServiceImpl implements HumanService {
     public void addEmployeeCriteria(EmployeeAddRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
+        CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class);
         Root<Department> dptRoot = criteriaQuery.from(Department.class);
         Root<School> schoolRoot = criteriaQuery.from(School.class);
-        Root<Role> roleRoot = criteriaQuery.from(Role.class);
-        Join<Department, School> join = dptRoot.join(Department_.school);
-        criteriaQuery.multiselect(dptRoot, schoolRoot, roleRoot);
+        Root<Role> roleRoot = roleCriteriaQuery.from(Role.class);
+
+        roleCriteriaQuery.select(roleRoot);
+        roleCriteriaQuery.where((
+                builder.equal(roleRoot.get(Role_.roleDescription), filter.getRole())
+        ));
+        Role role = entityManager.createQuery(roleCriteriaQuery).getSingleResult();
+
+        Join<Department, School> join = dptRoot.join(Department_.school, JoinType.INNER);
+        criteriaQuery.multiselect(dptRoot, schoolRoot).distinct(true);
         criteriaQuery.where(
                 builder.and(
                         builder.equal(dptRoot.get(Department_.name), filter.getDptName()),
-                        builder.equal(schoolRoot.get(School_.name), filter.getSchoolName()),
-                        builder.equal(roleRoot.get(Role_.roleDescription), filter.getRole())
-                        ));
-        Tuple schoolDepartmentRole = entityManager.createQuery(criteriaQuery).getSingleResult();
-//        CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class)
+                        builder.equal(schoolRoot.get(School_.name), filter.getSchoolName())
+                ));
+        Tuple schoolDepartment = entityManager.createQuery(criteriaQuery).getSingleResult();
 
-        Human employee = new Human();
-        HumanInUniversity humanInUniversity = new HumanInUniversity();
-        humanInUniversity.setHuman(employee);
-        humanInUniversity.setRoles(Arrays.asList(schoolDepartmentRole.get(roleRoot)));
-        humanInUniversity.setDepartments(Arrays.asList(schoolDepartmentRole.get(dptRoot)));
-        employee.setFullName(filter.getEmployeeFullName());
-        employee.setBirthDate(LocalDate.parse(filter.getBirthDate()));
-//        employee.setRoles(Arrays.asList(schoolDepartmentRole.get(roleRoot).getRoleDescription()));
-        humanRepository.save(employee);
-//        humanInUniversityRepository.save(humanInUniversity);
+        Human human = new Human();
+        human.setFullName(filter.getEmployeeFullName());
+        human.setBirthDate(LocalDate.parse(filter.getBirthDate()));
+        HumanInUniversity employee = new HumanInUniversity();
+        employee.setHuman(human);
+        employee.setRole(role);
+        employee.setDepartment(schoolDepartment.get(dptRoot));
+        humanInUniversityRepository.save(employee);
 
 
-        System.out.println(schoolDepartmentRole.get(schoolRoot).getName() + " "
-                + schoolDepartmentRole.get(dptRoot).getName()
-        + schoolDepartmentRole.get(roleRoot).getRoleDescription());
+
+
+
+//        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
+//        Root<Department> dptRoot = criteriaQuery.from(Department.class);
+//        Root<School> schoolRoot = criteriaQuery.from(School.class);
+//        Root<Role> roleRoot = criteriaQuery.from(Role.class);
+//        Join<Department, School> join = dptRoot.join(Department_.school);
+//        criteriaQuery.multiselect(dptRoot, schoolRoot, roleRoot);
+//        criteriaQuery.where(
+//                builder.and(
+//                        builder.equal(dptRoot.get(Department_.name), filter.getDptName()),
+//                        builder.equal(schoolRoot.get(School_.name), filter.getSchoolName()),
+//                        builder.equal(roleRoot.get(Role_.roleDescription), filter.getRole())
+//                        ));
+//        Tuple schoolDepartmentRole = entityManager.createQuery(criteriaQuery).getSingleResult();
+////        CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class)
+//
+//        Human employee = new Human();
+//        HumanInUniversity humanInUniversity = new HumanInUniversity();
+//        humanInUniversity.setHuman(employee);
+//        humanInUniversity.setRoles(Arrays.asList(schoolDepartmentRole.get(roleRoot)));
+//        humanInUniversity.setDepartments(Arrays.asList(schoolDepartmentRole.get(dptRoot)));
+//        employee.setFullName(filter.getEmployeeFullName());
+//        employee.setBirthDate(LocalDate.parse(filter.getBirthDate()));
+////        employee.setRoles(Arrays.asList(schoolDepartmentRole.get(roleRoot).getRoleDescription()));
+//        humanRepository.save(employee);
+////        humanInUniversityRepository.save(humanInUniversity);
+//
+//
+//        System.out.println(schoolDepartmentRole.get(schoolRoot).getName() + " "
+//                + schoolDepartmentRole.get(dptRoot).getName()
+//        + schoolDepartmentRole.get(roleRoot).getRoleDescription());
     }
 }

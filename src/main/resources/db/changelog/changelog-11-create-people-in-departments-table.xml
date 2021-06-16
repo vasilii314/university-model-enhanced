@@ -23,7 +23,7 @@
         </createTable>
         <sql>
         	ALTER TABLE people_in_departments ADD CONSTRAINT fk_human_in_dpt_human_id FOREIGN KEY (human_in_uni_id) REFERENCES people_in_university (id) ON UPDATE CASCADE;
-        	ALTER TABLE people_in_departments ADD CONSTRAINT fk_people_in_uni_dpt_id FOREIGN KEY (department_id) REFERENCES department (id) ON UPDATE CASCADE; 
+        	ALTER TABLE people_in_departments ADD CONSTRAINT fk_people_in_uni_dpt_id FOREIGN KEY (department_id) REFERENCES departments (id) ON UPDATE CASCADE;
         </sql>
     </changeSet>
 </databaseChangeLog>

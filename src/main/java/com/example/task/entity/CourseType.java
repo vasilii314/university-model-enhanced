@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-@Table(name = "course_type")
+@Table(name = "course_types")
 public class CourseType {
 
     @Id
@@ -17,7 +17,7 @@ public class CourseType {
     @Column(length = 50)
     private CourseTypeEnum type;
 
-    @OneToMany(mappedBy = "courseType")
+    @OneToMany(mappedBy = "courseType", cascade = CascadeType.ALL)
     private List<Course> courses;
 
     public CourseType() {

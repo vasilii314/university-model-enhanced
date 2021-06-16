@@ -19,7 +19,7 @@ public class Group {
     @JoinColumn(name = "department_id")
     private Department groupDepartment;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<StudentsInGroups> students;
 
     public Group() {
