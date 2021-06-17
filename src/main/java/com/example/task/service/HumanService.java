@@ -9,4 +9,6 @@ import java.util.List;
 public interface HumanService extends Service<Human> {
     List<Human> findEmployeesCriteria(EmployeeFilterRequest filter);
     void addEmployeeCriteria(EmployeeAddRequest filter);
+    void deleteEmployeeOrStudent(EmployeeFilterRequest filter);
+    void updateEmployeeOrStudent(EmployeeFilterRequest filter);
 }

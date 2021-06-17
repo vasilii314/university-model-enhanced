@@ -3,13 +3,14 @@ package com.example.task.json.filters;
 import com.example.task.entity.RoleEnum;
 import com.example.task.json.updates.Updates;
 
-import java.util.Map;
-
 public class EmployeeFilterRequest {
     private String employeeFullName;
+    private String dptName;
     private RoleEnum role;
-    private Map<String, String> birthDate;
+    private String birthDateUpperBound;
+    private String birthDateLowerBound;
     private Updates updates;
+
     public EmployeeFilterRequest() {
     }
 
@@ -21,6 +22,14 @@ public class EmployeeFilterRequest {
         this.employeeFullName = employeeFullName;
     }
 
+    public String getDptName() {
+        return dptName;
+    }
+
+    public void setDptName(String dptName) {
+        this.dptName = dptName;
+    }
+
     public RoleEnum getRole() {
         return role;
     }
@@ -29,12 +38,20 @@ public class EmployeeFilterRequest {
         this.role = role;
     }
 
-    public Map<String, String> getBirthDate() {
-        return birthDate;
+    public String getBirthDateUpperBound() {
+        return birthDateUpperBound;
     }
 
-    public void setBirthDate(Map<String, String> birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthDateUpperBound(String birthDateUpperBound) {
+        this.birthDateUpperBound = birthDateUpperBound;
+    }
+
+    public String getBirthDateLowerBound() {
+        return birthDateLowerBound;
+    }
+
+    public void setBirthDateLowerBound(String birthDateLowerBound) {
+        this.birthDateLowerBound = birthDateLowerBound;
     }
 
     public Updates getUpdates() {
