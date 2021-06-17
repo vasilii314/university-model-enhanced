@@ -22,7 +22,7 @@
             </column>
         </createTable>
         <sql>
-        	ALTER TABLE groups ADD CONSTRAINT fk_group_dpt FOREIGN KEY (department_id) REFERENCES department (id) ON UPDATE CASCADE 
+        	ALTER TABLE groups ADD CONSTRAINT fk_group_dpt FOREIGN KEY (department_id) REFERENCES departments (id) ON UPDATE CASCADE
         </sql>
     </changeSet>
 </databaseChangeLog>

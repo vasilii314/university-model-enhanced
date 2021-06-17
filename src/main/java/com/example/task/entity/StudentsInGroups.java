@@ -11,7 +11,7 @@ public class StudentsInGroups {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
     private HumanInUniversity student;
 

@@ -8,14 +8,14 @@
         <preConditions onFail="HALT">
         	<and>
         		<not>
-                	<tableExists tableName="course"/>
+                	<tableExists tableName="courses"/>
             	</not>
             	<not>
             		<indexExists indexName="idx_course_name"/>
             	</not>
         	</and>
         </preConditions>
-        <createTable tableName="course">
+        <createTable tableName="courses">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -33,10 +33,10 @@
             </column>
         </createTable>
         <sql>
-        	ALTER TABLE course ADD CONSTRAINT fk_course_type FOREIGN KEY (course_type_id) REFERENCES course_type (id) ON UPDATE CASCADE;
-        	ALTER TABLE course ADD CONSTRAINT fk_course_dpt FOREIGN KEY (department_id) REFERENCES department (id) ON UPDATE CASCADE; 
-        	ALTER TABLE course ADD CONSTRAINT valid_duration CHECK(duration > 0);
-        	CREATE INDEX idx_course_name ON course (name);
+        	ALTER TABLE courses ADD CONSTRAINT fk_course_type FOREIGN KEY (course_type_id) REFERENCES course_types (id) ON UPDATE CASCADE;
+        	ALTER TABLE courses ADD CONSTRAINT fk_course_dpt FOREIGN KEY (department_id) REFERENCES departments (id) ON UPDATE CASCADE;
+        	ALTER TABLE courses ADD CONSTRAINT valid_duration CHECK(duration > 0);
+        	CREATE INDEX idx_course_name ON courses (name);
         </sql>
     </changeSet>
 </databaseChangeLog>

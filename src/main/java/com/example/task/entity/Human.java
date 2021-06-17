@@ -5,7 +5,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,9 +23,25 @@ public class Human {
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "human", cascade = CascadeType.ALL)
-    private List<HumanInUniversity> roles;
+    List<HumanInUniversity> occupations;
+
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "employees",
+//            joinColumns = {@JoinColumn(name = "human_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+//    private List<Role> roles;
+//
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "employees_in_schools",
+//            joinColumns = {@JoinColumn(name = "human_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "school_id")})
+//    private List<Department> departments;
 
     public Human() {
+    }
+
+    public Human(String fullName) {
+        this.fullName = fullName;
     }
 
     public Human(String fullName, LocalDate birthDate) {
@@ -58,12 +73,12 @@ public class Human {
         this.birthDate = birthDate;
     }
 
-    public List<HumanInUniversity> getRoles() {
-        return roles;
+    public List<HumanInUniversity> getOccupations() {
+        return occupations;
     }
 
-    public void setRoles(List<HumanInUniversity> roles) {
-        this.roles = roles;
+    public void setOccupations(List<HumanInUniversity> occupations) {
+        this.occupations = occupations;
     }
 
     @Override
@@ -72,7 +87,6 @@ public class Human {
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
                 ", birthDate=" + birthDate +
-                ", roles=" + roles +
                 '}';
     }
 }

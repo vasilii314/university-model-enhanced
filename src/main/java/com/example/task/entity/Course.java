@@ -6,7 +6,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Entity
-@Table(name = "course")
+@Table(name = "courses")
 public class Course {
 
     @Id
@@ -20,14 +20,14 @@ public class Course {
     @Positive
     private int duration;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_type_id")
     private CourseType courseType;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<StudentGrade> grades;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id")
     private Department department;
 

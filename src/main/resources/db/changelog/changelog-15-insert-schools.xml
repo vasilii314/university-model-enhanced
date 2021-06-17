@@ -4,21 +4,18 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet author="admin" id="4">
+    <changeSet author="admin" id="15">
         <preConditions onFail="HALT">
             <and>
-                <tableExists tableName="course_types"/>
-                <tableIsEmpty tableName="course_types"/>
+                <tableExists tableName="schools"/>
+                <tableIsEmpty tableName="schools"/>
                 <sqlCheck expectedResult="0">
-                	SELECT COUNT(*) FROM course_types
+                    SELECT COUNT(*) FROM schools
                 </sqlCheck>
             </and>
         </preConditions>
-        <insert tableName="course_types">
-            <column name="type" value="SOCIAL"/>
-        </insert>
-        <insert tableName="course_types">
-            <column name="type" value="MATHEMATICAL"/>
+        <insert tableName="schools">
+            <column name="name" value="School 1"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

@@ -7,10 +7,10 @@
     <changeSet author="admin" id="2">
         <preConditions onFail="HALT">
             <not>
-                <tableExists tableName="course_type"/>
+                <tableExists tableName="course_types"/>
             </not>
         </preConditions>
-        <createTable tableName="course_type">
+        <createTable tableName="course_types">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -19,7 +19,7 @@
             </column>
         </createTable>
         <sql>
-        	ALTER TABLE course_type ADD CONSTRAINT valid_type CHECK(type IN ('SOCIAL', 'MATHEMATICAL'))
+        	ALTER TABLE course_types ADD CONSTRAINT valid_type CHECK(type IN ('SOCIAL', 'MATHEMATICAL'))
         </sql>
     </changeSet>
 </databaseChangeLog>

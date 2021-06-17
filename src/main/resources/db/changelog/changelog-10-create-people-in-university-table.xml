@@ -27,7 +27,7 @@
         <sql>
         	ALTER TABLE people_in_university ADD CONSTRAINT fk_people_in_uni_human_id FOREIGN KEY (human_id) REFERENCES people (id) ON UPDATE CASCADE;
         	ALTER TABLE people_in_university ADD CONSTRAINT fk_people_in_uni_role FOREIGN KEY (role_id) REFERENCES roles (id) ON UPDATE CASCADE;
-        	ALTER TABLE people_in_university ADD CONSTRAINT fk_people_in_uni_dpt FOREIGN KEY (department_id) REFERENCES department (id) ON UPDATE CASCADE; 
+        	ALTER TABLE people_in_university ADD CONSTRAINT fk_people_in_uni_dpt FOREIGN KEY (department_id) REFERENCES departments (id) ON UPDATE CASCADE;
         </sql>
     </changeSet>
 </databaseChangeLog>

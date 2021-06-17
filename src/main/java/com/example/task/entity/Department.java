@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "department")
+@Table(name = "departments")
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class Department {
     @JoinColumn(name = "school_id")
     private School school;
 
-    @ManyToMany(mappedBy = "departments", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private List<HumanInUniversity> people;
 
     @OneToMany(mappedBy = "groupDepartment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

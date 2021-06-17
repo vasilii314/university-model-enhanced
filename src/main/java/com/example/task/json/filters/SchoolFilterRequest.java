@@ -1,5 +1,7 @@
 package com.example.task.json.filters;
 
+import com.example.task.json.updates.Updates;
+
 import javax.validation.constraints.NotBlank;
 
 public class SchoolFilterRequest {

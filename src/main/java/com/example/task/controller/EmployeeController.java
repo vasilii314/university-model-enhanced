@@ -1,5 +1,6 @@
 package com.example.task.controller;
 
+import com.example.task.entity.Human;
 import com.example.task.json.filters.EmployeeAddRequest;
 import com.example.task.json.filters.EmployeeFilterRequest;
 import com.example.task.json.responses.EmployeeDTO;
@@ -26,7 +27,13 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     public List<EmployeeDTO> getEmployees(@RequestBody EmployeeFilterRequest req) {
-        List<EmployeeDTO> employees =  humanService.findEmployeesCriteria(req)
+
+        List<Human> peopleInUniversity = humanService.findEmployeesCriteria(req);
+        for (Human human : peopleInUniversity) {
+            System.out.println(human);
+        }
+
+        List<EmployeeDTO> employees =  peopleInUniversity
                 .stream()
                 .map(EmployeeDTO::toEmployeeDTO)
                 .collect(Collectors.toList());
@@ -35,19 +42,16 @@ public class EmployeeController {
 
     @PostMapping("/employees")
     public void addEmployee(@RequestBody EmployeeAddRequest req) {
-//        Human employee = new Human(req.getEmployeeFullName(), LocalDate.parse(req.getBd()));
-//        HumanInUniversity humanInUniversity = new HumanInUniversity();
-//        Role role = new Role(req.getRole());
-//        role.setId(0);
-//        humanInUniversity.setId(0);
-//        humanInUniversity.setHuman(employee);
-//        humanInUniversity.setRoles(new ArrayList<>());
-//        humanInUniversity.getRoles().add(role);
-//        employee.setRoles(new ArrayList<>());
-//        employee.getRoles().add(humanInUniversity);
-//        humanService.save(employee);
-//        humanInUniversityRepository.save(humanInUniversity);
-//        return employee.getFullName();
         humanService.addEmployeeCriteria(req);
+    }
+
+    @DeleteMapping("/employees")
+    public void deleteEmployee(@RequestBody EmployeeFilterRequest req) {
+        humanService.deleteEmployeeOrStudent(req);
+    }
+
+    @PatchMapping("/employees")
+    public void updateEmployee(@RequestBody EmployeeFilterRequest req) {
+        humanService.updateEmployeeOrStudent(req);
     }
 }

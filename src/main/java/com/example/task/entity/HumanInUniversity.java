@@ -11,26 +11,28 @@ public class HumanInUniversity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany
-    @JoinTable(name = "people_roles",
-    joinColumns = {@JoinColumn(name = "human_in_uni_id")},
-    inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<Role> roles;
-
-    @ManyToMany
-    @JoinTable(name = "people_in_departments",
-            joinColumns = {@JoinColumn(name = "human_in_uni_id")},
-            inverseJoinColumns = {@JoinColumn(name = "department_id")})
-    private List<Department> departments;
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "human_id")
     private Human human;
 
-    @OneToMany(mappedBy = "student")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<StudentsInGroups> studentsInGroups;
 
     public HumanInUniversity() {
+    }
+
+    public HumanInUniversity(Human human, Role role, Department department) {
+        this.human = human;
+        this.role = role;
+        this.department = department;
     }
 
     public int getId() {
@@ -41,20 +43,28 @@ public class HumanInUniversity {
         this.id = id;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public List<Department> getDepartments() {
-        return departments;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepartments(List<Department> departments) {
-        this.departments = departments;
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public List<StudentsInGroups> getStudentsInGroups() {
+        return studentsInGroups;
+    }
+
+    public void setStudentsInGroups(List<StudentsInGroups> studentsInGroups) {
+        this.studentsInGroups = studentsInGroups;
     }
 
     public Human getHuman() {
@@ -69,9 +79,10 @@ public class HumanInUniversity {
     public String toString() {
         return "HumanInUniversity{" +
                 "id=" + id +
-                ", roles=" + roles +
-                ", departments=" + departments +
                 ", human=" + human +
+                ", role=" + role +
+                ", department=" + department +
+                ", studentsInGroups=" + studentsInGroups +
                 '}';
     }
 }

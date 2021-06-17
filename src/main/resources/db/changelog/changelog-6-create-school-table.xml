@@ -8,14 +8,14 @@
         <preConditions onFail="HALT">
         	<and>
         		 <not>
-                 	<tableExists tableName="school"/>
+                 	<tableExists tableName="schools"/>
             	</not>
             	<not>
             		<indexExists indexName="idx_school_name"/>
             	</not>
         	</and>
         </preConditions>
-        <createTable tableName="school">
+        <createTable tableName="schools">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -24,7 +24,7 @@
             </column>
         </createTable>
         <sql>
-        	CREATE INDEX idx_school_name ON school (name)
+        	CREATE INDEX idx_school_name ON schools (name)
         </sql>
     </changeSet>
 </databaseChangeLog>

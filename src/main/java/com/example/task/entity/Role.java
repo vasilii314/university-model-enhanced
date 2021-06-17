@@ -17,10 +17,14 @@ public class Role {
     @Column(length = 50)
     private RoleEnum roleDescription;
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<HumanInUniversity> peopleWithRoles;
 
     public Role() {
+    }
+
+    public Role(RoleEnum roleDescription) {
+        this.roleDescription = roleDescription;
     }
 
     public int getId() {
