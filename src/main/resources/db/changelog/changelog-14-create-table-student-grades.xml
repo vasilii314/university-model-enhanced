@@ -25,8 +25,8 @@
             </column>
         </createTable>
         <sql>
-        	ALTER TABLE student_grades ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id) REFERENCES students_in_groups (id) ON UPDATE CASCADE;
-        	ALTER TABLE student_grades ADD CONSTRAINT fk_course_id FOREIGN KEY (course_id) REFERENCES courses (id) ON UPDATE CASCADE;
+        	ALTER TABLE student_grades ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id) REFERENCES students_in_groups (id) ON UPDATE CASCADE ON DELETE CASCADE;
+        	ALTER TABLE student_grades ADD CONSTRAINT fk_course_id FOREIGN KEY (course_id) REFERENCES courses (id) ON UPDATE CASCADE ON DELETE CASCADE;
         	ALTER TABLE student_grades ADD CONSTRAINT valid_duration CHECK(grade BETWEEN 2 AND 5);
         </sql>
     </changeSet>

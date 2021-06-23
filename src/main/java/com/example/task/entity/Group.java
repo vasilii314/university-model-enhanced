@@ -49,6 +49,14 @@ public class Group {
         this.groupDepartment = department;
     }
 
+    public List<StudentsInGroups> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<StudentsInGroups> students) {
+        this.students = students;
+    }
+
     @Override
     public String toString() {
         return "Group{" +

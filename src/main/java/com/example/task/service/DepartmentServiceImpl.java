@@ -27,7 +27,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         this.departmentRepository = departmentRepository;
         this.entityManager = entityManager;
     }
-    
+
     public List<Department> criteriaFindAll() {
     	CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     	CriteriaQuery<School> criteriaQuery = builder.createQuery(School.class);

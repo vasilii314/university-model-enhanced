@@ -15,11 +15,11 @@ public class StudentsInGroups {
     @JoinColumn(name = "student_id")
     private HumanInUniversity student;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<StudentGrade> grades;
 
     public StudentsInGroups() {

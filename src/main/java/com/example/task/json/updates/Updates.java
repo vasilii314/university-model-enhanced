@@ -3,6 +3,8 @@ package com.example.task.json.updates;
 import com.example.task.entity.CourseTypeEnum;
 import com.example.task.entity.RoleEnum;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
@@ -17,7 +19,12 @@ public class Updates {
     private LocalDate birthDate;
 
     @Positive
-    private int duration;
+    @Min(2)
+    @Max(5)
+    private int grade;
+
+    @Positive
+    private Integer duration;
 
     public Updates() {
     }
@@ -86,11 +93,19 @@ public class Updates {
         this.birthDate = birthDate;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
     }
 }

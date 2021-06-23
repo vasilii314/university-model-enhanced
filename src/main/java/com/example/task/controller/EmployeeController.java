@@ -29,10 +29,6 @@ public class EmployeeController {
     public List<EmployeeDTO> getEmployees(@RequestBody EmployeeFilterRequest req) {
 
         List<Human> peopleInUniversity = humanService.findEmployeesCriteria(req);
-        for (Human human : peopleInUniversity) {
-            System.out.println(human);
-        }
-
         List<EmployeeDTO> employees =  peopleInUniversity
                 .stream()
                 .map(EmployeeDTO::toEmployeeDTO)

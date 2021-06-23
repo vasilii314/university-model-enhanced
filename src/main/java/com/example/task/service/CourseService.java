@@ -1,13 +1,13 @@
 package com.example.task.service;
 
 import com.example.task.entity.Course;
+import com.example.task.json.filters.CourseFilterRequest;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface CourseService {
-    List<Course> findAll();
-    Optional<Course> findById(int id);
-    void save(Course course);
-    void deleteById(int id);
+public interface CourseService extends Service<Course> {
+    List<Course> findCoursesCriteria(CourseFilterRequest filter);
+    void addCourseCriteria(CourseFilterRequest filter);
+    void deleteCourseCriteria(CourseFilterRequest filter);
+    void updateCourseCriteria(CourseFilterRequest filter);
 }

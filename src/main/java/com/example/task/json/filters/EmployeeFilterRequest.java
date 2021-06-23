@@ -9,6 +9,7 @@ public class EmployeeFilterRequest {
     private RoleEnum role;
     private String birthDateUpperBound;
     private String birthDateLowerBound;
+    private String groupName;
     private Updates updates;
 
     public EmployeeFilterRequest() {
@@ -60,5 +61,13 @@ public class EmployeeFilterRequest {
 
     public void setUpdates(Updates updates) {
         this.updates = updates;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 }

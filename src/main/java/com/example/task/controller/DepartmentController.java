@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequestMapping("/api")
 public class DepartmentController {
@@ -24,10 +25,6 @@ public class DepartmentController {
     @GetMapping("/departments")
     public List<DepartmentDTO> findDepartments(@RequestBody DepartmentFilterRequest req) {
         List<Department> departmentsRaw = departmentService.findDepartmentsCriteria(req);
-        for (Department department : departmentsRaw) {
-            System.out.println(department.getName());
-        }
-
         List<DepartmentDTO> departments =  departmentsRaw
                 .stream()
                 .map(DepartmentDTO::toDepartmentDTO)

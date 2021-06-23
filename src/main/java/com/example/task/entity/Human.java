@@ -25,18 +25,6 @@ public class Human {
     @OneToMany(mappedBy = "human", cascade = CascadeType.ALL)
     List<HumanInUniversity> occupations;
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "employees",
-//            joinColumns = {@JoinColumn(name = "human_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "role_id")})
-//    private List<Role> roles;
-//
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "employees_in_schools",
-//            joinColumns = {@JoinColumn(name = "human_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "school_id")})
-//    private List<Department> departments;
-
     public Human() {
     }
 

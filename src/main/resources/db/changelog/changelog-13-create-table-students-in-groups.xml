@@ -22,7 +22,7 @@
             </column>
         </createTable>
         <sql>
-        	ALTER TABLE students_in_groups ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id) REFERENCES people_in_university (id) ON UPDATE CASCADE;
+        	ALTER TABLE students_in_groups ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id) REFERENCES people_in_university (id) ON UPDATE CASCADE ON DELETE CASCADE;
         	ALTER TABLE students_in_groups ADD CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES groups (id) ON UPDATE CASCADE;
         </sql>
     </changeSet>

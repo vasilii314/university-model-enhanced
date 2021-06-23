@@ -3,7 +3,7 @@ package com.example.task.json.filters;
 import com.example.task.json.updates.Updates;
 
 public class DepartmentFilterRequest {
-    private String dptName;
+    private String dptName ;
     private String schoolName;
     private Updates updates;
 
@@ -25,6 +25,7 @@ public class DepartmentFilterRequest {
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
     }
+
 
     public Updates getUpdates() {
         return updates;

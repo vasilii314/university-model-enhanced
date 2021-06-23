@@ -1,6 +1,5 @@
 package com.example.task.service;
 
-import com.example.task.entity.StudentGrade;
 import com.example.task.entity.StudentsInGroups;
 
 import java.util.List;

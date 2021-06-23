@@ -34,6 +34,13 @@ public class Course {
     public Course() {
     }
 
+    public Course(String name, int duration, CourseType courseType, Department department) {
+        this.name = name;
+        this.duration = duration;
+        this.courseType = courseType;
+        this.department = department;
+    }
+
     public int getId() {
         return id;
     }
