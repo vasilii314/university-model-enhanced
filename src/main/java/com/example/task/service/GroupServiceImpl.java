@@ -74,86 +74,98 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void addGroup(GroupFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Department> criteriaQuery = builder.createQuery(Department.class);
-        Root<Department> dptRoot = criteriaQuery.from(Department.class);
-        Root<Group> groupRoot = criteriaQuery.from(Group.class);
-        if (filter.getDptName() != null) {
-            criteriaQuery.select(dptRoot)
-                    .where(builder.like(dptRoot.get(Department_.name), filter.getDptName())).distinct(true);
-            Department department = entityManager.createQuery(criteriaQuery).getSingleResult();
-            if (filter.getGroupName() != null) {
-                Group group = new Group();
-                group.setName(filter.getGroupName());
-                group.setDepartment(department);
-                groupRepository.save(group);
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Department> criteriaQuery = builder.createQuery(Department.class);
+            Root<Department> dptRoot = criteriaQuery.from(Department.class);
+            Root<Group> groupRoot = criteriaQuery.from(Group.class);
+            if (filter.getDptName() != null) {
+                criteriaQuery.select(dptRoot)
+                        .where(builder.like(dptRoot.get(Department_.name), filter.getDptName())).distinct(true);
+                Department department = entityManager.createQuery(criteriaQuery).getSingleResult();
+                if (filter.getGroupName() != null) {
+                    Group group = new Group();
+                    group.setName(filter.getGroupName());
+                    group.setDepartment(department);
+                    groupRepository.save(group);
+                }
             }
+        } catch (Exception e) {
+            throw new RuntimeException("Save failed");
         }
     }
 
     @Override
     @Transactional
     public void deleteGroup(GroupFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaDelete<Group> groupCriteriaDelete = builder.createCriteriaDelete(Group.class);
-        Root<Group> groupRoot = groupCriteriaDelete.from(Group.class);
-        Predicate groupNameRestriction;
-        Predicate dptNameRestriction;
-        if (filter.getGroupName() != null) {
-            groupNameRestriction = builder.equal(groupRoot.get(Group_.name), filter.getGroupName());
-            Join<Group, Department> join;
-            if (filter.getDptName() != null) {
-                Subquery<Group> subquery = groupCriteriaDelete.subquery(Group.class);
-                Root<Group> groupRoot2 = subquery.from(Group.class);
-                subquery.select(groupRoot2);
-                join = groupRoot2.join(Group_.groupDepartment);
-                dptNameRestriction = builder.equal(join.get(Department_.name), filter.getDptName());
-                subquery.where(builder.and(groupNameRestriction, dptNameRestriction));
-                groupCriteriaDelete.where(groupRoot.in(subquery));
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaDelete<Group> groupCriteriaDelete = builder.createCriteriaDelete(Group.class);
+            Root<Group> groupRoot = groupCriteriaDelete.from(Group.class);
+            Predicate groupNameRestriction;
+            Predicate dptNameRestriction;
+            if (filter.getGroupName() != null) {
+                groupNameRestriction = builder.equal(groupRoot.get(Group_.name), filter.getGroupName());
+                Join<Group, Department> join;
+                if (filter.getDptName() != null) {
+                    Subquery<Group> subquery = groupCriteriaDelete.subquery(Group.class);
+                    Root<Group> groupRoot2 = subquery.from(Group.class);
+                    subquery.select(groupRoot2);
+                    join = groupRoot2.join(Group_.groupDepartment);
+                    dptNameRestriction = builder.equal(join.get(Department_.name), filter.getDptName());
+                    subquery.where(builder.and(groupNameRestriction, dptNameRestriction));
+                    groupCriteriaDelete.where(groupRoot.in(subquery));
+                    entityManager.createQuery(groupCriteriaDelete).executeUpdate();
+                    return;
+                }
+                groupCriteriaDelete.where(groupNameRestriction);
                 entityManager.createQuery(groupCriteriaDelete).executeUpdate();
-                return;
             }
-            groupCriteriaDelete.where(groupNameRestriction);
-            entityManager.createQuery(groupCriteriaDelete).executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException("Delete failed");
         }
     }
 
     @Override
     @Transactional
     public void updateGroup(GroupFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaUpdate<Group> groupCriteriaUpdate = builder.createCriteriaUpdate(Group.class);
-        Root<Group> groupRoot = groupCriteriaUpdate.from(Group.class);
-        Predicate groupNameRestriction;
-        Predicate dptNameRestriction;
-        if (filter.getGroupName() != null) {
-            groupNameRestriction = builder.equal(groupRoot.get(Group_.name), filter.getGroupName());
-            Join<Group, Department> join;
-            if (filter.getDptName() != null) {
-                Subquery<Group> subquery = groupCriteriaUpdate.subquery(Group.class);
-                Root<Group> groupRoot2 = subquery.from(Group.class);
-                subquery.select(groupRoot2);
-                join = groupRoot2.join(Group_.groupDepartment);
-                dptNameRestriction = builder.equal(join.get(Department_.name), filter.getDptName());
-                subquery.where(builder.and(groupNameRestriction, dptNameRestriction));
-                groupCriteriaUpdate.where(groupRoot.in(subquery));
-            }
-            groupCriteriaUpdate.where(groupNameRestriction);
-            if (filter.getUpdates() != null) {
-                if (filter.getUpdates().getGroupName() != null) {
-                    groupCriteriaUpdate.set(Group_.name, filter.getUpdates().getGroupName());
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaUpdate<Group> groupCriteriaUpdate = builder.createCriteriaUpdate(Group.class);
+            Root<Group> groupRoot = groupCriteriaUpdate.from(Group.class);
+            Predicate groupNameRestriction;
+            Predicate dptNameRestriction;
+            if (filter.getGroupName() != null) {
+                groupNameRestriction = builder.equal(groupRoot.get(Group_.name), filter.getGroupName());
+                Join<Group, Department> join;
+                if (filter.getDptName() != null) {
+                    Subquery<Group> subquery = groupCriteriaUpdate.subquery(Group.class);
+                    Root<Group> groupRoot2 = subquery.from(Group.class);
+                    subquery.select(groupRoot2);
+                    join = groupRoot2.join(Group_.groupDepartment);
+                    dptNameRestriction = builder.equal(join.get(Department_.name), filter.getDptName());
+                    subquery.where(builder.and(groupNameRestriction, dptNameRestriction));
+                    groupCriteriaUpdate.where(groupRoot.in(subquery));
                 }
-                if (filter.getUpdates().getDptName() != null) {
-                    CriteriaQuery<Department> departmentCriteriaQuery = builder.createQuery(Department.class);
-                    Root<Department> departmentRoot = departmentCriteriaQuery.from(Department.class);
-                    departmentCriteriaQuery.select(departmentRoot)
-                            .where(builder.equal(departmentRoot.get(Department_.name), filter.getUpdates().getDptName()))
-                            .distinct(true);
-                    Department department = entityManager.createQuery(departmentCriteriaQuery).getSingleResult();
-                    groupCriteriaUpdate.set(Group_.groupDepartment, department);
+                groupCriteriaUpdate.where(groupNameRestriction);
+                if (filter.getUpdates() != null) {
+                    if (filter.getUpdates().getGroupName() != null) {
+                        groupCriteriaUpdate.set(Group_.name, filter.getUpdates().getGroupName());
+                    }
+                    if (filter.getUpdates().getDptName() != null) {
+                        CriteriaQuery<Department> departmentCriteriaQuery = builder.createQuery(Department.class);
+                        Root<Department> departmentRoot = departmentCriteriaQuery.from(Department.class);
+                        departmentCriteriaQuery.select(departmentRoot)
+                                .where(builder.equal(departmentRoot.get(Department_.name), filter.getUpdates().getDptName()))
+                                .distinct(true);
+                        Department department = entityManager.createQuery(departmentCriteriaQuery).getSingleResult();
+                        groupCriteriaUpdate.set(Group_.groupDepartment, department);
+                    }
+                    entityManager.createQuery(groupCriteriaUpdate).executeUpdate();
                 }
-                entityManager.createQuery(groupCriteriaUpdate).executeUpdate();
             }
+        } catch (Exception e) {
+            throw new RuntimeException("Update failed");
         }
     }
 }

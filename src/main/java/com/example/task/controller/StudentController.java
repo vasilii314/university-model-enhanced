@@ -7,6 +7,7 @@ import com.example.task.json.responses.StudentDTO;
 import com.example.task.json.responses.StudentGradeDTO;
 import com.example.task.service.HumanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,34 +26,61 @@ public class StudentController {
     }
 
     @GetMapping("/students")
-    public List<StudentDTO> getStudents(@RequestBody @Valid StudentFilterRequest req) {
+    public ResponseEntity<List<StudentDTO>> getStudents(@RequestBody @Valid StudentFilterRequest req) {
         List<Human> studentsRaw = humanService.findStudents(req);
+        if (studentsRaw.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
         List<StudentDTO> students = studentsRaw.stream().map(StudentDTO::toStudentDTO).collect(Collectors.toList());
-        return students;
+        return ResponseEntity.ok(students);
     }
 
     @PostMapping("/students")
-    public void addStudent(@RequestBody @Valid StudentFilterRequest req) {
-        humanService.addStudentCriteria(req);
+    public ResponseEntity<?> addStudent(@RequestBody @Valid StudentFilterRequest req) {
+        try {
+            humanService.addStudentCriteria(req);
+            return ResponseEntity.status(201).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/students/grades")
-    public List<StudentGradeDTO> getGrades(@RequestBody @Valid StudentFilterRequest req) {
-        return humanService.getStudentGrades(req);
+    public ResponseEntity<List<StudentGradeDTO>> getGrades(@RequestBody @Valid StudentFilterRequest req) {
+        List<StudentGradeDTO> grades = humanService.getStudentGrades(req);
+        if (grades.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(grades);
     }
 
     @PostMapping("/students/grades")
-    public void addGrade(@RequestBody @Valid StudentFilterRequest req) {
-        humanService.addStudentGrade(req);
+    public ResponseEntity<?> addGrade(@RequestBody @Valid StudentFilterRequest req) {
+        try {
+            humanService.addStudentGrade(req);
+            return ResponseEntity.status(201).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/students")
-    public void deleteStudent(@RequestBody @Valid EmployeeFilterRequest req) {
-        humanService.deleteEmployeeOrStudent(req);
+    public ResponseEntity<?> deleteStudent(@RequestBody @Valid EmployeeFilterRequest req) {
+        try {
+            humanService.deleteEmployeeOrStudent(req);
+            return ResponseEntity.status(204).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PatchMapping("/students")
-    public void updateStudent(@RequestBody @Valid EmployeeFilterRequest req) {
-        humanService.updateEmployeeOrStudent(req);
+    public ResponseEntity<?> updateStudent(@RequestBody @Valid EmployeeFilterRequest req) {
+        try {
+            humanService.updateEmployeeOrStudent(req);
+            return ResponseEntity.status(204).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

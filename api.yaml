@@ -36,14 +36,12 @@ paths:
         description: "Student object that needs to be added"
         required: true
         schema:
-          $ref: "#/definitions/StudentFilter"
+          $ref: "#/definitions/StudentFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "201": 
-          description: "Successfull operation"
-          schema:
-             $ref: '#/definitions/Human'
+          description: "Successful operation"
     get:
       tags: 
         - "student"
@@ -58,22 +56,22 @@ paths:
       - in: "body"
         name: "body"
         description: ""
-        required: true
+        required: false
         schema:
-          $ref: "#/definitions/StudentFilter"
+          $ref: "#/definitions/StudentFilterRequest"
       responses:
         "404":
           description: "Not Found"
         "200": 
-          description: "Successfull operation"
+          description: "Successful operation"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Human"
+              $ref: "#/definitions/StudentDTO"
     delete:
       tags: 
         - "student"
-      summary: ""
+      summary: "Delete student"
       description: ""
       operationId: "delStudent"
       consumes:
@@ -86,16 +84,16 @@ paths:
         description: ""
         required: true
         schema:
-          $ref: "#/definitions/StudentFilter"
+          $ref: "#/definitions/EmployeeFilterRequest"
       responses:
         "404":
           description: "Not Found"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
     patch:
       tags: 
         - "student"
-      summary: ""
+      summary: "Update student"
       description: ""
       operationId: "updateStudent"
       consumes:
@@ -108,12 +106,12 @@ paths:
         description: ""
         required: true
         schema:
-          $ref: "#/definitions/StudentFilter"
+          $ref: "#/definitions/EmployeeFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
               
   /student/grades:
     get:
@@ -132,18 +130,44 @@ paths:
         description: ""
         required: true
         schema:
-          $ref: "#/definitions/StudentFilter"
+          $ref: "#/definitions/StudentFilterRequest"
       responses:
         "404":
           description: "Not Found"
         "200": 
-          description: "Successfull operation"
-          
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StudentGradeDTO"
+    post:
+      tags:
+      - "student"
+      summary: "Add grade"
+      description: ""
+      operationId: "addGrade"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/StudentFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "201": 
+          description: "Successful operation"
+      
   /courses:
     get:
       tags:
         - "course"
-      summary: "******"
+      summary: "Get a list of courses"
       description: ""
       operationId: "getCourses"
       consumes:
@@ -156,20 +180,20 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/CourseFilter"
+          $ref: "#/definitions/CourseFilterRequest"
       responses:
         "404":
           description: "Not Found"
         "200": 
-          description: "Successfull operation"
+          description: "Successful operation"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Course"
+              $ref: "#/definitions/CourseDTO"
     post:
       tags:
         - "course"
-      summary: "******"
+      summary: "Add course"
       description: ""
       operationId: "addCourse"
       consumes:
@@ -182,18 +206,16 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/Course"
+          $ref: "#/definitions/CourseFilterRequest"
       responses:
         "400":
           description: "Bad Request"
         "201": 
-          description: "Successfull operation"
-          schema:
-            $ref: "#/definitions/Course"
+          description: "Successful operation"
     delete:
       tags:
         - "course"
-      summary: "******"
+      summary: "Delete course"
       description: ""
       operationId: "delCourse"
       consumes:
@@ -206,16 +228,16 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/CourseFilter"
+          $ref: "#/definitions/CourseFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
     patch:
       tags: 
         - "course"
-      summary: ""
+      summary: "Update course"
       description: ""
       operationId: "updateCourse"
       consumes:
@@ -228,18 +250,18 @@ paths:
         description: ""
         required: true
         schema:
-          $ref: "#/definitions/CourseFilter"
+          $ref: "#/definitions/CourseFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
     
   /schools:
     get:
       tags:
         - "school"
-      summary: "******"
+      summary: "Get a list of schools"
       description: ""
       operationId: "getSchools"
       consumes:
@@ -252,20 +274,20 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/SchoolFilter"
+          $ref: "#/definitions/SchoolFilterRequest"
       responses:
         "404":
           description: "Not Found"
         "200": 
-          description: "Successfull operation"
+          description: "Successful operation"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/School"
+              $ref: "#/definitions/SchoolDTO"
     post:
       tags:
         - "school"
-      summary: "******"
+      summary: "Add school"
       description: ""
       operationId: "addSchool"
       consumes:
@@ -278,18 +300,16 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/School"
+          $ref: "#/definitions/SchoolFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "201": 
-          description: "Successfull operation"
-          schema:
-            $ref: '#/definitions/School'
+          description: "Successful operation"
     delete:
       tags:
         - "school"
-      summary: "******"
+      summary: "Delete school"
       description: ""
       operationId: "delSchool"
       consumes:
@@ -302,16 +322,16 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/SchoolFilter"
+          $ref: "#/definitions/SchoolFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
     patch:
       tags: 
         - "school"
-      summary: ""
+      summary: "Update school"
       description: ""
       operationId: "updateSchool"
       consumes:
@@ -324,18 +344,18 @@ paths:
         description: ""
         required: true
         schema:
-          $ref: "#/definitions/SchoolFilter"
+          $ref: "#/definitions/SchoolFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
             
-  /school/employees:
+  /employees:
     get:
       tags:
         - "employee"
-      summary: "******"
+      summary: "Get a list of employees"
       description: ""
       operationId: "getEmployees"
       consumes:
@@ -348,20 +368,20 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/EmployeeFilter"
+          $ref: "#/definitions/EmployeeFilterRequest"
       responses:
         "404":
           description: "Not Found"
         "200": 
-          description: "Successfull operation"
+          description: "Successful operation"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Human"
+              $ref: "#/definitions/EmployeeDTO"
     post:
       tags:
         - "employee"
-      summary: "******"
+      summary: "Add employee"
       description: ""
       operationId: "addEmployee"
       consumes:
@@ -374,19 +394,16 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/Human"
+          $ref: "#/definitions/EmployeeAddRequest"
       responses:
         "400":
           description: "Bad request"
         "201": 
-          description: "Successfull operation"
-          schema:
-            $ref: "#/definitions/Human"
-            
+          description: "Successful operation"
     delete:
       tags:
         - "employee"
-      summary: "******"
+      summary: "Delete employee"
       description: ""
       operationId: "delEmployee"
       consumes:
@@ -399,17 +416,17 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/EmployeeFilter"
+          $ref: "#/definitions/EmployeeFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
     patch:
       tags: 
         - "employee"
       summary: ""
-      description: ""
+      description: "Update employee"
       operationId: "updateEmployee"
       consumes:
       - "application/json"
@@ -421,18 +438,18 @@ paths:
         description: ""
         required: true
         schema:
-          $ref: "#/definitions/EmployeeFilter"
+          $ref: "#/definitions/EmployeeFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
       
   /departments:
     get:
       tags:
         - "department"
-      summary: "******"
+      summary: "Get a list of departments"
       description: ""
       operationId: "getDepartments"
       consumes:
@@ -445,20 +462,20 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/DepartmentFilter"
+          $ref: "#/definitions/DepartmentFilterRequest"
       responses:
         "404":
           description: "Not Found"
         "200": 
-          description: "Successfull operation"
+          description: "Successful operation"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Department"
+              $ref: "#/definitions/DepartmentDTO"
     post:
       tags:
         - "department"
-      summary: "******"
+      summary: "Add department"
       description: ""
       operationId: "addDepartment"
       consumes:
@@ -471,18 +488,18 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/Department"
+          $ref: "#/definitions/DepartmentFilterRequest"
       responses:
-        "404":
-          description: "Not Found"
+        "400":
+          description: "Bad request"
         "200": 
-          description: "Successfull operation"
+          description: "Successful operation"
           schema:
-            $ref: "#/definitions/Department"
+            $ref: "#/definitions/DepartmentDTO"
     delete:
       tags:
         - "department"
-      summary: "******"
+      summary: "Delete department"
       description: ""
       operationId: "delDepartment"
       consumes:
@@ -495,16 +512,16 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/DepartmentFilter"
+          $ref: "#/definitions/DepartmentFilterRequest"
       responses:
-        "404":
-          description: "Not Found"
+        "400":
+          description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
     patch:
       tags: 
         - "department"
-      summary: ""
+      summary: "Update department"
       description: ""
       operationId: "updateDepartment"
       consumes:
@@ -517,18 +534,18 @@ paths:
         description: ""
         required: true
         schema:
-          $ref: "#/definitions/DepartmentFilter"
+          $ref: "#/definitions/DepartmentFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
             
   /department/groups:
     get:
       tags:
         - "department"
-      summary: "******"
+      summary: "Get a list of groups"
       description: ""
       operationId: "getGroups"
       consumes:
@@ -541,20 +558,20 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/GroupFilter"
+          $ref: "#/definitions/GroupFilterRequest"
       responses:
         "404":
           description: "Not Found"
         "200": 
-          description: "Successfull operation"
+          description: "Successful operation"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Group"
+              $ref: "#/definitions/GroupDTO"
     post:
       tags:
         - "department"
-      summary: "******"
+      summary: "Add group to an existing department"
       description: ""
       operationId: "addGroup"
       consumes:
@@ -567,18 +584,16 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/Group"
+          $ref: "#/definitions/GroupFilterRequest"
       responses:
         "400":
           description: "Bad requset"
         "201": 
-          description: "Successfull operation"
-          schema:
-            $ref: "#/definitions/Group"
+          description: "Successful operation"
     delete:
       tags:
         - "department"
-      summary: "******"
+      summary: "Delete group from an existing department"
       description: ""
       operationId: "delGroup"
       consumes:
@@ -591,16 +606,16 @@ paths:
         description: "******"
         required: true
         schema:
-          $ref: "#/definitions/GroupFilter"
+          $ref: "#/definitions/GroupFilterRequest"
       responses:
         "400":
           description: "Bad requset"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
     patch:
       tags: 
         - "department"
-      summary: ""
+      summary: "Update group in an existing department"
       description: ""
       operationId: "updateGroup"
       consumes:
@@ -613,20 +628,18 @@ paths:
         description: ""
         required: true
         schema:
-          $ref: "#/definitions/GroupFilter"
+          $ref: "#/definitions/GroupFilterRequest"
       responses:
         "400":
           description: "Bad request"
         "204": 
-          description: "Successfull operation"
+          description: "Successful operation"
 
 definitions:
-  Human:
-    type: "object"
+  StudentDTO:
     required:
     - "fullName"
     - "birthDate"
-    - "role"
     properties:
       fullName:
         type: "string"
@@ -635,21 +648,12 @@ definitions:
         type: "string"
         format: "date"
         example: "1999-07-15"
-      department:
-        type: "string"
-      school:
-        type: "string"
-      role:
-        type: "string"
-        pattern: '(STUDENT|PROFESSOR|POSTGRADUATE)'
-        example: "[Must match this pattern: (STUDENT|PROFESSOR|POSTGRADUATE)]"
         
-  Course:
+  CourseDTO:
     type: "object"
     required:
     - "courseName"
     - "duration"
-    - "courseType"
     - "department"
     properties:
       courseName:
@@ -657,12 +661,10 @@ definitions:
       duration:
         type: "integer"
         format: "int64"
-      courseType:
-        type: "string"
       department:
         type: "string"
         
-  School:
+  SchoolDTO:
     type: "object"
     required:
     - "schoolName"
@@ -672,113 +674,142 @@ definitions:
       departments:
         type: "array"
         items:
-          $ref: "#/definitions/Department"
-        
-  Group:
+          $ref: "#/definitions/DepartmentDTO"
+          
+  GroupDTO:
     type: "object"
     required:
     - "groupName"
     properties:
       groupName:
         type: "string"
-      schoolName:
-        type: "string"
       dptName:
         type: "string"
-      students:
-        type: "array"
-        items:
-          $ref: "#/definitions/Human"
-        
-  Department:
+      numOfStudents:
+        type: "integer"
+        minimum: 0
+          
+  DepartmentDTO:
     type: "object"
     required:
-    - "name"
-    - "school"
+    - "dptName"
     properties:
       dptName:
         type: "string"
-      school:
-        type: "string"
         
-  DepartmentFilter:
+  DepartmentFilterRequest:
     type: "object"
     properties:
       dptName:
         type: "string"
-      school:
+      schoolName:
         type: "string"
       updates:
         $ref: "#/definitions/Updates"
     
-  SchoolFilter:
+  SchoolFilterRequest:
     type: "object"
     properties:
       schoolName:
         type: "string"
       updates:
         $ref: "#/definitions/Updates"
-        
-  GroupFilter:
+      
+  GroupFilterRequest:
     type: "object"
     properties:
       groupName:
         type: "string"
+      dptName:
+        type: "string"
       updates:
         $ref: "#/definitions/Updates"
-        
-  StudentFilter:
+      
+  StudentFilterRequest:
     type: "object"
     properties:
       studentFullName:
-        type: "object"
-        properties:
-          firstName:
-            type: "string"
-          lastName:
-            type: "string"
-      avgGradeBounds:
-        type: "object"
-        properties:
-          upperBound:
-            type: "number"
-          lowerBound:
-            type: "number"
-      dateOfBirth:
-        type: "object"
-        properties:
-          upperBound:
-            type: "string"
-            format: "date"
-          lowerBound:
-            type: "string"
-            format: "date"
+        type: "string"
+      birthDateUpperBound:
+        type: "string"
+        format: "date"
+      birthDateLowerBound:
+        type: "string"
+        format: "date"
+      birthDate:
+        type: "string"
+        format: "date"
+      dptName:
+        type: "string"
+      schoolName:
+        type: "string"
+      courseName:
+        type: "string"
+      groupName:
+        type: "string"
+      gradeLowerBound:
+        type: "integer"
+        minimum: 2
+        maximum: 5
+      gradeUpperBound:
+        type: "integer"
+        minimum: 2
+        maximum: 5
       updates:
         $ref: "#/definitions/Updates"
             
-  EmployeeFilter:
+  EmployeeFilterRequest:
     type: "object"
     properties:
       employeeFullName:
-        type: "string"
-      schoolName:
         type: "string"
       dptName:
         type: "string"
       role:
         type: "string"
         pattern: '(PROFESSOR|POSTGRADUATE)'
-      dateOfBirth:
-        type: "object"
-        properties:
-          upperBound:
-            type: "string"
-            format: "date"
-          lowerBound:
-            type: "string"
-            format: "date"
+      birthDateUpperBound:
+        type: "string"
+        format: "date"
+      birthDateLowerBound:
+        type: "string"
+        format: "date"
       updates:
         $ref: "#/definitions/Updates"
+        
+  EmployeeAddRequest:
+    type: "object"
+    properties:
+      employeeFullName:
+        type: "string"
+      dptName:
+        type: "string"
+      role:
+        type: "string"
+        pattern: '(PROFESSOR|POSTGRADUATE)'
+      birthDate:
+        type: "string"
+        format: "date"
+      schoolName:
+        type: "string"  
+        
+  EmployeeDTO:
+    type: "object"
+    properties:
+      fullName:
+        type: "string"
+        
+  StudentGradeDTO:
+    type: "object"
+    properties:
+      grade:
+        type: "integer"
+        maximum: 5
+        minimum: 0
+      studentFullName:
+        type: "string"
+      courseName:
+        type: "string"
             
   Updates:
     type: "object"
@@ -797,36 +828,40 @@ definitions:
       role:
         type: "string"
         pattern: '(PROFESSOR|POSTGRADUATE)'
-      firstName:
+      fullName:
         type: "string"
-      lastName:
-        type: "string"
-      dateOfBirth:
+      birthDate:
         type: "string"
         format: "date"
       duration:
         type: "integer"
-        format: "int64"
-            
-  Filter:
-    type: "object"
-    properties:
-      id:
+        minimum: 0
+      grade:
         type: "integer"
-        format: "int64"
-        example: 31415926 
-        
-  CourseFilter:
+        minimum: 0
+        maximum: 5
+            
+  CourseFilterRequest:
     type: "object"
     properties:
+      courseName:
+        type: "string"
+      groupName:
+        type: "string"
+      dptName:
+        type: "string"
       courseType:
         type: "string"
         pattern: '(SOCIAL|MATHEMATICAL)'
+      durationLowerBound:
+        type: "integer"
+        minimum: 0
+      durationUpperBound:
+        type: "integer"
+        minimum: 0
       duration:
         type: "integer"
-        format: "int64"
-      department:
-        type: "string"
+        minimum: 0
       updates:
         $ref: "#/definitions/Updates"
     

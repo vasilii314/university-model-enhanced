@@ -261,167 +261,179 @@ public class HumanServiceImpl implements HumanService {
     @Override
     @Transactional
     public void addEmployeeCriteria(EmployeeAddRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
-        CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class);
-        Root<Department> dptRoot = criteriaQuery.from(Department.class);
-        Root<School> schoolRoot = criteriaQuery.from(School.class);
-        Root<Role> roleRoot = roleCriteriaQuery.from(Role.class);
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
+            CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class);
+            Root<Department> dptRoot = criteriaQuery.from(Department.class);
+            Root<School> schoolRoot = criteriaQuery.from(School.class);
+            Root<Role> roleRoot = roleCriteriaQuery.from(Role.class);
 
-        roleCriteriaQuery.select(roleRoot);
-        roleCriteriaQuery.where((
-                builder.equal(roleRoot.get(Role_.roleDescription), filter.getRole())
-        ));
-        Role role = entityManager.createQuery(roleCriteriaQuery).getSingleResult();
+            roleCriteriaQuery.select(roleRoot);
+            roleCriteriaQuery.where((
+                    builder.equal(roleRoot.get(Role_.roleDescription), filter.getRole())
+            ));
+            Role role = entityManager.createQuery(roleCriteriaQuery).getSingleResult();
 
-        Join<Department, School> join = dptRoot.join(Department_.school, JoinType.INNER);
-        criteriaQuery.multiselect(dptRoot, schoolRoot).distinct(true);
-        criteriaQuery.where(
-                builder.and(
-                        builder.equal(dptRoot.get(Department_.name), filter.getDptName()),
-                        builder.equal(schoolRoot.get(School_.name), filter.getSchoolName())
-                        ));
-        Tuple schoolDepartment = entityManager.createQuery(criteriaQuery).getSingleResult();
+            Join<Department, School> join = dptRoot.join(Department_.school, JoinType.INNER);
+            criteriaQuery.multiselect(dptRoot, schoolRoot).distinct(true);
+            criteriaQuery.where(
+                    builder.and(
+                            builder.equal(dptRoot.get(Department_.name), filter.getDptName()),
+                            builder.equal(schoolRoot.get(School_.name), filter.getSchoolName())
+                    ));
+            Tuple schoolDepartment = entityManager.createQuery(criteriaQuery).getSingleResult();
 
-        Human human = new Human();
-        human.setFullName(filter.getEmployeeFullName());
-        human.setBirthDate(LocalDate.parse(filter.getBirthDate()));
-        HumanInUniversity employee = new HumanInUniversity();
-        employee.setHuman(human);
-        employee.setRole(role);
-        employee.setDepartment(schoolDepartment.get(dptRoot));
-        humanInUniversityRepository.save(employee);
+            Human human = new Human();
+            human.setFullName(filter.getEmployeeFullName());
+            human.setBirthDate(LocalDate.parse(filter.getBirthDate()));
+            HumanInUniversity employee = new HumanInUniversity();
+            employee.setHuman(human);
+            employee.setRole(role);
+            employee.setDepartment(schoolDepartment.get(dptRoot));
+            humanInUniversityRepository.save(employee);
+        } catch (Exception e) {
+            throw new RuntimeException("Save failed");
+        }
     }
 
     @Override
     @Transactional
     public void deleteEmployeeOrStudent(EmployeeFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaDelete<Human> criteriaDelete = builder.createCriteriaDelete(Human.class);
-        Root<Human> humanRoot = criteriaDelete.from(Human.class);
-        Subquery<Human> subquery = criteriaDelete.subquery(Human.class);
-        Root<Human> humanRoot2 = subquery.from(Human.class);
-        subquery.select(humanRoot2);
-        Join<Human, HumanInUniversity> join1 = humanRoot2.join(Human_.occupations);
-        Join<HumanInUniversity, Department> join2 = join1.join(HumanInUniversity_.department);
-        Join<Department, Group> join4 = join2.join(Department_.groups);
-        Join<HumanInUniversity, Role> join3 = join1.join(HumanInUniversity_.role);
-        Predicate fullNameRestriction = filter.getEmployeeFullName() != null ?
-                builder.like(humanRoot2.get(Human_.fullName), "%" + filter.getEmployeeFullName() + "%") :
-                builder.like(humanRoot2.get(Human_.fullName), "%");
-        Predicate groupNameRestriction = filter.getGroupName() != null ?
-                builder.like(join4.get(Group_.name), "%" + filter.getGroupName() + "%") :
-                builder.like(join4.get(Group_.name), "%");
-        Predicate roleRestriction = filter.getRole() != null &&
-                (filter.getRole().equals(RoleEnum.POSTGRADUATE) || filter.getRole().equals(RoleEnum.PROFESSOR)) ?
-                builder.equal(join3.get(Role_.roleDescription), filter.getRole()) :
-                join3.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
-        Predicate dptRestriction =  filter.getDptName() != null ?
-                builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
-                builder.like(join2.get(Department_.name), "%");
-        Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
-                builder.lessThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateUpperBound())) :
-                builder.lessThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.now());
-        Predicate birthDateLowerBound = filter.getBirthDateLowerBound() != null ?
-                builder.greaterThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateLowerBound())) :
-                builder.greaterThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
-        subquery.where(builder.and(fullNameRestriction,
-                roleRestriction,
-                dptRestriction,
-                groupNameRestriction,
-                birthDateUpperBound,
-                birthDateLowerBound));
-        criteriaDelete.where(humanRoot.in(subquery));
-        entityManager.createQuery(criteriaDelete).executeUpdate();
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaDelete<Human> criteriaDelete = builder.createCriteriaDelete(Human.class);
+            Root<Human> humanRoot = criteriaDelete.from(Human.class);
+            Subquery<Human> subquery = criteriaDelete.subquery(Human.class);
+            Root<Human> humanRoot2 = subquery.from(Human.class);
+            subquery.select(humanRoot2);
+            Join<Human, HumanInUniversity> join1 = humanRoot2.join(Human_.occupations);
+            Join<HumanInUniversity, Department> join2 = join1.join(HumanInUniversity_.department);
+            Join<Department, Group> join4 = join2.join(Department_.groups);
+            Join<HumanInUniversity, Role> join3 = join1.join(HumanInUniversity_.role);
+            Predicate fullNameRestriction = filter.getEmployeeFullName() != null ?
+                    builder.like(humanRoot2.get(Human_.fullName), "%" + filter.getEmployeeFullName() + "%") :
+                    builder.like(humanRoot2.get(Human_.fullName), "%");
+            Predicate groupNameRestriction = filter.getGroupName() != null ?
+                    builder.like(join4.get(Group_.name), "%" + filter.getGroupName() + "%") :
+                    builder.like(join4.get(Group_.name), "%");
+            Predicate roleRestriction = filter.getRole() != null &&
+                    (filter.getRole().equals(RoleEnum.POSTGRADUATE) || filter.getRole().equals(RoleEnum.PROFESSOR)) ?
+                    builder.equal(join3.get(Role_.roleDescription), filter.getRole()) :
+                    join3.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
+            Predicate dptRestriction =  filter.getDptName() != null ?
+                    builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
+                    builder.like(join2.get(Department_.name), "%");
+            Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
+                    builder.lessThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateUpperBound())) :
+                    builder.lessThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.now());
+            Predicate birthDateLowerBound = filter.getBirthDateLowerBound() != null ?
+                    builder.greaterThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateLowerBound())) :
+                    builder.greaterThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
+            subquery.where(builder.and(fullNameRestriction,
+                    roleRestriction,
+                    dptRestriction,
+                    groupNameRestriction,
+                    birthDateUpperBound,
+                    birthDateLowerBound));
+            criteriaDelete.where(humanRoot.in(subquery));
+            entityManager.createQuery(criteriaDelete).executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException("Delete failed");
+        }
     }
 
     @Override
     @Transactional
     public void updateEmployeeOrStudent(EmployeeFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Human> humanCriteriaQuery= builder.createQuery(Human.class);
-        CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class);
-        CriteriaQuery<Department> departmentCriteriaQuery = builder.createQuery(Department.class);
-        CriteriaQuery<Group> groupCriteriaQuery = builder.createQuery(Group.class);
-        Root<Human> humanRoot = humanCriteriaQuery.from(Human.class);
-        Root<Role> roleRoot = roleCriteriaQuery.from(Role.class);
-        Root<Department> departmentRoot = departmentCriteriaQuery.from(Department.class);
-        Root<Group> groupRoot = groupCriteriaQuery.from(Group.class);
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Human> humanCriteriaQuery= builder.createQuery(Human.class);
+            CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class);
+            CriteriaQuery<Department> departmentCriteriaQuery = builder.createQuery(Department.class);
+            CriteriaQuery<Group> groupCriteriaQuery = builder.createQuery(Group.class);
+            Root<Human> humanRoot = humanCriteriaQuery.from(Human.class);
+            Root<Role> roleRoot = roleCriteriaQuery.from(Role.class);
+            Root<Department> departmentRoot = departmentCriteriaQuery.from(Department.class);
+            Root<Group> groupRoot = groupCriteriaQuery.from(Group.class);
 
-        Role role = null;
-        if (filter.getUpdates().getRole() != null) {
-            Predicate roleRestriction = builder.equal(roleRoot.get(Role_.roleDescription), filter.getUpdates().getRole());
-            roleCriteriaQuery.select(roleRoot).where(roleRestriction).distinct(true);
-            role = entityManager.createQuery(roleCriteriaQuery).getSingleResult();
-        }
-
-        Department department = null;
-        if (filter.getUpdates().getDptName() != null) {
-            Predicate dptRestriction = filter.getUpdates().getDptName() != null ?
-                    builder.like(departmentRoot.get(Department_.name), "%" + filter.getUpdates().getDptName() + "%") :
-                    builder.like(departmentRoot.get(Department_.name), "%");
-            departmentCriteriaQuery.select(departmentRoot).where(dptRestriction).distinct(true);
-            department = entityManager.createQuery(departmentCriteriaQuery).getSingleResult();
-        }
-
-        Group group = null;
-        if (filter.getUpdates().getGroupName() != null) {
-            Predicate groupNameRestriction = builder.like(groupRoot.get(Group_.name),
-                    "%" + filter.getUpdates().getGroupName() + "%");
-            group = entityManager.createQuery(groupCriteriaQuery).getSingleResult();
-        }
-
-        Join<Human, HumanInUniversity> join1 = humanRoot.join(Human_.occupations);
-        Join<HumanInUniversity, Department> join2 = join1.join(HumanInUniversity_.department);
-        Join<HumanInUniversity, Role> join3 = join1.join(HumanInUniversity_.role);
-        Join<Department, Group> join4 = join2.join(Department_.groups);
-        Predicate fullNameRestriction = filter.getEmployeeFullName() != null ?
-                builder.like(humanRoot.get(Human_.fullName), "%" + filter.getEmployeeFullName() + "%") :
-                builder.like(humanRoot.get(Human_.fullName), "%");
-        Predicate humanRoleRestriction = filter.getRole() != null &&
-                (filter.getRole().equals(RoleEnum.POSTGRADUATE) || filter.getRole().equals(RoleEnum.PROFESSOR)) ?
-                builder.equal(join3.get(Role_.roleDescription), filter.getRole()) :
-                join3.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
-        Predicate humanDptRestriction =  filter.getDptName() != null ?
-                builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
-                builder.like(join2.get(Department_.name), "%");
-        Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
-                builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateUpperBound())) :
-                builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.now());
-        Predicate birthDateLowerBound = filter.getBirthDateLowerBound() != null ?
-                builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateLowerBound())) :
-                builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
-        Predicate groupNameRestriction = filter.getGroupName() != null ?
-                builder.like(join4.get(Group_.name), "%" + filter.getGroupName() + "%") :
-                builder.like(join4.get(Group_.name), "%");
-
-        humanCriteriaQuery.where(builder.and(fullNameRestriction,
-                humanRoleRestriction,
-                humanDptRestriction,
-                birthDateUpperBound,
-                birthDateLowerBound,
-                groupNameRestriction)).distinct(true);
-        Human human = entityManager.createQuery(humanCriteriaQuery).getSingleResult();
-
-        HumanInUniversity occupation = new HumanInUniversity();
-        occupation.setHuman(human);
-        if(department != null) {
-            occupation.setDepartment(department);
-            if (role != null) {
-                occupation.setRole(role);
-                human.getOccupations().add(occupation);
-                if (filter.getUpdates().getFullName() != null) {
-                    human.setFullName(filter.getUpdates().getFullName());
-                }
-                if (role.getRoleDescription().equals(RoleEnum.STUDENT) && group != null) {
-                    StudentsInGroups updatedStudent = new StudentsInGroups();
-                    updatedStudent.setStudent(occupation);
-                    updatedStudent.setGroup(group);
-                    studentInGroupRepository.save(updatedStudent);
-                    return;
-                }
-                humanInUniversityRepository.save(occupation);
+            Role role = null;
+            if (filter.getUpdates().getRole() != null) {
+                Predicate roleRestriction = builder.equal(roleRoot.get(Role_.roleDescription), filter.getUpdates().getRole());
+                roleCriteriaQuery.select(roleRoot).where(roleRestriction).distinct(true);
+                role = entityManager.createQuery(roleCriteriaQuery).getSingleResult();
             }
+
+            Department department = null;
+            if (filter.getUpdates().getDptName() != null) {
+                Predicate dptRestriction = filter.getUpdates().getDptName() != null ?
+                        builder.like(departmentRoot.get(Department_.name), "%" + filter.getUpdates().getDptName() + "%") :
+                        builder.like(departmentRoot.get(Department_.name), "%");
+                departmentCriteriaQuery.select(departmentRoot).where(dptRestriction).distinct(true);
+                department = entityManager.createQuery(departmentCriteriaQuery).getSingleResult();
+            }
+
+            Group group = null;
+            if (filter.getUpdates().getGroupName() != null) {
+                Predicate groupNameRestriction = builder.like(groupRoot.get(Group_.name),
+                        "%" + filter.getUpdates().getGroupName() + "%");
+                group = entityManager.createQuery(groupCriteriaQuery).getSingleResult();
+            }
+
+            Join<Human, HumanInUniversity> join1 = humanRoot.join(Human_.occupations);
+            Join<HumanInUniversity, Department> join2 = join1.join(HumanInUniversity_.department);
+            Join<HumanInUniversity, Role> join3 = join1.join(HumanInUniversity_.role);
+            Join<Department, Group> join4 = join2.join(Department_.groups);
+            Predicate fullNameRestriction = filter.getEmployeeFullName() != null ?
+                    builder.like(humanRoot.get(Human_.fullName), "%" + filter.getEmployeeFullName() + "%") :
+                    builder.like(humanRoot.get(Human_.fullName), "%");
+            Predicate humanRoleRestriction = filter.getRole() != null &&
+                    (filter.getRole().equals(RoleEnum.POSTGRADUATE) || filter.getRole().equals(RoleEnum.PROFESSOR)) ?
+                    builder.equal(join3.get(Role_.roleDescription), filter.getRole()) :
+                    join3.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
+            Predicate humanDptRestriction =  filter.getDptName() != null ?
+                    builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
+                    builder.like(join2.get(Department_.name), "%");
+            Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
+                    builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateUpperBound())) :
+                    builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.now());
+            Predicate birthDateLowerBound = filter.getBirthDateLowerBound() != null ?
+                    builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateLowerBound())) :
+                    builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
+            Predicate groupNameRestriction = filter.getGroupName() != null ?
+                    builder.like(join4.get(Group_.name), "%" + filter.getGroupName() + "%") :
+                    builder.like(join4.get(Group_.name), "%");
+
+            humanCriteriaQuery.where(builder.and(fullNameRestriction,
+                    humanRoleRestriction,
+                    humanDptRestriction,
+                    birthDateUpperBound,
+                    birthDateLowerBound,
+                    groupNameRestriction)).distinct(true);
+            Human human = entityManager.createQuery(humanCriteriaQuery).getSingleResult();
+
+            HumanInUniversity occupation = new HumanInUniversity();
+            occupation.setHuman(human);
+            if(department != null) {
+                occupation.setDepartment(department);
+                if (role != null) {
+                    occupation.setRole(role);
+                    human.getOccupations().add(occupation);
+                    if (filter.getUpdates().getFullName() != null) {
+                        human.setFullName(filter.getUpdates().getFullName());
+                    }
+                    if (role.getRoleDescription().equals(RoleEnum.STUDENT) && group != null) {
+                        StudentsInGroups updatedStudent = new StudentsInGroups();
+                        updatedStudent.setStudent(occupation);
+                        updatedStudent.setGroup(group);
+                        studentInGroupRepository.save(updatedStudent);
+                        return;
+                    }
+                    humanInUniversityRepository.save(occupation);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Update Failed");
         }
     }
 }

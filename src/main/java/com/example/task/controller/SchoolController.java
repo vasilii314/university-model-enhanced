@@ -33,10 +33,10 @@ public class SchoolController {
     }
 
     @PostMapping("/schools")
-    public ResponseEntity<SchoolDTO> addSchool(@Valid @RequestBody SchoolFilterRequest req) {
+    public ResponseEntity<?> addSchool(@Valid @RequestBody SchoolFilterRequest req) {
         School school = new School(req.getSchoolName());
         schoolService.save(school);
-        return ResponseEntity.status(201).body(new SchoolDTO(school.getName(), null));
+        return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/schools")

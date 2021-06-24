@@ -84,7 +84,7 @@ public class CourseServiceImpl implements CourseService {
                 Course course = new Course(filter.getCourseName(), filter.getDuration(), courseType, departments.get(0));
                 courseRepository.save(course);
             } catch (NoResultException e) {
-                e.printStackTrace();
+                throw new RuntimeException("No result");
             }
         }
     }
@@ -92,96 +92,104 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public void deleteCourseCriteria(CourseFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaDelete<Course> courseCriteriaDelete = builder.createCriteriaDelete(Course.class);
-        Root<Course> courseRoot = courseCriteriaDelete.from(Course.class);
-        Subquery<Course> subquery = courseCriteriaDelete.subquery(Course.class);
-        Root<Course> courseRoot2 = subquery.from(Course.class);
-        subquery.select(courseRoot2);
-        Join<Course, CourseType> join1 = courseRoot2.join(Course_.courseType);
-        Join<Course, Department> join2 = courseRoot2.join(Course_.department);
-        Predicate courseTypeRestriction = filter.getCourseType() != null ?
-                builder.equal(join1.get(CourseType_.type), filter.getCourseType()) :
-                join1.get(CourseType_.type).in(CourseTypeEnum.MATHEMATICAL, CourseTypeEnum.SOCIAL);
-        Predicate dptNameRestriction = filter.getDptName() != null ?
-                builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
-                builder.like(join2.get(Department_.name), "%");
-        Predicate courseNameRestriction = filter.getCourseName() != null ?
-                builder.like(courseRoot2.get(Course_.name), "%" + filter.getCourseName() + "%") :
-                builder.like(courseRoot2.get(Course_.name), "%");
-        Predicate durationLowerBound = filter.getDurationLowerBound() != null ?
-                builder.greaterThanOrEqualTo(courseRoot2.get(Course_.duration), filter.getDurationLowerBound()) :
-                builder.greaterThanOrEqualTo(courseRoot2.get(Course_.duration), 0);
-        Predicate durationUpperBound = filter.getDurationUpperBound() != null ?
-                builder.lessThanOrEqualTo(courseRoot2.get(Course_.duration), filter.getDurationUpperBound()) :
-                builder.lessThanOrEqualTo(courseRoot2.get(Course_.duration), Integer.MAX_VALUE);
-        subquery.where(
-                builder.and(
-                        courseNameRestriction,
-                        courseTypeRestriction,
-                        dptNameRestriction,
-                        durationLowerBound,
-                        durationUpperBound
-                )
-        );
-        courseCriteriaDelete.where(courseRoot.in(subquery));
-        entityManager.createQuery(courseCriteriaDelete).executeUpdate();
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaDelete<Course> courseCriteriaDelete = builder.createCriteriaDelete(Course.class);
+            Root<Course> courseRoot = courseCriteriaDelete.from(Course.class);
+            Subquery<Course> subquery = courseCriteriaDelete.subquery(Course.class);
+            Root<Course> courseRoot2 = subquery.from(Course.class);
+            subquery.select(courseRoot2);
+            Join<Course, CourseType> join1 = courseRoot2.join(Course_.courseType);
+            Join<Course, Department> join2 = courseRoot2.join(Course_.department);
+            Predicate courseTypeRestriction = filter.getCourseType() != null ?
+                    builder.equal(join1.get(CourseType_.type), filter.getCourseType()) :
+                    join1.get(CourseType_.type).in(CourseTypeEnum.MATHEMATICAL, CourseTypeEnum.SOCIAL);
+            Predicate dptNameRestriction = filter.getDptName() != null ?
+                    builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
+                    builder.like(join2.get(Department_.name), "%");
+            Predicate courseNameRestriction = filter.getCourseName() != null ?
+                    builder.like(courseRoot2.get(Course_.name), "%" + filter.getCourseName() + "%") :
+                    builder.like(courseRoot2.get(Course_.name), "%");
+            Predicate durationLowerBound = filter.getDurationLowerBound() != null ?
+                    builder.greaterThanOrEqualTo(courseRoot2.get(Course_.duration), filter.getDurationLowerBound()) :
+                    builder.greaterThanOrEqualTo(courseRoot2.get(Course_.duration), 0);
+            Predicate durationUpperBound = filter.getDurationUpperBound() != null ?
+                    builder.lessThanOrEqualTo(courseRoot2.get(Course_.duration), filter.getDurationUpperBound()) :
+                    builder.lessThanOrEqualTo(courseRoot2.get(Course_.duration), Integer.MAX_VALUE);
+            subquery.where(
+                    builder.and(
+                            courseNameRestriction,
+                            courseTypeRestriction,
+                            dptNameRestriction,
+                            durationLowerBound,
+                            durationUpperBound
+                    )
+            );
+            courseCriteriaDelete.where(courseRoot.in(subquery));
+            entityManager.createQuery(courseCriteriaDelete).executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to process the request");
+        }
     }
 
     @Override
     @Transactional
     public void updateCourseCriteria(CourseFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaUpdate<Course> courseCriteriaUpdate = builder.createCriteriaUpdate(Course.class);
-        CriteriaQuery<Department> departmentCriteriaQuery = builder.createQuery(Department.class);
-        CriteriaQuery<CourseType> courseTypeCriteriaQuery = builder.createQuery(CourseType.class);
-        Root<Course> courseRoot = courseCriteriaUpdate.from(Course.class);
-        Root<Department> departmentRoot = departmentCriteriaQuery.from(Department.class);
-        Root<CourseType> courseTypeRoot = courseTypeCriteriaQuery.from(CourseType.class);
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaUpdate<Course> courseCriteriaUpdate = builder.createCriteriaUpdate(Course.class);
+            CriteriaQuery<Department> departmentCriteriaQuery = builder.createQuery(Department.class);
+            CriteriaQuery<CourseType> courseTypeCriteriaQuery = builder.createQuery(CourseType.class);
+            Root<Course> courseRoot = courseCriteriaUpdate.from(Course.class);
+            Root<Department> departmentRoot = departmentCriteriaQuery.from(Department.class);
+            Root<CourseType> courseTypeRoot = courseTypeCriteriaQuery.from(CourseType.class);
 
-        if (filter.getUpdates() != null) {
-            Department department = null;
-            if (filter.getUpdates().getDptName() != null) {
-                Predicate dptNameRestriction = filter.getUpdates().getDptName() != null ?
-                        builder.like(departmentRoot.get(Department_.name), "%" + filter.getUpdates().getDptName() + "%") :
-                        builder.like(departmentRoot.get(Department_.name), "%");
-                departmentCriteriaQuery.select(departmentRoot).where(dptNameRestriction).distinct(true);
-                department = entityManager.createQuery(departmentCriteriaQuery).getSingleResult();
-            }
+            if (filter.getUpdates() != null) {
+                Department department = null;
+                if (filter.getUpdates().getDptName() != null) {
+                    Predicate dptNameRestriction = filter.getUpdates().getDptName() != null ?
+                            builder.like(departmentRoot.get(Department_.name), "%" + filter.getUpdates().getDptName() + "%") :
+                            builder.like(departmentRoot.get(Department_.name), "%");
+                    departmentCriteriaQuery.select(departmentRoot).where(dptNameRestriction).distinct(true);
+                    department = entityManager.createQuery(departmentCriteriaQuery).getSingleResult();
+                }
 
-            CourseType courseType = null;
-            if (filter.getUpdates().getCourseType() != null) {
-                Predicate courseTypeRestriction = filter.getCourseType() != null ?
-                        builder.equal(courseTypeRoot.get(CourseType_.type), filter.getCourseType()) :
-                        courseTypeRoot.get(CourseType_.type).in(CourseTypeEnum.MATHEMATICAL, CourseTypeEnum.SOCIAL);
-                courseTypeCriteriaQuery.select(courseTypeRoot).where(courseTypeRestriction).distinct(true);
-                courseType = entityManager.createQuery(courseTypeCriteriaQuery).getSingleResult();
-            }
+                CourseType courseType = null;
+                if (filter.getUpdates().getCourseType() != null) {
+                    Predicate courseTypeRestriction = filter.getCourseType() != null ?
+                            builder.equal(courseTypeRoot.get(CourseType_.type), filter.getCourseType()) :
+                            courseTypeRoot.get(CourseType_.type).in(CourseTypeEnum.MATHEMATICAL, CourseTypeEnum.SOCIAL);
+                    courseTypeCriteriaQuery.select(courseTypeRoot).where(courseTypeRestriction).distinct(true);
+                    courseType = entityManager.createQuery(courseTypeCriteriaQuery).getSingleResult();
+                }
 
-            List<Course> courses = findCoursesCriteria(filter);
-            if (courses.size() == 1) {
-                Course course = courses.get(0);
-                boolean flag = false;
-                if (filter.getUpdates().getCourseName() != null) {
-                    course.setName(filter.getUpdates().getCourseName());
-                    flag = true;
-                }
-                if (filter.getUpdates().getDuration() != null) {
-                    course.setDuration(filter.getUpdates().getDuration());
-                    flag = true;
-                }
-                if (department != null) {
-                    course.setDepartment(department);
-                    flag = true;
-                }
-                if (courseType != null) {
-                    course.setCourseType(courseType);
-                    flag = true;
-                }
-                if (flag) {
-                    courseRepository.save(course);
+                List<Course> courses = findCoursesCriteria(filter);
+                if (courses.size() == 1) {
+                    Course course = courses.get(0);
+                    boolean flag = false;
+                    if (filter.getUpdates().getCourseName() != null) {
+                        course.setName(filter.getUpdates().getCourseName());
+                        flag = true;
+                    }
+                    if (filter.getUpdates().getDuration() != null) {
+                        course.setDuration(filter.getUpdates().getDuration());
+                        flag = true;
+                    }
+                    if (department != null) {
+                        course.setDepartment(department);
+                        flag = true;
+                    }
+                    if (courseType != null) {
+                        course.setCourseType(courseType);
+                        flag = true;
+                    }
+                    if (flag) {
+                        courseRepository.save(course);
+                    }
                 }
             }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to process the request");
         }
     }
 

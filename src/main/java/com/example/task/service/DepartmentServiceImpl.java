@@ -6,6 +6,7 @@ import com.example.task.entity.School;
 import com.example.task.entity.School_;
 import com.example.task.json.filters.DepartmentFilterRequest;
 import com.example.task.repository.DepartmentRepository;
+import liquibase.pro.packaged.E;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,83 +84,95 @@ public class DepartmentServiceImpl implements DepartmentService {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<School> schoolCriteriaQuery = builder.createQuery(School.class);
         Root<School> schoolRoot = schoolCriteriaQuery.from(School.class);
-        if (filter.getSchoolName() != null) {
-            schoolCriteriaQuery.select(schoolRoot)
-                    .where(builder.like(schoolRoot.get(School_.name), "%" + filter.getSchoolName() + "%"))
-                    .distinct(true);
-            School school = entityManager.createQuery(schoolCriteriaQuery).getSingleResult();
-            if (filter.getDptName() != null) {
-                Department department = new Department();
-                department.setName(filter.getDptName());
-                department.setSchool(school);
-                departmentRepository.save(department);
+        try {
+            if (filter.getSchoolName() != null) {
+                schoolCriteriaQuery.select(schoolRoot)
+                        .where(builder.like(schoolRoot.get(School_.name), "%" + filter.getSchoolName() + "%"))
+                        .distinct(true);
+                School school = entityManager.createQuery(schoolCriteriaQuery).getSingleResult();
+                if (filter.getDptName() != null) {
+                    Department department = new Department();
+                    department.setName(filter.getDptName());
+                    department.setSchool(school);
+                    departmentRepository.save(department);
+                }
             }
+        } catch (Exception e) {
+            throw new RuntimeException("Save failed");
         }
     }
 
     @Override
     @Transactional
     public void deleteDepartment(DepartmentFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaDelete<Department> departmentCriteriaDelete = builder.createCriteriaDelete(Department.class);
-        Root<Department> departmentRoot = departmentCriteriaDelete.from(Department.class);
-        Predicate dptNameRestriction;
-        Predicate schoolNameRestriction;
-        if (filter.getDptName() != null) {
-            dptNameRestriction = builder.equal(departmentRoot.get(Department_.name), filter.getDptName());
-            Join<Department, School> join;
-            if (filter.getSchoolName() != null) {
-                Subquery<Department> subquery = departmentCriteriaDelete.subquery(Department.class);
-                Root<Department> departmentRoot2 = subquery.from(Department.class);
-                subquery.select(departmentRoot2);
-                join = departmentRoot2.join(Department_.school);
-                schoolNameRestriction = builder.equal(join.get(School_.name), filter.getSchoolName());
-                subquery.where(builder.and(dptNameRestriction, schoolNameRestriction));
-                departmentCriteriaDelete.where(departmentRoot.in(subquery));
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaDelete<Department> departmentCriteriaDelete = builder.createCriteriaDelete(Department.class);
+            Root<Department> departmentRoot = departmentCriteriaDelete.from(Department.class);
+            Predicate dptNameRestriction;
+            Predicate schoolNameRestriction;
+            if (filter.getDptName() != null) {
+                dptNameRestriction = builder.equal(departmentRoot.get(Department_.name), filter.getDptName());
+                Join<Department, School> join;
+                if (filter.getSchoolName() != null) {
+                    Subquery<Department> subquery = departmentCriteriaDelete.subquery(Department.class);
+                    Root<Department> departmentRoot2 = subquery.from(Department.class);
+                    subquery.select(departmentRoot2);
+                    join = departmentRoot2.join(Department_.school);
+                    schoolNameRestriction = builder.equal(join.get(School_.name), filter.getSchoolName());
+                    subquery.where(builder.and(dptNameRestriction, schoolNameRestriction));
+                    departmentCriteriaDelete.where(departmentRoot.in(subquery));
+                    entityManager.createQuery(departmentCriteriaDelete).executeUpdate();
+                    return;
+                }
+                departmentCriteriaDelete.where(dptNameRestriction);
                 entityManager.createQuery(departmentCriteriaDelete).executeUpdate();
-                return;
             }
-            departmentCriteriaDelete.where(dptNameRestriction);
-            entityManager.createQuery(departmentCriteriaDelete).executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException("Delete failed");
         }
     }
 
     @Override
     @Transactional
     public void updateDepartment(DepartmentFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaUpdate<Department> departmentCriteriaUpdate = builder.createCriteriaUpdate(Department.class);
-        Root<Department> departmentRoot = departmentCriteriaUpdate.from(Department.class);
-        Predicate dptNameRestriction;
-        Predicate schoolNameRestriction;
-        if (filter.getDptName() != null) {
-            dptNameRestriction = builder.equal(departmentRoot.get(Department_.name), filter.getDptName());
-            Join<Department, School> join;
-            if (filter.getSchoolName() != null) {
-                Subquery<Department> subquery = departmentCriteriaUpdate.subquery(Department.class);
-                Root<Department> departmentRoot2 = subquery.from(Department.class);
-                subquery.select(departmentRoot2);
-                join = departmentRoot2.join(Department_.school);
-                schoolNameRestriction = builder.equal(join.get(School_.name), filter.getSchoolName());
-                subquery.where(builder.and(dptNameRestriction, schoolNameRestriction));
-                departmentCriteriaUpdate.where(departmentRoot.in(subquery));
-            }
-            departmentCriteriaUpdate.where(dptNameRestriction);
-            if (filter.getUpdates() != null) {
-                if (filter.getUpdates().getDptName() != null) {
-                    departmentCriteriaUpdate.set(Department_.name, filter.getUpdates().getDptName());
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaUpdate<Department> departmentCriteriaUpdate = builder.createCriteriaUpdate(Department.class);
+            Root<Department> departmentRoot = departmentCriteriaUpdate.from(Department.class);
+            Predicate dptNameRestriction;
+            Predicate schoolNameRestriction;
+            if (filter.getDptName() != null) {
+                dptNameRestriction = builder.equal(departmentRoot.get(Department_.name), filter.getDptName());
+                Join<Department, School> join;
+                if (filter.getSchoolName() != null) {
+                    Subquery<Department> subquery = departmentCriteriaUpdate.subquery(Department.class);
+                    Root<Department> departmentRoot2 = subquery.from(Department.class);
+                    subquery.select(departmentRoot2);
+                    join = departmentRoot2.join(Department_.school);
+                    schoolNameRestriction = builder.equal(join.get(School_.name), filter.getSchoolName());
+                    subquery.where(builder.and(dptNameRestriction, schoolNameRestriction));
+                    departmentCriteriaUpdate.where(departmentRoot.in(subquery));
                 }
-                if (filter.getUpdates().getSchoolName() != null) {
-                    CriteriaQuery<School> schoolCriteriaQuery = builder.createQuery(School.class);
-                    Root<School> schoolRoot = schoolCriteriaQuery.from(School.class);
-                    schoolCriteriaQuery.select(schoolRoot)
-                            .where(builder.equal(schoolRoot.get(School_.name), filter.getUpdates().getSchoolName()))
-                    .distinct(true);
-                    School school = entityManager.createQuery(schoolCriteriaQuery).getSingleResult();
-                    departmentCriteriaUpdate.set(Department_.school, school);
+                departmentCriteriaUpdate.where(dptNameRestriction);
+                if (filter.getUpdates() != null) {
+                    if (filter.getUpdates().getDptName() != null) {
+                        departmentCriteriaUpdate.set(Department_.name, filter.getUpdates().getDptName());
+                    }
+                    if (filter.getUpdates().getSchoolName() != null) {
+                        CriteriaQuery<School> schoolCriteriaQuery = builder.createQuery(School.class);
+                        Root<School> schoolRoot = schoolCriteriaQuery.from(School.class);
+                        schoolCriteriaQuery.select(schoolRoot)
+                                .where(builder.equal(schoolRoot.get(School_.name), filter.getUpdates().getSchoolName()))
+                                .distinct(true);
+                        School school = entityManager.createQuery(schoolCriteriaQuery).getSingleResult();
+                        departmentCriteriaUpdate.set(Department_.school, school);
+                    }
+                    entityManager.createQuery(departmentCriteriaUpdate).executeUpdate();
                 }
-                entityManager.createQuery(departmentCriteriaUpdate).executeUpdate();
             }
+        } catch (Exception e) {
+            throw new RuntimeException("Update Failed");
         }
     }
 }

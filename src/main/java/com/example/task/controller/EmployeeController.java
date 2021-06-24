@@ -7,6 +7,7 @@ import com.example.task.json.responses.EmployeeDTO;
 import com.example.task.repository.HumanInUniversityRepository;
 import com.example.task.service.HumanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,28 +27,46 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public List<EmployeeDTO> getEmployees(@RequestBody EmployeeFilterRequest req) {
+    public ResponseEntity<List<EmployeeDTO>> getEmployees(@RequestBody EmployeeFilterRequest req) {
 
         List<Human> peopleInUniversity = humanService.findEmployeesCriteria(req);
+        if (peopleInUniversity.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
         List<EmployeeDTO> employees =  peopleInUniversity
                 .stream()
                 .map(EmployeeDTO::toEmployeeDTO)
                 .collect(Collectors.toList());
-        return employees;
+        return ResponseEntity.ok(employees);
     }
 
     @PostMapping("/employees")
-    public void addEmployee(@RequestBody EmployeeAddRequest req) {
-        humanService.addEmployeeCriteria(req);
+    public ResponseEntity<?> addEmployee(@RequestBody EmployeeAddRequest req) {
+        try {
+            humanService.addEmployeeCriteria(req);
+            return ResponseEntity.status(201).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/employees")
-    public void deleteEmployee(@RequestBody EmployeeFilterRequest req) {
-        humanService.deleteEmployeeOrStudent(req);
+    public ResponseEntity<?> deleteEmployee(@RequestBody EmployeeFilterRequest req) {
+        try {
+            humanService.deleteEmployeeOrStudent(req);
+            return ResponseEntity.status(204).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PatchMapping("/employees")
-    public void updateEmployee(@RequestBody EmployeeFilterRequest req) {
-        humanService.updateEmployeeOrStudent(req);
+    public ResponseEntity<?> updateEmployee(@RequestBody EmployeeFilterRequest req) {
+        try {
+            humanService.updateEmployeeOrStudent(req);
+            return ResponseEntity.status(204).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

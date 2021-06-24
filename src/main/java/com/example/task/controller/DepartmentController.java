@@ -4,7 +4,9 @@ import com.example.task.entity.Department;
 import com.example.task.json.filters.DepartmentFilterRequest;
 import com.example.task.json.responses.DepartmentDTO;
 import com.example.task.service.DepartmentService;
+import liquibase.pro.packaged.E;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,27 +25,45 @@ public class DepartmentController {
     }
 
     @GetMapping("/departments")
-    public List<DepartmentDTO> findDepartments(@RequestBody DepartmentFilterRequest req) {
+    public ResponseEntity<List<DepartmentDTO>> findDepartments(@RequestBody DepartmentFilterRequest req) {
         List<Department> departmentsRaw = departmentService.findDepartmentsCriteria(req);
+        if (departmentsRaw.size() == 0) {
+            return ResponseEntity.notFound().build();
+        }
         List<DepartmentDTO> departments =  departmentsRaw
                 .stream()
                 .map(DepartmentDTO::toDepartmentDTO)
                 .collect(Collectors.toList());
-        return departments;
+        return ResponseEntity.ok(departments);
     }
 
     @PostMapping("/departments")
-    public void addDepartment(@RequestBody DepartmentFilterRequest req) {
-        departmentService.addDepartment(req);
+    public ResponseEntity<?> addDepartment(@RequestBody DepartmentFilterRequest req) {
+        try {
+            departmentService.addDepartment(req);
+            return ResponseEntity.status(201).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping("/departments")
-    public void deleteDepartment(@RequestBody DepartmentFilterRequest req) {
-        departmentService.deleteDepartment(req);
+    public ResponseEntity<?> deleteDepartment(@RequestBody DepartmentFilterRequest req) {
+        try {
+            departmentService.deleteDepartment(req);
+            return ResponseEntity.status(204).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PatchMapping("/departments")
-    public void updateDepartment(@RequestBody DepartmentFilterRequest req) {
-        departmentService.updateDepartment(req);
+    public ResponseEntity<?> updateDepartment(@RequestBody DepartmentFilterRequest req) {
+        try {
+            departmentService.updateDepartment(req);
+            return ResponseEntity.status(204).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
