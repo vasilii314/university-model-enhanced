@@ -27,9 +27,6 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeDTO>> getEmployeesCriteria(@RequestBody EmployeeFilterRequest req) {
 
         List<Human> peopleInUniversity = humanService.findEmployeesCriteria(req);
-        if (peopleInUniversity.size() == 0) {
-            return ResponseEntity.notFound().build();
-        }
         List<EmployeeDTO> employees =  peopleInUniversity
                 .stream()
                 .map(EmployeeDTO::toEmployeeDTO)
@@ -39,31 +36,19 @@ public class EmployeeController {
 
     @PostMapping("/add-employee")
     public ResponseEntity<EmployeeDTO> addEmployeeCriteria(@RequestBody EmployeeAddRequest req) {
-        try {
             humanService.addEmployeeCriteria(req);
             return ResponseEntity.status(201).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @DeleteMapping("/employees")
     public ResponseEntity<EmployeeDTO> deleteEmployeeCriteria(@RequestBody EmployeeFilterRequest req) {
-        try {
             humanService.deleteEmployeeOrStudentCriteria(req);
             return ResponseEntity.status(204).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @PatchMapping("/employees")
     public ResponseEntity<EmployeeDTO> updateEmployeeCriteria(@RequestBody EmployeeFilterRequest req) {
-        try {
             humanService.updateEmployeeOrStudentCriteria(req);
             return ResponseEntity.status(204).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 }

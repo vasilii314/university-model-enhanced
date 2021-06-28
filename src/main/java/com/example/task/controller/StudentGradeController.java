@@ -24,19 +24,12 @@ public class StudentGradeController {
     @PostMapping("/grades")
     public ResponseEntity<List<StudentGradeDTO>> getGradesCriteria(@RequestBody @Valid StudentFilterRequest req) {
         List<StudentGradeDTO> grades = humanService.getStudentGradesCriteria(req);
-        if (grades.size() == 0) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(grades);
     }
 
     @PostMapping("/add-grade")
     public ResponseEntity<StudentGradeDTO> addGradeCriteria(@RequestBody @Valid StudentFilterRequest req) {
-        try {
             humanService.addStudentGradeCriteria(req);
             return ResponseEntity.status(201).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 }

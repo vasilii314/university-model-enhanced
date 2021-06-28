@@ -25,9 +25,6 @@ public class CourseController {
     @PostMapping("/courses")
     private ResponseEntity<List<CourseDTO>> getCoursesCriteria(@RequestBody CourseFilterRequest req) {
         List<Course> coursesRaw = courseService.findCoursesCriteria(req);
-        if (coursesRaw.size() == 0) {
-            return ResponseEntity.notFound().build();
-        }
         List<CourseDTO> courses = coursesRaw
                 .stream()
                 .map(course -> new CourseDTO(course.getId(), course.getName(), course.getDuration(), course.getDepartment().getName()))
@@ -37,32 +34,19 @@ public class CourseController {
 
     @PostMapping("/add-course")
     private ResponseEntity<CourseDTO> addCourseCriteria(@RequestBody CourseFilterRequest req) {
-        try {
             courseService.addCourseCriteria(req);
             return ResponseEntity.status(201).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @DeleteMapping("/courses")
     private ResponseEntity<CourseDTO> deleteCourseCriteria(@RequestBody CourseFilterRequest req) {
-        try {
             courseService.deleteCourseCriteria(req);
             return ResponseEntity.status(201).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @PatchMapping("/courses")
     private ResponseEntity<CourseDTO> updateCourseCriteria(@RequestBody CourseFilterRequest req) {
-        try {
             courseService.updateCourseCriteria(req);
             return ResponseEntity.status(204).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 }

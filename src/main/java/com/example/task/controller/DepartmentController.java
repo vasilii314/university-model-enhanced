@@ -26,9 +26,6 @@ public class DepartmentController {
     @PostMapping("/departments")
     public ResponseEntity<List<DepartmentDTO>> findDepartmentsCriteria(@RequestBody DepartmentFilterRequest req) {
         List<Department> departmentsRaw = departmentService.findDepartmentsCriteria(req);
-        if (departmentsRaw.size() == 0) {
-            return ResponseEntity.notFound().build();
-        }
         System.out.println(departmentsRaw.get(0).getId());
         List<DepartmentDTO> departments =  departmentsRaw
                 .stream()
@@ -39,12 +36,8 @@ public class DepartmentController {
 
     @PostMapping("/add-department")
     public ResponseEntity<DepartmentDTO> addDepartmentCriteria(@RequestBody DepartmentFilterRequest req) {
-        try {
             departmentService.addDepartmentCriteria(req);
             return ResponseEntity.status(201).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @DeleteMapping("/departments")

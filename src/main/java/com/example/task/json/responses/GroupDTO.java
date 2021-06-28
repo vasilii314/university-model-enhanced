@@ -6,9 +6,9 @@ public class GroupDTO {
     private final Integer id;
     private final String groupName;
     private final String dptName;
-    private final int numOfStudents;
+    private final Integer numOfStudents;
 
-    public GroupDTO(Integer id, String groupName, String dptName, int numOfStudents) {
+    public GroupDTO(Integer id, String groupName, String dptName, Integer numOfStudents) {
         this.id = id;
         this.groupName = groupName;
         this.dptName = dptName;
@@ -31,7 +31,7 @@ public class GroupDTO {
         return dptName;
     }
 
-    public int getNumOfStudents() {
+    public Integer getNumOfStudents() {
         return numOfStudents;
     }
 }

@@ -21,7 +21,7 @@ public class Updates {
     @Positive
     @Min(2)
     @Max(5)
-    private int grade;
+    private Integer grade;
 
     @Positive
     private Integer duration;
@@ -101,11 +101,11 @@ public class Updates {
         this.duration = duration;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 }

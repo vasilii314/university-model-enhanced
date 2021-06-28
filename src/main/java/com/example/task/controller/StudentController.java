@@ -27,22 +27,14 @@ public class StudentController {
     @PostMapping("/students")
     public ResponseEntity<List<StudentDTO>> getStudentsCriteria(@RequestBody @Valid StudentFilterRequest req) {
         List<Human> studentsRaw = humanService.findStudentsCriteria(req);
-        if (studentsRaw.size() == 0) {
-            return ResponseEntity.notFound().build();
-        }
         List<StudentDTO> students = studentsRaw.stream().map(StudentDTO::toStudentDTO).collect(Collectors.toList());
         return ResponseEntity.ok(students);
     }
 
     @PostMapping("/add-student")
     public ResponseEntity<StudentDTO> addStudentCriteria(@RequestBody @Valid StudentFilterRequest req) {
-        try {
             humanService.addStudentCriteria(req);
             return ResponseEntity.status(201).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @DeleteMapping("/students")
@@ -57,11 +49,7 @@ public class StudentController {
 
     @PatchMapping("/students")
     public ResponseEntity<StudentDTO> updateStudentCriteria(@RequestBody @Valid EmployeeFilterRequest req) {
-        try {
             humanService.updateEmployeeOrStudentCriteria(req);
             return ResponseEntity.status(204).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 }
