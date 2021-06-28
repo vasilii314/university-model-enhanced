@@ -1,10 +1,7 @@
 package com.example.task.repository.custom;
 
 import com.example.task.entity.Department;
-import com.example.task.json.filters.DepartmentFilterRequest;
-import com.example.task.service.Service;
-import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.stereotype.Repository;
+import com.example.task.json.requests.filters.DepartmentFilterRequest;
 
 import java.util.List;
 

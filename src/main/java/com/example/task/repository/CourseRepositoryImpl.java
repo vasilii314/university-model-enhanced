@@ -1,8 +1,8 @@
 package com.example.task.repository;
 
 import com.example.task.entity.*;
-import com.example.task.json.filters.CourseFilterRequest;
-import com.example.task.json.filters.DepartmentFilterRequest;
+import com.example.task.json.requests.filters.CourseFilterRequest;
+import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.repository.custom.CourseRepositoryCustom;
 import com.example.task.repository.default_repos.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +31,14 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Course> courseCriteriaQuery = builder.createQuery(Course.class);
         Root<Course> courseRoot = courseCriteriaQuery.from(Course.class);
-        Join<Course, CourseType> join1 = courseRoot.join(Course_.courseType);
-        Join<Course, Department> join2 = courseRoot.join(Course_.department);
+        Join<Course, CourseType> joinCourseTypeToCourse = courseRoot.join(Course_.courseType);
+        Join<Course, Department> joinDepartmentToCourse = courseRoot.join(Course_.department);
         Predicate courseTypeRestriction = filter.getCourseType() != null ?
-                builder.equal(join1.get(CourseType_.type), filter.getCourseType()) :
-                join1.get(CourseType_.type).in(CourseTypeEnum.MATHEMATICAL, CourseTypeEnum.SOCIAL);
+                builder.equal(joinCourseTypeToCourse.get(CourseType_.type), filter.getCourseType()) :
+                joinCourseTypeToCourse.get(CourseType_.type).in(CourseTypeEnum.MATHEMATICAL, CourseTypeEnum.SOCIAL);
         Predicate dptNameRestriction = filter.getDptName() != null ?
-                builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
-                builder.like(join2.get(Department_.name), "%");
+                builder.like(joinDepartmentToCourse.get(Department_.name), "%" + filter.getDptName() + "%") :
+                builder.like(joinDepartmentToCourse.get(Department_.name), "%");
         Predicate courseNameRestriction = filter.getCourseName() != null ?
                 builder.like(courseRoot.get(Course_.name), "%" + filter.getCourseName() + "%") :
                 builder.like(courseRoot.get(Course_.name), "%");
@@ -96,14 +96,14 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
             Subquery<Course> subquery = courseCriteriaDelete.subquery(Course.class);
             Root<Course> courseRoot2 = subquery.from(Course.class);
             subquery.select(courseRoot2);
-            Join<Course, CourseType> join1 = courseRoot2.join(Course_.courseType);
-            Join<Course, Department> join2 = courseRoot2.join(Course_.department);
+            Join<Course, CourseType> joinCourseTypeToCourse = courseRoot2.join(Course_.courseType);
+            Join<Course, Department> joinDepartmentToCourse = courseRoot2.join(Course_.department);
             Predicate courseTypeRestriction = filter.getCourseType() != null ?
-                    builder.equal(join1.get(CourseType_.type), filter.getCourseType()) :
-                    join1.get(CourseType_.type).in(CourseTypeEnum.MATHEMATICAL, CourseTypeEnum.SOCIAL);
+                    builder.equal(joinCourseTypeToCourse.get(CourseType_.type), filter.getCourseType()) :
+                    joinCourseTypeToCourse.get(CourseType_.type).in(CourseTypeEnum.MATHEMATICAL, CourseTypeEnum.SOCIAL);
             Predicate dptNameRestriction = filter.getDptName() != null ?
-                    builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
-                    builder.like(join2.get(Department_.name), "%");
+                    builder.like(joinDepartmentToCourse.get(Department_.name), "%" + filter.getDptName() + "%") :
+                    builder.like(joinDepartmentToCourse.get(Department_.name), "%");
             Predicate courseNameRestriction = filter.getCourseName() != null ?
                     builder.like(courseRoot2.get(Course_.name), "%" + filter.getCourseName() + "%") :
                     builder.like(courseRoot2.get(Course_.name), "%");
@@ -180,7 +180,6 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
                         flag = true;
                     }
                     if (flag) {
-//                        courseRepository.save(course);
                         entityManager.persist(course);
                     }
                 }

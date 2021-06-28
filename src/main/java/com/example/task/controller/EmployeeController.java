@@ -1,8 +1,8 @@
 package com.example.task.controller;
 
 import com.example.task.entity.Human;
-import com.example.task.json.filters.EmployeeAddRequest;
-import com.example.task.json.filters.EmployeeFilterRequest;
+import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
+import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.responses.EmployeeDTO;
 import com.example.task.service.HumanService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@ import com.example.task.entity.Department;
 import com.example.task.entity.Department_;
 import com.example.task.entity.Group;
 import com.example.task.entity.Group_;
-import com.example.task.json.filters.GroupFilterRequest;
+import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.repository.custom.GroupRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,9 +34,9 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
             Predicate groupNameRestriction = builder
                     .like(groupRoot.get(Group_.name), "%" + filter.getGroupName() + "%");
             if (filter.getDptName() != null) {
-                Join<Group, Department> join = groupRoot.join(Group_.groupDepartment);
+                Join<Group, Department> joinDepartmentToGroup = groupRoot.join(Group_.groupDepartment);
                 Predicate dptNameRestriction = builder
-                        .like(join.get(Department_.name), "%" + filter.getDptName() + "%");
+                        .like(joinDepartmentToGroup.get(Department_.name), "%" + filter.getDptName() + "%");
                 groupCriteriaQuery.where(builder.and(groupNameRestriction, dptNameRestriction)).distinct(true);
                 return entityManager.createQuery(groupCriteriaQuery).getResultList();
             }
@@ -80,13 +80,13 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
             Predicate dptNameRestriction;
             if (filter.getGroupName() != null) {
                 groupNameRestriction = builder.equal(groupRoot.get(Group_.name), filter.getGroupName());
-                Join<Group, Department> join;
+                Join<Group, Department> joinDepartmentToGroup;
                 if (filter.getDptName() != null) {
                     Subquery<Group> subquery = groupCriteriaDelete.subquery(Group.class);
                     Root<Group> groupRoot2 = subquery.from(Group.class);
                     subquery.select(groupRoot2);
-                    join = groupRoot2.join(Group_.groupDepartment);
-                    dptNameRestriction = builder.equal(join.get(Department_.name), filter.getDptName());
+                    joinDepartmentToGroup = groupRoot2.join(Group_.groupDepartment);
+                    dptNameRestriction = builder.equal(joinDepartmentToGroup.get(Department_.name), filter.getDptName());
                     subquery.where(builder.and(groupNameRestriction, dptNameRestriction));
                     groupCriteriaDelete.where(groupRoot.in(subquery));
                     entityManager.createQuery(groupCriteriaDelete).executeUpdate();
@@ -112,13 +112,13 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
             Predicate dptNameRestriction;
             if (filter.getGroupName() != null) {
                 groupNameRestriction = builder.equal(groupRoot.get(Group_.name), filter.getGroupName());
-                Join<Group, Department> join;
+                Join<Group, Department> joinDepartmentToGroup;
                 if (filter.getDptName() != null) {
                     Subquery<Group> subquery = groupCriteriaUpdate.subquery(Group.class);
                     Root<Group> groupRoot2 = subquery.from(Group.class);
                     subquery.select(groupRoot2);
-                    join = groupRoot2.join(Group_.groupDepartment);
-                    dptNameRestriction = builder.equal(join.get(Department_.name), filter.getDptName());
+                    joinDepartmentToGroup = groupRoot2.join(Group_.groupDepartment);
+                    dptNameRestriction = builder.equal(joinDepartmentToGroup.get(Department_.name), filter.getDptName());
                     subquery.where(builder.and(groupNameRestriction, dptNameRestriction));
                     groupCriteriaUpdate.where(groupRoot.in(subquery));
                 }

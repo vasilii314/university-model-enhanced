@@ -4,7 +4,7 @@ import com.example.task.entity.Department;
 import com.example.task.entity.Department_;
 import com.example.task.entity.School;
 import com.example.task.entity.School_;
-import com.example.task.json.filters.DepartmentFilterRequest;
+import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.repository.custom.DepartmentRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,7 +30,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
         CriteriaQuery<Department> criteriaQuery = builder.createQuery(Department.class);
         Root<Department> departmentRoot = criteriaQuery.from(Department.class);
         Root<School> schoolRoot = criteriaQuery.from(School.class);
-        Join<Department, School> join = departmentRoot.join(Department_.school);
+        Join<Department, School> joinSchoolToDepartment = departmentRoot.join(Department_.school);
         criteriaQuery.select(departmentRoot);
         Predicate dptNameRestriction = filter.getDptName() != null ? builder.like(departmentRoot.get(Department_.name),
                 "%" + filter.getDptName() + "%") :
@@ -79,13 +79,13 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
             Predicate schoolNameRestriction;
             if (filter.getDptName() != null) {
                 dptNameRestriction = builder.equal(departmentRoot.get(Department_.name), filter.getDptName());
-                Join<Department, School> join;
+                Join<Department, School> joinSchoolToDepartment;
                 if (filter.getSchoolName() != null) {
                     Subquery<Department> subquery = departmentCriteriaDelete.subquery(Department.class);
                     Root<Department> departmentRoot2 = subquery.from(Department.class);
                     subquery.select(departmentRoot2);
-                    join = departmentRoot2.join(Department_.school);
-                    schoolNameRestriction = builder.equal(join.get(School_.name), filter.getSchoolName());
+                    joinSchoolToDepartment = departmentRoot2.join(Department_.school);
+                    schoolNameRestriction = builder.equal(joinSchoolToDepartment.get(School_.name), filter.getSchoolName());
                     subquery.where(builder.and(dptNameRestriction, schoolNameRestriction));
                     departmentCriteriaDelete.where(departmentRoot.in(subquery));
                     entityManager.createQuery(departmentCriteriaDelete).executeUpdate();
@@ -111,13 +111,13 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
             Predicate schoolNameRestriction;
             if (filter.getDptName() != null) {
                 dptNameRestriction = builder.equal(departmentRoot.get(Department_.name), filter.getDptName());
-                Join<Department, School> join;
+                Join<Department, School> joinSchoolToDepartment;
                 if (filter.getSchoolName() != null) {
                     Subquery<Department> subquery = departmentCriteriaUpdate.subquery(Department.class);
                     Root<Department> departmentRoot2 = subquery.from(Department.class);
                     subquery.select(departmentRoot2);
-                    join = departmentRoot2.join(Department_.school);
-                    schoolNameRestriction = builder.equal(join.get(School_.name), filter.getSchoolName());
+                    joinSchoolToDepartment = departmentRoot2.join(Department_.school);
+                    schoolNameRestriction = builder.equal(joinSchoolToDepartment.get(School_.name), filter.getSchoolName());
                     subquery.where(builder.and(dptNameRestriction, schoolNameRestriction));
                     departmentCriteriaUpdate.where(departmentRoot.in(subquery));
                 }

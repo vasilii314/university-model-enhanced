@@ -1,7 +1,7 @@
 package com.example.task.controller;
 
 import com.example.task.entity.Group;
-import com.example.task.json.filters.GroupFilterRequest;
+import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.responses.GroupDTO;
 import com.example.task.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;

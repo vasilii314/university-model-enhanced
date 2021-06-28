@@ -1,7 +1,7 @@
 package com.example.task.controller;
 
 import com.example.task.entity.Department;
-import com.example.task.json.filters.DepartmentFilterRequest;
+import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.responses.DepartmentDTO;
 import com.example.task.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;

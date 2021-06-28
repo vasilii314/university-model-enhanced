@@ -1,8 +1,7 @@
 package com.example.task.repository.custom;
 
 import com.example.task.entity.School;
-import com.example.task.json.filters.SchoolFilterRequest;
-import com.example.task.service.Service;
+import com.example.task.json.requests.filters.SchoolFilterRequest;
 
 import java.util.List;
 

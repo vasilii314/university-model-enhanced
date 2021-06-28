@@ -1,11 +1,10 @@
 package com.example.task.repository.custom;
 
 import com.example.task.entity.Human;
-import com.example.task.json.filters.EmployeeAddRequest;
-import com.example.task.json.filters.EmployeeFilterRequest;
-import com.example.task.json.filters.StudentFilterRequest;
+import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
+import com.example.task.json.requests.filters.EmployeeFilterRequest;
+import com.example.task.json.requests.filters.StudentFilterRequest;
 import com.example.task.json.responses.StudentGradeDTO;
-import com.example.task.service.Service;
 
 import java.util.List;
 

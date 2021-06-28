@@ -1,9 +1,9 @@
 package com.example.task.repository;
 
 import com.example.task.entity.*;
-import com.example.task.json.filters.EmployeeAddRequest;
-import com.example.task.json.filters.EmployeeFilterRequest;
-import com.example.task.json.filters.StudentFilterRequest;
+import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
+import com.example.task.json.requests.filters.EmployeeFilterRequest;
+import com.example.task.json.requests.filters.StudentFilterRequest;
 import com.example.task.json.responses.StudentGradeDTO;
 import com.example.task.repository.custom.HumanRepositoryCustom;
 import com.example.task.repository.default_repos.HumanInUniversityRepository;
@@ -45,9 +45,9 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
         CriteriaQuery<Human> criteriaQuery = builder.createQuery(Human.class);
         Root<Human> humanRoot = criteriaQuery.from(Human.class);
         Root<Role> roleRoot = criteriaQuery.from(Role.class);
-        Join<Human, HumanInUniversity> join1 = humanRoot.join(Human_.occupations);
-        Join<HumanInUniversity, Role> join2 = join1.join(HumanInUniversity_.role);
-        Join<HumanInUniversity, Department> join3 = join1.join(HumanInUniversity_.department);
+        Join<Human, HumanInUniversity> joinHumanInUniversityToHuman = humanRoot.join(Human_.occupations);
+        Join<HumanInUniversity, Role> joinRoleToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.role);
+        Join<HumanInUniversity, Department> joinDepartmentToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.department);
         Predicate fullNameRestriction = filter.getEmployeeFullName() != null ?
                 builder.like(humanRoot.get(Human_.fullName), "%" + filter.getEmployeeFullName() + "%") :
                 builder.like(humanRoot.get(Human_.fullName), "%");
@@ -76,7 +76,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
             ));
             Role role = entityManager.createQuery(roleCriteriaQuery).getSingleResult();
 
-            Join<Department, School> join = dptRoot.join(Department_.school, JoinType.INNER);
+            Join<Department, School> joinSchoolToDepartment = dptRoot.join(Department_.school, JoinType.INNER);
             criteriaQuery.multiselect(dptRoot, schoolRoot).distinct(true);
             criteriaQuery.where(
                     builder.and(
@@ -109,10 +109,10 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
             Subquery<Human> subquery = criteriaDelete.subquery(Human.class);
             Root<Human> humanRoot2 = subquery.from(Human.class);
             subquery.select(humanRoot2);
-            Join<Human, HumanInUniversity> join1 = humanRoot2.join(Human_.occupations);
-            Join<HumanInUniversity, Department> join2 = join1.join(HumanInUniversity_.department);
-            Join<Department, Group> join4 = join2.join(Department_.groups);
-            Join<HumanInUniversity, Role> join3 = join1.join(HumanInUniversity_.role);
+            Join<Human, HumanInUniversity> joinHumanInUniversityToHuman = humanRoot2.join(Human_.occupations);
+            Join<HumanInUniversity, Department> joinDepartmentToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.department);
+            Join<Department, Group> join4 = joinDepartmentToHumanInUniversity.join(Department_.groups);
+            Join<HumanInUniversity, Role> joinRoleToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.role);
             Predicate fullNameRestriction = filter.getEmployeeFullName() != null ?
                     builder.like(humanRoot2.get(Human_.fullName), "%" + filter.getEmployeeFullName() + "%") :
                     builder.like(humanRoot2.get(Human_.fullName), "%");
@@ -121,11 +121,11 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                     builder.like(join4.get(Group_.name), "%");
             Predicate roleRestriction = filter.getRole() != null &&
                     (filter.getRole().equals(RoleEnum.POSTGRADUATE) || filter.getRole().equals(RoleEnum.PROFESSOR)) ?
-                    builder.equal(join3.get(Role_.roleDescription), filter.getRole()) :
-                    join3.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
+                    builder.equal(joinRoleToHumanInUniversity.get(Role_.roleDescription), filter.getRole()) :
+                    joinRoleToHumanInUniversity.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
             Predicate dptRestriction =  filter.getDptName() != null ?
-                    builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
-                    builder.like(join2.get(Department_.name), "%");
+                    builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%" + filter.getDptName() + "%") :
+                    builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%");
             Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
                     builder.lessThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateUpperBound())) :
                     builder.lessThanOrEqualTo(humanRoot2.get(Human_.birthDate), LocalDate.now());
@@ -182,20 +182,20 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                 group = entityManager.createQuery(groupCriteriaQuery).getSingleResult();
             }
 
-            Join<Human, HumanInUniversity> join1 = humanRoot.join(Human_.occupations);
-            Join<HumanInUniversity, Department> join2 = join1.join(HumanInUniversity_.department);
-            Join<HumanInUniversity, Role> join3 = join1.join(HumanInUniversity_.role);
-            Join<Department, Group> join4 = join2.join(Department_.groups);
+            Join<Human, HumanInUniversity> joinHumanInUniversityToHuman = humanRoot.join(Human_.occupations);
+            Join<HumanInUniversity, Department> joinDepartmentToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.department);
+            Join<HumanInUniversity, Role> joinRoleToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.role);
+            Join<Department, Group> joinGroupToDepartment = joinDepartmentToHumanInUniversity.join(Department_.groups);
             Predicate fullNameRestriction = filter.getEmployeeFullName() != null ?
                     builder.like(humanRoot.get(Human_.fullName), "%" + filter.getEmployeeFullName() + "%") :
                     builder.like(humanRoot.get(Human_.fullName), "%");
             Predicate humanRoleRestriction = filter.getRole() != null &&
                     (filter.getRole().equals(RoleEnum.POSTGRADUATE) || filter.getRole().equals(RoleEnum.PROFESSOR)) ?
-                    builder.equal(join3.get(Role_.roleDescription), filter.getRole()) :
-                    join3.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
+                    builder.equal(joinRoleToHumanInUniversity.get(Role_.roleDescription), filter.getRole()) :
+                    joinRoleToHumanInUniversity.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
             Predicate humanDptRestriction =  filter.getDptName() != null ?
-                    builder.like(join2.get(Department_.name), "%" + filter.getDptName() + "%") :
-                    builder.like(join2.get(Department_.name), "%");
+                    builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%" + filter.getDptName() + "%") :
+                    builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%");
             Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
                     builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateUpperBound())) :
                     builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.now());
@@ -203,8 +203,8 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                     builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateLowerBound())) :
                     builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
             Predicate groupNameRestriction = filter.getGroupName() != null ?
-                    builder.like(join4.get(Group_.name), "%" + filter.getGroupName() + "%") :
-                    builder.like(join4.get(Group_.name), "%");
+                    builder.like(joinGroupToDepartment.get(Group_.name), "%" + filter.getGroupName() + "%") :
+                    builder.like(joinGroupToDepartment.get(Group_.name), "%");
 
             humanCriteriaQuery.where(builder.and(fullNameRestriction,
                     humanRoleRestriction,
@@ -246,9 +246,9 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
         CriteriaQuery<Human> criteriaQuery = builder.createQuery(Human.class);
         Root<Human> humanRoot = criteriaQuery.from(Human.class);
         Root<Role> roleRoot = criteriaQuery.from(Role.class);
-        Join<Human, HumanInUniversity> join1 = humanRoot.join(Human_.occupations);
-        Join<HumanInUniversity, Role> join2 = join1.join(HumanInUniversity_.role);
-        Join<HumanInUniversity, Department> join3 = join1.join(HumanInUniversity_.department);
+        Join<Human, HumanInUniversity> joinHumanInUniversityToHuman = humanRoot.join(Human_.occupations);
+        Join<HumanInUniversity, Role> joinRoleToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.role);
+        Join<HumanInUniversity, Department> joinDepartmentToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.department);
         Predicate fullNameRestriction = filter.getStudentFullName() != null ?
                 builder.like(humanRoot.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
                 builder.like(humanRoot.get(Human_.fullName), "%");
@@ -260,8 +260,8 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                 builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
         Predicate roleRestriction = builder.equal(roleRoot.get(Role_.roleDescription), RoleEnum.STUDENT);
         Predicate humanDptRestriction =  filter.getDptName() != null ?
-                builder.like(join3.get(Department_.name), "%" + filter.getDptName() + "%") :
-                builder.like(join3.get(Department_.name), "%");
+                builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%" + filter.getDptName() + "%") :
+                builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%");
         criteriaQuery.select(humanRoot).distinct(true);
         criteriaQuery.where(builder.and(fullNameRestriction,
                 birthDateLowerBound,
@@ -285,8 +285,8 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
         roleCriteriaQuery.where(builder.equal(roleRoot.get(Role_.roleDescription), RoleEnum.STUDENT));
         Role role = entityManager.createQuery(roleCriteriaQuery).getSingleResult();
 
-        Join<Department, School> join = dptRoot.join(Department_.school, JoinType.INNER);
-        Join<Department, Group> join1 = dptRoot.join(Department_.groups);
+        Join<Department, School> joinSchoolToDepartment = dptRoot.join(Department_.school, JoinType.INNER);
+        Join<Department, Group> joinGroupToDepartment = dptRoot.join(Department_.groups);
         criteriaQuery.multiselect(dptRoot, schoolRoot, groupRoot).distinct(true);
         criteriaQuery.where(
                 builder.and(
@@ -315,21 +315,21 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
         CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
         Root<StudentGrade> studentGradeRoot = criteriaQuery.from(StudentGrade.class);
 
-        Join<StudentGrade, Course> join = studentGradeRoot.join(StudentGrade_.course);
-        Join<StudentGrade, StudentsInGroups> join1 = studentGradeRoot.join(StudentGrade_.student);
-        Join<StudentsInGroups, Group> join4 = join1.join(StudentsInGroups_.group);
-        Join<StudentsInGroups, HumanInUniversity> join2 = join1.join(StudentsInGroups_.student);
-        Join<HumanInUniversity, Human> join3 = join2.join(HumanInUniversity_.human);
-        Join<Course, Department> join5 = join.join(Course_.department);
+        Join<StudentGrade, Course> joinCourseToStudentGrade = studentGradeRoot.join(StudentGrade_.course);
+        Join<StudentGrade, StudentsInGroups> joinStudentsInGroupsToStudentGrade = studentGradeRoot.join(StudentGrade_.student);
+        Join<StudentsInGroups, Group> joinGroupToStudentsInGroups = joinStudentsInGroupsToStudentGrade.join(StudentsInGroups_.group);
+        Join<StudentsInGroups, HumanInUniversity> joinHumanInUniversityToStudentsInGroups = joinStudentsInGroupsToStudentGrade.join(StudentsInGroups_.student);
+        Join<HumanInUniversity, Human> joinHumanToHumanInUniversity = joinHumanInUniversityToStudentsInGroups.join(HumanInUniversity_.human);
+        Join<Course, Department> joinDepartmentToCourse = joinCourseToStudentGrade.join(Course_.department);
         Predicate courseNameRestriction = filter.getCourseName() != null ?
-                builder.like(join.get(Course_.name), "%" + filter.getCourseName() + "%") :
-                builder.like(join.get(Course_.name), "%");
+                builder.like(joinCourseToStudentGrade.get(Course_.name), "%" + filter.getCourseName() + "%") :
+                builder.like(joinCourseToStudentGrade.get(Course_.name), "%");
         Predicate fullNameRestriction = filter.getStudentFullName() != null ?
-                builder.like(join3.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
-                builder.like(join3.get(Human_.fullName), "%");
+                builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
+                builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%");
         Predicate groupNameRestriction = filter.getGroupName() != null ?
-                builder.like(join4.get(Group_.name), "%" + filter.getGroupName() + "%") :
-                builder.like(join4.get(Group_.name), "%");
+                builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%" + filter.getGroupName() + "%") :
+                builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%");
         Predicate gradeLowerBound = filter.getGradeLowerBound() != 0 ?
                 builder.greaterThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), filter.getGradeLowerBound()) :
                 builder.greaterThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), 2);
@@ -337,12 +337,12 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                 builder.lessThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), filter.getGradeUpperBound()) :
                 builder.lessThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), 5);
         Predicate studentDptRestriction =  filter.getDptName() != null ?
-                builder.like(join5.get(Department_.name), "%" + filter.getDptName() + "%") :
-                builder.like(join5.get(Department_.name), "%");
+                builder.like(joinDepartmentToCourse.get(Department_.name), "%" + filter.getDptName() + "%") :
+                builder.like(joinDepartmentToCourse.get(Department_.name), "%");
 
 
-        Path<String> studentFullNamePath = join3.get(Human_.fullName);
-        Path<String> courseNamePath = join.get(Course_.name);
+        Path<String> studentFullNamePath = joinHumanToHumanInUniversity.get(Human_.fullName);
+        Path<String> courseNamePath = joinCourseToStudentGrade.get(Course_.name);
 
         criteriaQuery.multiselect(studentFullNamePath, courseNamePath, studentGradeRoot).where(builder.and(courseNameRestriction,
                 groupNameRestriction,
@@ -369,31 +369,31 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
         Root<Course> courseRoot = courseCriteriaQuery.from(Course.class);
         Root<StudentsInGroups> studentsInGroupsRoot = criteriaQuery.from(StudentsInGroups.class);
 
-        Join<StudentsInGroups, HumanInUniversity> join1 = studentsInGroupsRoot.join(StudentsInGroups_.student);
-        Join<StudentsInGroups, Group> join3 = studentsInGroupsRoot.join(StudentsInGroups_.group);
-        Join<HumanInUniversity, Human> join2 = join1.join(HumanInUniversity_.human);
+        Join<StudentsInGroups, HumanInUniversity> joinHumanInUniversityToStudentsInGroups = studentsInGroupsRoot.join(StudentsInGroups_.student);
+        Join<StudentsInGroups, Group> joinGroupToStudentsInGroups = studentsInGroupsRoot.join(StudentsInGroups_.group);
+        Join<HumanInUniversity, Human> joinHumanToHumanInUniversity = joinHumanInUniversityToStudentsInGroups.join(HumanInUniversity_.human);
 
 
         Predicate courseNameRestriction = filter.getCourseName() != null ?
                 builder.like(courseRoot.get(Course_.name), "%" + filter.getCourseName() + "%") :
                 builder.like(courseRoot.get(Course_.name), "%");
         Predicate fullNameRestriction = filter.getStudentFullName() != null ?
-                builder.like(join2.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
-                builder.like(join2.get(Human_.fullName), "%");
+                builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
+                builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%");
         Predicate groupNameRestriction = filter.getGroupName() != null ?
-                builder.like(join3.get(Group_.name), "%" + filter.getGroupName() + "%") :
-                builder.like(join3.get(Group_.name), "%");
+                builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%" + filter.getGroupName() + "%") :
+                builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%");
 
         courseCriteriaQuery.select(courseRoot).where(courseNameRestriction).distinct(true);
         Course course = entityManager.createQuery(courseCriteriaQuery).getSingleResult();
 
 
-        criteriaQuery.multiselect(join2.get(Human_.fullName), studentsInGroupsRoot).distinct(true);
+        criteriaQuery.multiselect(joinHumanToHumanInUniversity.get(Human_.fullName), studentsInGroupsRoot).distinct(true);
         criteriaQuery.where(builder.and(fullNameRestriction, groupNameRestriction)).distinct(true);
 
         try {
             Tuple tuple = entityManager.createQuery(criteriaQuery).getSingleResult();
-            System.out.println(tuple.get(join2.get(Human_.fullName)));
+            System.out.println(tuple.get(joinHumanToHumanInUniversity.get(Human_.fullName)));
             System.out.println(tuple.get(studentsInGroupsRoot).getStudent().getHuman());
             StudentGrade grade = new StudentGrade();
             grade.setGrade(filter.getUpdates().getGrade());

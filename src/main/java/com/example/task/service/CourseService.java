@@ -1,7 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.Course;
-import com.example.task.json.filters.CourseFilterRequest;
+import com.example.task.json.requests.filters.CourseFilterRequest;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@ package com.example.task.repository;
 import com.example.task.criteria.SearchCriteria;
 import com.example.task.entity.School;
 import com.example.task.entity.School_;
-import com.example.task.json.filters.SchoolFilterRequest;
+import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.operations.SearchOperation;
 import com.example.task.repository.custom.SchoolRepositoryCustom;
 import com.example.task.specification.SchoolSpecification;

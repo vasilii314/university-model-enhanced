@@ -1,7 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.Group;
-import com.example.task.json.filters.GroupFilterRequest;
+import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.repository.default_repos.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

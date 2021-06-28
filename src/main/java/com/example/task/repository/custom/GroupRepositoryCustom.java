@@ -1,8 +1,7 @@
 package com.example.task.repository.custom;
 
 import com.example.task.entity.Group;
-import com.example.task.json.filters.GroupFilterRequest;
-import com.example.task.service.Service;
+import com.example.task.json.requests.filters.GroupFilterRequest;
 
 import java.util.List;
 

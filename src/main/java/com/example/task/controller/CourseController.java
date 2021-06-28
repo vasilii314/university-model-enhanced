@@ -1,7 +1,7 @@
 package com.example.task.controller;
 
 import com.example.task.entity.Course;
-import com.example.task.json.filters.CourseFilterRequest;
+import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.responses.CourseDTO;
 import com.example.task.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;

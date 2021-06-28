@@ -1,7 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.Department;
-import com.example.task.json.filters.DepartmentFilterRequest;
+import com.example.task.json.requests.filters.DepartmentFilterRequest;
 
 import java.util.List;
 

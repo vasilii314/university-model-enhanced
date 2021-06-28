@@ -1,4 +1,4 @@
-package com.example.task.json.filters;
+package com.example.task.json.requests.filters;
 
 import com.example.task.json.updates.Updates;
 

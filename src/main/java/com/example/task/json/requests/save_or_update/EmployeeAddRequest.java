@@ -1,4 +1,4 @@
-package com.example.task.json.filters;
+package com.example.task.json.requests.save_or_update;
 
 import com.example.task.entity.RoleEnum;
 

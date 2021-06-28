@@ -1,7 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.School;
-import com.example.task.json.filters.SchoolFilterRequest;
+import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.repository.default_repos.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
