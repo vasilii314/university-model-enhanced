@@ -1,7 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.CourseType;
-import com.example.task.repository.CourseTypeRepository;
+import com.example.task.repository.default_repos.CourseTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

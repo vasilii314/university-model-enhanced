@@ -7,13 +7,19 @@ import java.util.stream.Collectors;
 
 public class SchoolDTO {
 
+    private final Integer id;
     private final String schoolName;
 
     private final List<DepartmentDTO> departments;
 
-    public SchoolDTO(String schoolName, List<DepartmentDTO> departments) {
+    public SchoolDTO(Integer id, String schoolName, List<DepartmentDTO> departments) {
+        this.id = id;
         this.schoolName = schoolName;
         this.departments = departments;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getSchoolName() {
@@ -27,6 +33,6 @@ public class SchoolDTO {
     public static SchoolDTO toSchoolDTO(School school) {
         List<DepartmentDTO> departmentDTOS;
         departmentDTOS = school.getDepartments().stream().map(DepartmentDTO::toDepartmentDTO).collect(Collectors.toList());
-        return new SchoolDTO(school.getName(), departmentDTOS);
+        return new SchoolDTO(school.getId(), school.getName(), departmentDTOS);
     }
 }

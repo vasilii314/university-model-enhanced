@@ -1,7 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.Role;
-import com.example.task.repository.RoleRepository;
+import com.example.task.repository.default_repos.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

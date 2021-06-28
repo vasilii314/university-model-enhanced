@@ -1,18 +1,11 @@
 package com.example.task.service;
 
-import com.example.task.criteria.SearchCriteria;
 import com.example.task.entity.School;
-import com.example.task.entity.School_;
 import com.example.task.json.filters.SchoolFilterRequest;
-import com.example.task.operations.SearchOperation;
-import com.example.task.repository.SchoolRepository;
-import com.example.task.specification.SchoolSpecification;
+import com.example.task.repository.default_repos.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,20 +15,9 @@ public class SchoolServiceImpl implements SchoolService {
 
     private SchoolRepository schoolRepository;
 
-    private EntityManager entityManager;
-
     @Autowired
-    public SchoolServiceImpl(SchoolRepository schoolRepository, EntityManager entityManager) {
+    public SchoolServiceImpl(SchoolRepository schoolRepository) {
         this.schoolRepository = schoolRepository;
-        this.entityManager = entityManager;
-    }
-
-    public List<School> criteriaFindAll() {
-    	CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    	CriteriaQuery<School> criteriaQuery = builder.createQuery(School.class);
-    	Root<School> root = criteriaQuery.from(School.class);
-    	criteriaQuery.select(root);
-    	return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
     @Override
@@ -62,33 +44,16 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public List<School> findSchoolsByName(SchoolFilterRequest filter) {
-        SchoolSpecification specification = new SchoolSpecification();
-        specification.add(new SearchCriteria("name", filter.getSchoolName(), SearchOperation.MATCH));
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<School> criteriaQuery = builder.createQuery(School.class);
-        Root<School> root = criteriaQuery.from(School.class);
-        criteriaQuery.where(specification.toPredicate(root, criteriaQuery, builder));
-        return entityManager.createQuery(criteriaQuery).getResultList();
+        return schoolRepository.findSchoolsByName(filter);
     }
 
     @Override
-    @Transactional
     public int deleteSchoolByName(SchoolFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaDelete<School> criteriaDelete = builder.createCriteriaDelete(School.class);
-        Root<School> root = criteriaDelete.from(School.class);
-        criteriaDelete.where(builder.equal(root.get(School_.name), filter.getSchoolName()));
-        return entityManager.createQuery(criteriaDelete).executeUpdate();
+        return schoolRepository.deleteSchoolByName(filter);
     }
 
     @Override
-    @Transactional
     public int updateSchoolByName(SchoolFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaUpdate<School> criteriaUpdate = builder.createCriteriaUpdate(School.class);
-        Root<School> root = criteriaUpdate.from(School.class);
-        criteriaUpdate.set(School_.name, filter.getUpdates().getSchoolName());
-        criteriaUpdate.where(builder.equal(root.get(School_.name), filter.getSchoolName()));
-        return entityManager.createQuery(criteriaUpdate).executeUpdate();
+        return schoolRepository.updateSchoolByName(filter);
     }
 }

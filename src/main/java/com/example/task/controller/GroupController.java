@@ -21,8 +21,8 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @GetMapping("/groups")
-    public ResponseEntity<List<GroupDTO>> getGroups(@RequestBody GroupFilterRequest req) {
+    @PostMapping("/groups")
+    public ResponseEntity<List<GroupDTO>> getGroupsCriteria(@RequestBody GroupFilterRequest req) {
         List<Group> groupsRaw = groupService.findGroupsCriteria(req);
         if (groupsRaw.size() == 0) {
             return ResponseEntity.notFound().build();
@@ -31,20 +31,21 @@ public class GroupController {
         return ResponseEntity.ok(groups);
     }
 
-    @PostMapping("/groups")
-    public ResponseEntity<?> addGroup(@RequestBody GroupFilterRequest req) {
+    @PostMapping("/add-group")
+    public ResponseEntity<GroupDTO> addGroupCriteria(@RequestBody GroupFilterRequest req) {
         try {
-            groupService.addGroup(req);
+            groupService.addGroupCriteria(req);
             return ResponseEntity.status(201).build();
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }
 
     @DeleteMapping("/groups")
-    public ResponseEntity<?> deleteGroup(@RequestBody GroupFilterRequest req) {
+    public ResponseEntity<GroupDTO> deleteGroupCriteria(@RequestBody GroupFilterRequest req) {
         try {
-            groupService.addGroup(req);
+            groupService.deleteGroupCriteria(req);
             return ResponseEntity.status(204).build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -52,9 +53,9 @@ public class GroupController {
     }
 
     @PatchMapping("/groups")
-    public ResponseEntity<?> updateGroup(@RequestBody GroupFilterRequest req) {
+    public ResponseEntity<GroupDTO> updateGroupCriteria(@RequestBody GroupFilterRequest req) {
         try {
-            groupService.updateGroup(req);
+            groupService.updateGroupCriteria(req);
             return ResponseEntity.status(204).build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

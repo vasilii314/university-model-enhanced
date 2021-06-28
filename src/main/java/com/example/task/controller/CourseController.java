@@ -22,31 +22,32 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @GetMapping("/courses")
-    private ResponseEntity<List<CourseDTO>> getCourses(@RequestBody CourseFilterRequest req) {
+    @PostMapping("/courses")
+    private ResponseEntity<List<CourseDTO>> getCoursesCriteria(@RequestBody CourseFilterRequest req) {
         List<Course> coursesRaw = courseService.findCoursesCriteria(req);
         if (coursesRaw.size() == 0) {
             return ResponseEntity.notFound().build();
         }
         List<CourseDTO> courses = coursesRaw
                 .stream()
-                .map(course -> new CourseDTO(course.getName(), course.getDuration(), course.getDepartment().getName()))
+                .map(course -> new CourseDTO(course.getId(), course.getName(), course.getDuration(), course.getDepartment().getName()))
                 .collect(Collectors.toList());
         return ResponseEntity.ok(courses);
     }
 
-    @PostMapping("/courses")
-    private ResponseEntity<?> addCourse(@RequestBody CourseFilterRequest req) {
+    @PostMapping("/add-course")
+    private ResponseEntity<CourseDTO> addCourseCriteria(@RequestBody CourseFilterRequest req) {
         try {
             courseService.addCourseCriteria(req);
             return ResponseEntity.status(201).build();
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }
 
     @DeleteMapping("/courses")
-    private ResponseEntity<?> deleteCourse(@RequestBody CourseFilterRequest req) {
+    private ResponseEntity<CourseDTO> deleteCourseCriteria(@RequestBody CourseFilterRequest req) {
         try {
             courseService.deleteCourseCriteria(req);
             return ResponseEntity.status(201).build();
@@ -56,7 +57,7 @@ public class CourseController {
     }
 
     @PatchMapping("/courses")
-    private ResponseEntity<?> updateCourse(@RequestBody CourseFilterRequest req) {
+    private ResponseEntity<CourseDTO> updateCourseCriteria(@RequestBody CourseFilterRequest req) {
         try {
             courseService.updateCourseCriteria(req);
             return ResponseEntity.status(204).build();

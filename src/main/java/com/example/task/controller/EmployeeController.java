@@ -4,7 +4,6 @@ import com.example.task.entity.Human;
 import com.example.task.json.filters.EmployeeAddRequest;
 import com.example.task.json.filters.EmployeeFilterRequest;
 import com.example.task.json.responses.EmployeeDTO;
-import com.example.task.repository.HumanInUniversityRepository;
 import com.example.task.service.HumanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +17,14 @@ import java.util.stream.Collectors;
 public class EmployeeController {
 
     private HumanService humanService;
-    private HumanInUniversityRepository humanInUniversityRepository;
 
     @Autowired
-    public EmployeeController(HumanService humanService, HumanInUniversityRepository humanInUniversityRepository) {
+    public EmployeeController(HumanService humanService) {
         this.humanService = humanService;
-        this.humanInUniversityRepository = humanInUniversityRepository;
     }
 
-    @GetMapping("/employees")
-    public ResponseEntity<List<EmployeeDTO>> getEmployees(@RequestBody EmployeeFilterRequest req) {
+    @PostMapping("/employees")
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesCriteria(@RequestBody EmployeeFilterRequest req) {
 
         List<Human> peopleInUniversity = humanService.findEmployeesCriteria(req);
         if (peopleInUniversity.size() == 0) {
@@ -40,8 +37,8 @@ public class EmployeeController {
         return ResponseEntity.ok(employees);
     }
 
-    @PostMapping("/employees")
-    public ResponseEntity<?> addEmployee(@RequestBody EmployeeAddRequest req) {
+    @PostMapping("/add-employee")
+    public ResponseEntity<EmployeeDTO> addEmployeeCriteria(@RequestBody EmployeeAddRequest req) {
         try {
             humanService.addEmployeeCriteria(req);
             return ResponseEntity.status(201).build();
@@ -51,9 +48,9 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employees")
-    public ResponseEntity<?> deleteEmployee(@RequestBody EmployeeFilterRequest req) {
+    public ResponseEntity<EmployeeDTO> deleteEmployeeCriteria(@RequestBody EmployeeFilterRequest req) {
         try {
-            humanService.deleteEmployeeOrStudent(req);
+            humanService.deleteEmployeeOrStudentCriteria(req);
             return ResponseEntity.status(204).build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -61,9 +58,9 @@ public class EmployeeController {
     }
 
     @PatchMapping("/employees")
-    public ResponseEntity<?> updateEmployee(@RequestBody EmployeeFilterRequest req) {
+    public ResponseEntity<EmployeeDTO> updateEmployeeCriteria(@RequestBody EmployeeFilterRequest req) {
         try {
-            humanService.updateEmployeeOrStudent(req);
+            humanService.updateEmployeeOrStudentCriteria(req);
             return ResponseEntity.status(204).build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
