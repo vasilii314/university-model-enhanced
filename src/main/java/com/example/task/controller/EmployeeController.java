@@ -47,7 +47,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/employees")
-    public ResponseEntity<EmployeeDTO> updateEmployeeCriteria(@RequestBody EmployeeFilterRequest req) {
+    public ResponseEntity<EmployeeDTO> updateEmployeeCriteria(@RequestBody EmployeeAddRequest req) {
             humanService.updateEmployeeOrStudentCriteria(req);
             return ResponseEntity.status(204).build();
     }

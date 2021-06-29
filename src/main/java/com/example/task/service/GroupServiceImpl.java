@@ -2,6 +2,7 @@ package com.example.task.service;
 
 import com.example.task.entity.Group;
 import com.example.task.json.requests.filters.GroupFilterRequest;
+import com.example.task.json.requests.save_or_update.GroupAddRequest;
 import com.example.task.repository.default_repos.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void addGroupCriteria(GroupFilterRequest filter) {
+    public void addGroupCriteria(GroupAddRequest filter) {
         groupRepository.addGroupCriteria(filter);
     }
 
@@ -58,7 +59,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void updateGroupCriteria(GroupFilterRequest filter) {
+    public void updateGroupCriteria(GroupAddRequest filter) {
         groupRepository.updateGroupCriteria(filter);
     }
 }

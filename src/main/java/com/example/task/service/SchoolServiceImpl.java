@@ -2,6 +2,7 @@ package com.example.task.service;
 
 import com.example.task.entity.School;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
+import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.repository.default_repos.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public int updateSchoolByName(SchoolFilterRequest filter) {
+    public int updateSchoolByName(SchoolAddRequest filter) {
         return schoolRepository.updateSchoolByName(filter);
     }
 }

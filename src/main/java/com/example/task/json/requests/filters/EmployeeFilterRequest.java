@@ -1,7 +1,6 @@
 package com.example.task.json.requests.filters;
 
 import com.example.task.entity.RoleEnum;
-import com.example.task.json.updates.Updates;
 
 public class EmployeeFilterRequest {
     private String employeeFullName;
@@ -10,7 +9,6 @@ public class EmployeeFilterRequest {
     private String birthDateUpperBound;
     private String birthDateLowerBound;
     private String groupName;
-    private Updates updates;
 
     public EmployeeFilterRequest() {
     }
@@ -53,14 +51,6 @@ public class EmployeeFilterRequest {
 
     public void setBirthDateLowerBound(String birthDateLowerBound) {
         this.birthDateLowerBound = birthDateLowerBound;
-    }
-
-    public Updates getUpdates() {
-        return updates;
-    }
-
-    public void setUpdates(Updates updates) {
-        this.updates = updates;
     }
 
     public String getGroupName() {

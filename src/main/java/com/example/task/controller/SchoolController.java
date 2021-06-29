@@ -2,6 +2,7 @@ package com.example.task.controller;
 
 import com.example.task.entity.School;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
+import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.json.responses.SchoolDTO;
 import com.example.task.repository.default_repos.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class SchoolController {
     }
 
     @PostMapping("/add-school")
-    public ResponseEntity<SchoolDTO> addSchoolCriteria(@Valid @RequestBody SchoolFilterRequest req) {
+    public ResponseEntity<SchoolDTO> addSchoolCriteria(@Valid @RequestBody SchoolAddRequest req) {
         School school = new School(req.getSchoolName());
         schoolService.save(school);
         return ResponseEntity.status(201).build();
@@ -46,7 +47,7 @@ public class SchoolController {
     }
 
     @PatchMapping("/schools")
-    public ResponseEntity<SchoolDTO> updateSchoolByName(@Valid @RequestBody SchoolFilterRequest req) {
+    public ResponseEntity<SchoolDTO> updateSchoolByName(@Valid @RequestBody SchoolAddRequest req) {
         if (req.getUpdates() == null) {
             return ResponseEntity.badRequest().build();
         }

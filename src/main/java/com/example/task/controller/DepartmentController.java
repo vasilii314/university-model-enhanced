@@ -2,6 +2,7 @@ package com.example.task.controller;
 
 import com.example.task.entity.Department;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
+import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
 import com.example.task.json.responses.DepartmentDTO;
 import com.example.task.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class DepartmentController {
     }
 
     @PostMapping("/add-department")
-    public ResponseEntity<DepartmentDTO> addDepartmentCriteria(@RequestBody DepartmentFilterRequest req) {
+    public ResponseEntity<DepartmentDTO> addDepartmentCriteria(@RequestBody DepartmentAddRequest req) {
             departmentService.addDepartmentCriteria(req);
             return ResponseEntity.status(201).build();
     }
@@ -52,7 +53,7 @@ public class DepartmentController {
     }
 
     @PatchMapping("/departments")
-    public ResponseEntity<DepartmentDTO> updateDepartmentCriteria(@RequestBody DepartmentFilterRequest req) {
+    public ResponseEntity<DepartmentDTO> updateDepartmentCriteria(@RequestBody DepartmentAddRequest req) {
         try {
             departmentService.updateDepartmentCriteria(req);
             return ResponseEntity.status(204).build();

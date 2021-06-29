@@ -5,7 +5,6 @@ import com.example.task.json.updates.Updates;
 public class DepartmentFilterRequest {
     private String dptName;
     private String schoolName;
-    private Updates updates;
 
     public DepartmentFilterRequest() {
     }
@@ -24,13 +23,5 @@ public class DepartmentFilterRequest {
 
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
-    }
-
-    public Updates getUpdates() {
-        return updates;
-    }
-
-    public void setUpdates(Updates updates) {
-        this.updates = updates;
     }
 }

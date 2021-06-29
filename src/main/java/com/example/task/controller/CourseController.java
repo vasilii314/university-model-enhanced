@@ -2,6 +2,7 @@ package com.example.task.controller;
 
 import com.example.task.entity.Course;
 import com.example.task.json.requests.filters.CourseFilterRequest;
+import com.example.task.json.requests.save_or_update.CourseAddRequest;
 import com.example.task.json.responses.CourseDTO;
 import com.example.task.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CourseController {
     }
 
     @PostMapping("/add-course")
-    private ResponseEntity<CourseDTO> addCourseCriteria(@RequestBody CourseFilterRequest req) {
+    private ResponseEntity<CourseDTO> addCourseCriteria(@RequestBody CourseAddRequest req) {
             courseService.addCourseCriteria(req);
             return ResponseEntity.status(201).build();
     }
@@ -45,7 +46,7 @@ public class CourseController {
     }
 
     @PatchMapping("/courses")
-    private ResponseEntity<CourseDTO> updateCourseCriteria(@RequestBody CourseFilterRequest req) {
+    private ResponseEntity<CourseDTO> updateCourseCriteria(@RequestBody CourseAddRequest req) {
             courseService.updateCourseCriteria(req);
             return ResponseEntity.status(204).build();
     }

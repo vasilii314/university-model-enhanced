@@ -20,8 +20,6 @@ public class StudentFilterRequest {
     @Min(0)
     private int gradeLowerBound;
 
-    private Updates updates;
-
     public StudentFilterRequest() {
     }
 
@@ -103,13 +101,5 @@ public class StudentFilterRequest {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
-    }
-
-    public Updates getUpdates() {
-        return updates;
-    }
-
-    public void setUpdates(Updates updates) {
-        this.updates = updates;
     }
 }

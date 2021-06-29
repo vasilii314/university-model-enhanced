@@ -3,6 +3,7 @@ package com.example.task.repository;
 import com.example.task.entity.*;
 import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
+import com.example.task.json.requests.save_or_update.CourseAddRequest;
 import com.example.task.repository.custom.CourseRepositoryCustom;
 import com.example.task.repository.default_repos.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
 
     @Override
     @Transactional
-    public void addCourseCriteria(CourseFilterRequest filter) {
+    public void addCourseCriteria(CourseAddRequest filter) {
         DepartmentFilterRequest dptFilter = new DepartmentFilterRequest();
         dptFilter.setDptName(filter.getDptName());
         List<Department> departments = departmentRepository.findDepartmentsCriteria(dptFilter);
@@ -131,7 +132,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
 
     @Override
     @Transactional
-    public void updateCourseCriteria(CourseFilterRequest filter) {
+    public void updateCourseCriteria(CourseAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaUpdate<Course> courseCriteriaUpdate = builder.createCriteriaUpdate(Course.class);
@@ -159,7 +160,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
                     courseType = entityManager.createQuery(courseTypeCriteriaQuery).getSingleResult();
                 }
 
-                List<Course> courses = findCoursesCriteria(filter);
+                List<Course> courses = findCoursesCriteria(filter.getCourseFilter());
                 if (courses.size() == 1) {
                     Course course = courses.get(0);
                     boolean flag = false;

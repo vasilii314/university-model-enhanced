@@ -4,6 +4,7 @@ import com.example.task.criteria.SearchCriteria;
 import com.example.task.entity.School;
 import com.example.task.entity.School_;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
+import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.operations.SearchOperation;
 import com.example.task.repository.custom.SchoolRepositoryCustom;
 import com.example.task.specification.SchoolSpecification;
@@ -48,12 +49,12 @@ public class SchoolRepositoryImpl implements SchoolRepositoryCustom {
 
     @Override
     @Transactional
-    public int updateSchoolByName(SchoolFilterRequest filter) {
+    public int updateSchoolByName(SchoolAddRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaUpdate<School> criteriaUpdate = builder.createCriteriaUpdate(School.class);
         Root<School> root = criteriaUpdate.from(School.class);
         criteriaUpdate.set(School_.name, filter.getUpdates().getSchoolName());
-        criteriaUpdate.where(builder.equal(root.get(School_.name), filter.getSchoolName()));
+        criteriaUpdate.where(builder.equal(root.get(School_.name), filter.getSchoolFilter().getSchoolName()));
         return entityManager.createQuery(criteriaUpdate).executeUpdate();
     }
 }

@@ -2,6 +2,7 @@ package com.example.task.controller;
 
 import com.example.task.entity.Group;
 import com.example.task.json.requests.filters.GroupFilterRequest;
+import com.example.task.json.requests.save_or_update.GroupAddRequest;
 import com.example.task.json.responses.GroupDTO;
 import com.example.task.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class GroupController {
     }
 
     @PostMapping("/add-group")
-    public ResponseEntity<GroupDTO> addGroupCriteria(@RequestBody GroupFilterRequest req) {
+    public ResponseEntity<GroupDTO> addGroupCriteria(@RequestBody GroupAddRequest req) {
             groupService.addGroupCriteria(req);
             return ResponseEntity.status(201).build();
     }
@@ -41,7 +42,7 @@ public class GroupController {
     }
 
     @PatchMapping("/groups")
-    public ResponseEntity<GroupDTO> updateGroupCriteria(@RequestBody GroupFilterRequest req) {
+    public ResponseEntity<GroupDTO> updateGroupCriteria(@RequestBody GroupAddRequest req) {
             groupService.updateGroupCriteria(req);
             return ResponseEntity.status(204).build();
     }

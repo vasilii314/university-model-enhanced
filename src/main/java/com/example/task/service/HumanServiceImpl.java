@@ -4,6 +4,7 @@ import com.example.task.entity.*;
 import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
+import com.example.task.json.requests.save_or_update.StudentAddRequest;
 import com.example.task.json.responses.StudentGradeDTO;
 import com.example.task.repository.default_repos.HumanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class HumanServiceImpl implements HumanService {
     }
 
     @Override
-    public void addStudentCriteria(StudentFilterRequest filter) {
+    public void addStudentCriteria(StudentAddRequest filter) {
         humanRepository.addStudentCriteria(filter);
     }
 
@@ -61,7 +62,7 @@ public class HumanServiceImpl implements HumanService {
     }
 
     @Override
-    public void addStudentGradeCriteria(StudentFilterRequest filter) {
+    public void addStudentGradeCriteria(StudentAddRequest filter) {
         humanRepository.addStudentGradeCriteria(filter);
     }
 
@@ -81,7 +82,7 @@ public class HumanServiceImpl implements HumanService {
     }
 
     @Override
-    public void updateEmployeeOrStudentCriteria(EmployeeFilterRequest filter) {
+    public void updateEmployeeOrStudentCriteria(EmployeeAddRequest filter) {
         humanRepository.updateEmployeeOrStudentCriteria(filter);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.task.json.requests.save_or_update;
 
 import com.example.task.entity.RoleEnum;
+import com.example.task.json.requests.filters.EmployeeFilterRequest;
+import com.example.task.json.updates.Updates;
 
 public class EmployeeAddRequest {
     private String employeeFullName;
@@ -8,6 +10,8 @@ public class EmployeeAddRequest {
     private String birthDate;
     private String dptName;
     private String schoolName;
+    private Updates updates;
+    private EmployeeFilterRequest employeeFilter;
 
     public EmployeeAddRequest() {
     }
@@ -50,5 +54,21 @@ public class EmployeeAddRequest {
 
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
+    }
+
+    public Updates getUpdates() {
+        return updates;
+    }
+
+    public void setUpdates(Updates updates) {
+        this.updates = updates;
+    }
+
+    public EmployeeFilterRequest getEmployeeFilter() {
+        return employeeFilter;
+    }
+
+    public void setEmployeeFilter(EmployeeFilterRequest employeeFilter) {
+        this.employeeFilter = employeeFilter;
     }
 }

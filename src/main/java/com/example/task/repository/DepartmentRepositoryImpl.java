@@ -5,6 +5,7 @@ import com.example.task.entity.Department_;
 import com.example.task.entity.School;
 import com.example.task.entity.School_;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
+import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
 import com.example.task.repository.custom.DepartmentRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,7 +47,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
 
     @Override
     @Transactional
-    public void addDepartmentCriteria(DepartmentFilterRequest filter) {
+    public void addDepartmentCriteria(DepartmentAddRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<School> schoolCriteriaQuery = builder.createQuery(School.class);
         Root<School> schoolRoot = schoolCriteriaQuery.from(School.class);
@@ -102,22 +103,22 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
 
     @Override
     @Transactional
-    public void updateDepartmentCriteria(DepartmentFilterRequest filter) {
+    public void updateDepartmentCriteria(DepartmentAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaUpdate<Department> departmentCriteriaUpdate = builder.createCriteriaUpdate(Department.class);
             Root<Department> departmentRoot = departmentCriteriaUpdate.from(Department.class);
             Predicate dptNameRestriction;
             Predicate schoolNameRestriction;
-            if (filter.getDptName() != null) {
-                dptNameRestriction = builder.equal(departmentRoot.get(Department_.name), filter.getDptName());
+            if (filter.getDepartmentFilter().getDptName() != null) {
+                dptNameRestriction = builder.equal(departmentRoot.get(Department_.name), filter.getDepartmentFilter().getDptName());
                 Join<Department, School> joinSchoolToDepartment;
-                if (filter.getSchoolName() != null) {
+                if (filter.getDepartmentFilter().getSchoolName() != null) {
                     Subquery<Department> subquery = departmentCriteriaUpdate.subquery(Department.class);
                     Root<Department> departmentRoot2 = subquery.from(Department.class);
                     subquery.select(departmentRoot2);
                     joinSchoolToDepartment = departmentRoot2.join(Department_.school);
-                    schoolNameRestriction = builder.equal(joinSchoolToDepartment.get(School_.name), filter.getSchoolName());
+                    schoolNameRestriction = builder.equal(joinSchoolToDepartment.get(School_.name), filter.getDepartmentFilter().getSchoolName());
                     subquery.where(builder.and(dptNameRestriction, schoolNameRestriction));
                     departmentCriteriaUpdate.where(departmentRoot.in(subquery));
                 }

@@ -4,6 +4,7 @@ import com.example.task.entity.*;
 import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
+import com.example.task.json.requests.save_or_update.StudentAddRequest;
 import com.example.task.json.responses.StudentGradeDTO;
 import com.example.task.repository.custom.HumanRepositoryCustom;
 import com.example.task.repository.default_repos.HumanInUniversityRepository;
@@ -147,7 +148,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     }
 
     @Override
-    public void updateEmployeeOrStudentCriteria(EmployeeFilterRequest filter) {
+    public void updateEmployeeOrStudentCriteria(EmployeeAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Human> humanCriteriaQuery= builder.createQuery(Human.class);
@@ -196,14 +197,14 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
             Predicate humanDptRestriction =  filter.getDptName() != null ?
                     builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%" + filter.getDptName() + "%") :
                     builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%");
-            Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
-                    builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateUpperBound())) :
+            Predicate birthDateUpperBound = filter.getEmployeeFilter().getBirthDateUpperBound() != null ?
+                    builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getEmployeeFilter().getBirthDateUpperBound())) :
                     builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.now());
-            Predicate birthDateLowerBound = filter.getBirthDateLowerBound() != null ?
-                    builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateLowerBound())) :
+            Predicate birthDateLowerBound = filter.getEmployeeFilter().getBirthDateLowerBound() != null ?
+                    builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getEmployeeFilter().getBirthDateLowerBound())) :
                     builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
-            Predicate groupNameRestriction = filter.getGroupName() != null ?
-                    builder.like(joinGroupToDepartment.get(Group_.name), "%" + filter.getGroupName() + "%") :
+            Predicate groupNameRestriction = filter.getEmployeeFilter().getGroupName() != null ?
+                    builder.like(joinGroupToDepartment.get(Group_.name), "%" + filter.getEmployeeFilter().getGroupName() + "%") :
                     builder.like(joinGroupToDepartment.get(Group_.name), "%");
 
             humanCriteriaQuery.where(builder.and(fullNameRestriction,
@@ -272,7 +273,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     }
 
     @Override
-    public void addStudentCriteria(StudentFilterRequest filter) {
+    public void addStudentCriteria(StudentAddRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
         CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class);
@@ -290,9 +291,9 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
         criteriaQuery.multiselect(dptRoot, schoolRoot, groupRoot).distinct(true);
         criteriaQuery.where(
                 builder.and(
-                        builder.equal(dptRoot.get(Department_.name), filter.getDptName()),
-                        builder.equal(schoolRoot.get(School_.name), filter.getSchoolName()),
-                        builder.equal(groupRoot.get(Group_.name), filter.getGroupName())
+                        builder.equal(dptRoot.get(Department_.name), filter.getStudentFilter().getDptName()),
+                        builder.equal(schoolRoot.get(School_.name), filter.getStudentFilter().getSchoolName()),
+                        builder.equal(groupRoot.get(Group_.name), filter.getStudentFilter().getGroupName())
                 ));
         Tuple schoolDepartment = entityManager.createQuery(criteriaQuery).getSingleResult();
 
@@ -362,7 +363,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     }
 
     @Override
-    public void addStudentGradeCriteria(StudentFilterRequest filter) {
+    public void addStudentGradeCriteria(StudentAddRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
         CriteriaQuery<Course> courseCriteriaQuery = builder.createQuery(Course.class);
@@ -374,14 +375,14 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
         Join<HumanInUniversity, Human> joinHumanToHumanInUniversity = joinHumanInUniversityToStudentsInGroups.join(HumanInUniversity_.human);
 
 
-        Predicate courseNameRestriction = filter.getCourseName() != null ?
-                builder.like(courseRoot.get(Course_.name), "%" + filter.getCourseName() + "%") :
+        Predicate courseNameRestriction = filter.getStudentFilter().getCourseName() != null ?
+                builder.like(courseRoot.get(Course_.name), "%" + filter.getStudentFilter().getCourseName() + "%") :
                 builder.like(courseRoot.get(Course_.name), "%");
-        Predicate fullNameRestriction = filter.getStudentFullName() != null ?
-                builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
+        Predicate fullNameRestriction = filter.getStudentFilter().getStudentFullName() != null ?
+                builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%" + filter.getStudentFilter().getStudentFullName() + "%") :
                 builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%");
-        Predicate groupNameRestriction = filter.getGroupName() != null ?
-                builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%" + filter.getGroupName() + "%") :
+        Predicate groupNameRestriction = filter.getStudentFilter().getGroupName() != null ?
+                builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%" + filter.getStudentFilter().getGroupName() + "%") :
                 builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%");
 
         courseCriteriaQuery.select(courseRoot).where(courseNameRestriction).distinct(true);

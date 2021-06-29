@@ -3,6 +3,8 @@ package com.example.task.controller;
 import com.example.task.entity.Human;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
+import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
+import com.example.task.json.requests.save_or_update.StudentAddRequest;
 import com.example.task.json.responses.StudentDTO;
 import com.example.task.service.HumanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class StudentController {
     }
 
     @PostMapping("/add-student")
-    public ResponseEntity<StudentDTO> addStudentCriteria(@RequestBody @Valid StudentFilterRequest req) {
+    public ResponseEntity<StudentDTO> addStudentCriteria(@RequestBody @Valid StudentAddRequest req) {
             humanService.addStudentCriteria(req);
             return ResponseEntity.status(201).build();
     }
@@ -48,7 +50,7 @@ public class StudentController {
     }
 
     @PatchMapping("/students")
-    public ResponseEntity<StudentDTO> updateStudentCriteria(@RequestBody @Valid EmployeeFilterRequest req) {
+    public ResponseEntity<StudentDTO> updateStudentCriteria(@RequestBody @Valid EmployeeAddRequest req) {
             humanService.updateEmployeeOrStudentCriteria(req);
             return ResponseEntity.status(204).build();
     }

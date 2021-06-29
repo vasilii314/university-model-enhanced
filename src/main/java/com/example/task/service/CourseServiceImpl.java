@@ -2,6 +2,7 @@ package com.example.task.service;
 
 import com.example.task.entity.*;
 import com.example.task.json.requests.filters.CourseFilterRequest;
+import com.example.task.json.requests.save_or_update.CourseAddRequest;
 import com.example.task.repository.default_repos.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void addCourseCriteria(CourseFilterRequest filter) {
+    public void addCourseCriteria(CourseAddRequest filter) {
         courseRepository.addCourseCriteria(filter);
     }
 
@@ -36,7 +37,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void updateCourseCriteria(CourseFilterRequest filter) {
+    public void updateCourseCriteria(CourseAddRequest filter) {
         courseRepository.updateCourseCriteria(filter);
     }
 

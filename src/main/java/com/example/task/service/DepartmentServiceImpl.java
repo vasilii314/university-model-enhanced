@@ -2,6 +2,7 @@ package com.example.task.service;
 
 import com.example.task.entity.Department;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
+import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
 import com.example.task.repository.default_repos.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void addDepartmentCriteria(DepartmentFilterRequest filter) {
+    public void addDepartmentCriteria(DepartmentAddRequest filter) {
         departmentRepository.addDepartmentCriteria(filter);
     }
 
@@ -59,7 +60,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void updateDepartmentCriteria(DepartmentFilterRequest filter) {
+    public void updateDepartmentCriteria(DepartmentAddRequest filter) {
         departmentRepository.updateDepartmentCriteria(filter);
     }
 }

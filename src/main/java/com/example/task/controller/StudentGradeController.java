@@ -1,6 +1,7 @@
 package com.example.task.controller;
 
 import com.example.task.json.requests.filters.StudentFilterRequest;
+import com.example.task.json.requests.save_or_update.StudentAddRequest;
 import com.example.task.json.responses.StudentGradeDTO;
 import com.example.task.service.HumanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class StudentGradeController {
     }
 
     @PostMapping("/add-grade")
-    public ResponseEntity<StudentGradeDTO> addGradeCriteria(@RequestBody @Valid StudentFilterRequest req) {
+    public ResponseEntity<StudentGradeDTO> addGradeCriteria(@RequestBody @Valid StudentAddRequest req) {
             humanService.addStudentGradeCriteria(req);
             return ResponseEntity.status(201).build();
     }

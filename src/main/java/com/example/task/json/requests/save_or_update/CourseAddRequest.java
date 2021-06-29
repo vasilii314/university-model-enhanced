@@ -1,15 +1,18 @@
-package com.example.task.json.requests.filters;
+package com.example.task.json.requests.save_or_update;
 
 import com.example.task.entity.CourseTypeEnum;
+import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.updates.Updates;
 
 import javax.validation.constraints.Positive;
 
-public class CourseFilterRequest {
+public class CourseAddRequest {
     private String courseName;
     private String groupName;
     private String dptName;
     private CourseTypeEnum courseType;
+    private CourseFilterRequest courseFilter;
+    private Updates updates;
 
     @Positive
     private Integer durationUpperBound;
@@ -20,7 +23,7 @@ public class CourseFilterRequest {
     @Positive
     private Integer duration;
 
-    public CourseFilterRequest() {
+    public CourseAddRequest() {
     }
 
     public String getCourseName() {
@@ -55,6 +58,14 @@ public class CourseFilterRequest {
         this.courseType = courseType;
     }
 
+    public Updates getUpdates() {
+        return updates;
+    }
+
+    public void setUpdates(Updates updates) {
+        this.updates = updates;
+    }
+
     public Integer getDurationUpperBound() {
         return durationUpperBound;
     }
@@ -77,5 +88,13 @@ public class CourseFilterRequest {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public CourseFilterRequest getCourseFilter() {
+        return courseFilter;
+    }
+
+    public void setCourseFilter(CourseFilterRequest courseFilter) {
+        this.courseFilter = courseFilter;
     }
 }
