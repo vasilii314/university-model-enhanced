@@ -43,22 +43,13 @@ public class DepartmentController {
 
     @DeleteMapping("/departments")
     public ResponseEntity<DepartmentDTO> deleteDepartmentCriteria(@RequestBody DepartmentFilterRequest req) {
-        try {
             departmentService.deleteDepartmentCriteria(req);
             return ResponseEntity.status(204).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @PatchMapping("/departments")
     public ResponseEntity<DepartmentDTO> updateDepartmentCriteria(@RequestBody DepartmentAddRequest req) {
-        try {
             departmentService.updateDepartmentCriteria(req);
             return ResponseEntity.status(204).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 }

@@ -1,7 +1,5 @@
 package com.example.task.json.requests.filters;
 
-import com.example.task.json.updates.Updates;
-
 import javax.validation.constraints.Min;
 
 public class StudentFilterRequest {

@@ -1,6 +1,8 @@
 package com.example.task.service;
 
 import com.example.task.entity.School;
+import com.example.task.exception.custom.DeleteOrUpdateException;
+import com.example.task.exception.custom.SchoolNotFoundException;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.repository.default_repos.SchoolRepository;
@@ -45,16 +47,28 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public List<School> findSchoolsByName(SchoolFilterRequest filter) {
-        return schoolRepository.findSchoolsByName(filter);
+       List<School> schools = schoolRepository.findSchoolsByName(filter);
+       if (schools.size() == 0) {
+           throw new SchoolNotFoundException();
+       }
+       return schools;
     }
 
     @Override
     public int deleteSchoolByName(SchoolFilterRequest filter) {
-        return schoolRepository.deleteSchoolByName(filter);
+        int status = schoolRepository.deleteSchoolByName(filter);
+        if (status == 0) {
+            throw new DeleteOrUpdateException();
+        }
+        return status;
     }
 
     @Override
     public int updateSchoolByName(SchoolAddRequest filter) {
-        return schoolRepository.updateSchoolByName(filter);
+        int status = schoolRepository.updateSchoolByName(filter);
+        if (status == 0) {
+            throw new DeleteOrUpdateException();
+        }
+        return status;
     }
 }

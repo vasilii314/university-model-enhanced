@@ -1,6 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.Group;
+import com.example.task.exception.custom.GroupNotFoundException;
 import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.requests.save_or_update.GroupAddRequest;
 import com.example.task.repository.default_repos.GroupRepository;
@@ -45,7 +46,11 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<Group> findGroupsCriteria(GroupFilterRequest filter) {
-        return groupRepository.findGroupsCriteria(filter);
+        List<Group> groups = groupRepository.findGroupsCriteria(filter);
+        if (groups.size() == 0) {
+            throw new GroupNotFoundException();
+        }
+        return groups;
     }
 
     @Override

@@ -1,6 +1,10 @@
 package com.example.task.repository;
 
 import com.example.task.entity.*;
+import com.example.task.exception.custom.CourseNotFoundException;
+import com.example.task.exception.custom.CourseTypeNotFoundException;
+import com.example.task.exception.custom.DeleteOrUpdateException;
+import com.example.task.exception.custom.InternalException;
 import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.CourseAddRequest;
@@ -12,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.*;
 import java.util.List;
 
@@ -82,7 +87,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
                 Course course = new Course(filter.getCourseName(), filter.getDuration(), courseType, departments.get(0));
                 entityManager.persist(course);
             } catch (NoResultException e) {
-                throw new RuntimeException("No result");
+                throw new CourseTypeNotFoundException();
             }
         }
     }
@@ -125,8 +130,10 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
             );
             courseCriteriaDelete.where(courseRoot.in(subquery));
             entityManager.createQuery(courseCriteriaDelete).executeUpdate();
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to process the request");
+            throw new DeleteOrUpdateException();
         }
     }
 
@@ -185,8 +192,10 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
                     }
                 }
             }
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to process the request");
+            throw new DeleteOrUpdateException();
         }
     }
 }

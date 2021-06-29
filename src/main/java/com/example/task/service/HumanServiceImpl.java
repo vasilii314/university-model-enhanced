@@ -1,6 +1,9 @@
 package com.example.task.service;
 
 import com.example.task.entity.*;
+import com.example.task.exception.custom.EmployeeNotFoundException;
+import com.example.task.exception.custom.StudentGradeNotFoundException;
+import com.example.task.exception.custom.StudentNotFoundException;
 import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
@@ -48,7 +51,11 @@ public class HumanServiceImpl implements HumanService {
 
     @Override
     public List<Human> findStudentsCriteria(StudentFilterRequest filter) {
-        return humanRepository.findStudentsCriteria(filter);
+        List<Human> students = humanRepository.findStudentsCriteria(filter);
+        if (students.size() == 0) {
+            throw new StudentNotFoundException();
+        }
+        return students;
     }
 
     @Override
@@ -58,7 +65,11 @@ public class HumanServiceImpl implements HumanService {
 
     @Override
     public List<StudentGradeDTO> getStudentGradesCriteria(StudentFilterRequest filter) {
-        return humanRepository.getStudentGradesCriteria(filter);
+        List<StudentGradeDTO> studentGrades = humanRepository.getStudentGradesCriteria(filter);
+        if (studentGrades.size() == 0) {
+            throw new StudentGradeNotFoundException();
+        }
+        return studentGrades;
     }
 
     @Override
@@ -68,7 +79,11 @@ public class HumanServiceImpl implements HumanService {
 
     @Override
     public List<Human> findEmployeesCriteria(EmployeeFilterRequest filter) {
-        return humanRepository.findEmployeesCriteria(filter);
+        List<Human> employees = humanRepository.findEmployeesCriteria(filter);
+        if (employees.size() == 0) {
+            throw new EmployeeNotFoundException();
+        }
+        return employees;
     }
 
     @Override

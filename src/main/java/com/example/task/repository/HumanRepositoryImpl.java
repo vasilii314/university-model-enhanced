@@ -1,6 +1,7 @@
 package com.example.task.repository;
 
 import com.example.task.entity.*;
+import com.example.task.exception.custom.InternalException;
 import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.*;
 import java.time.LocalDate;
@@ -94,6 +96,8 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
             employee.setRole(role);
             employee.setDepartment(schoolDepartment.get(dptRoot));
             humanInUniversityRepository.save(employee);
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Save failed");
@@ -141,6 +145,8 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                     birthDateLowerBound));
             criteriaDelete.where(humanRoot.in(subquery));
             entityManager.createQuery(criteriaDelete).executeUpdate();
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Delete failed");
@@ -235,6 +241,8 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                     humanInUniversityRepository.save(occupation);
                 }
             }
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Update Failed");
@@ -243,123 +251,135 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
 
     @Override
     public List<Human> findStudentsCriteria(StudentFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Human> criteriaQuery = builder.createQuery(Human.class);
-        Root<Human> humanRoot = criteriaQuery.from(Human.class);
-        Root<Role> roleRoot = criteriaQuery.from(Role.class);
-        Join<Human, HumanInUniversity> joinHumanInUniversityToHuman = humanRoot.join(Human_.occupations);
-        Join<HumanInUniversity, Role> joinRoleToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.role);
-        Join<HumanInUniversity, Department> joinDepartmentToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.department);
-        Predicate fullNameRestriction = filter.getStudentFullName() != null ?
-                builder.like(humanRoot.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
-                builder.like(humanRoot.get(Human_.fullName), "%");
-        Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
-                builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateUpperBound())) :
-                builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.now());
-        Predicate birthDateLowerBound = filter.getBirthDateLowerBound() != null ?
-                builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateLowerBound())) :
-                builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
-        Predicate roleRestriction = builder.equal(roleRoot.get(Role_.roleDescription), RoleEnum.STUDENT);
-        Predicate humanDptRestriction =  filter.getDptName() != null ?
-                builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%" + filter.getDptName() + "%") :
-                builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%");
-        criteriaQuery.select(humanRoot).distinct(true);
-        criteriaQuery.where(builder.and(fullNameRestriction,
-                birthDateLowerBound,
-                birthDateUpperBound,
-                roleRestriction,
-                humanDptRestriction));
-        return entityManager.createQuery(criteriaQuery).getResultList();
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Human> criteriaQuery = builder.createQuery(Human.class);
+            Root<Human> humanRoot = criteriaQuery.from(Human.class);
+            Root<Role> roleRoot = criteriaQuery.from(Role.class);
+            Join<Human, HumanInUniversity> joinHumanInUniversityToHuman = humanRoot.join(Human_.occupations);
+            Join<HumanInUniversity, Role> joinRoleToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.role);
+            Join<HumanInUniversity, Department> joinDepartmentToHumanInUniversity = joinHumanInUniversityToHuman.join(HumanInUniversity_.department);
+            Predicate fullNameRestriction = filter.getStudentFullName() != null ?
+                    builder.like(humanRoot.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
+                    builder.like(humanRoot.get(Human_.fullName), "%");
+            Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
+                    builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateUpperBound())) :
+                    builder.lessThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.now());
+            Predicate birthDateLowerBound = filter.getBirthDateLowerBound() != null ?
+                    builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateLowerBound())) :
+                    builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
+            Predicate roleRestriction = builder.equal(roleRoot.get(Role_.roleDescription), RoleEnum.STUDENT);
+            Predicate humanDptRestriction =  filter.getDptName() != null ?
+                    builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%" + filter.getDptName() + "%") :
+                    builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%");
+            criteriaQuery.select(humanRoot).distinct(true);
+            criteriaQuery.where(builder.and(fullNameRestriction,
+                    birthDateLowerBound,
+                    birthDateUpperBound,
+                    roleRestriction,
+                    humanDptRestriction));
+            return entityManager.createQuery(criteriaQuery).getResultList();
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
+        }
     }
 
     @Override
     public void addStudentCriteria(StudentAddRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
-        CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class);
-        Root<Department> dptRoot = criteriaQuery.from(Department.class);
-        Root<School> schoolRoot = criteriaQuery.from(School.class);
-        Root<Role> roleRoot = roleCriteriaQuery.from(Role.class);
-        Root<Group> groupRoot = criteriaQuery.from(Group.class);
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
+            CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class);
+            Root<Department> dptRoot = criteriaQuery.from(Department.class);
+            Root<School> schoolRoot = criteriaQuery.from(School.class);
+            Root<Role> roleRoot = roleCriteriaQuery.from(Role.class);
+            Root<Group> groupRoot = criteriaQuery.from(Group.class);
 
-        roleCriteriaQuery.select(roleRoot);
-        roleCriteriaQuery.where(builder.equal(roleRoot.get(Role_.roleDescription), RoleEnum.STUDENT));
-        Role role = entityManager.createQuery(roleCriteriaQuery).getSingleResult();
+            roleCriteriaQuery.select(roleRoot);
+            roleCriteriaQuery.where(builder.equal(roleRoot.get(Role_.roleDescription), RoleEnum.STUDENT));
+            Role role = entityManager.createQuery(roleCriteriaQuery).getSingleResult();
 
-        Join<Department, School> joinSchoolToDepartment = dptRoot.join(Department_.school, JoinType.INNER);
-        Join<Department, Group> joinGroupToDepartment = dptRoot.join(Department_.groups);
-        criteriaQuery.multiselect(dptRoot, schoolRoot, groupRoot).distinct(true);
-        criteriaQuery.where(
-                builder.and(
-                        builder.equal(dptRoot.get(Department_.name), filter.getStudentFilter().getDptName()),
-                        builder.equal(schoolRoot.get(School_.name), filter.getStudentFilter().getSchoolName()),
-                        builder.equal(groupRoot.get(Group_.name), filter.getStudentFilter().getGroupName())
-                ));
-        Tuple schoolDepartment = entityManager.createQuery(criteriaQuery).getSingleResult();
+            Join<Department, School> joinSchoolToDepartment = dptRoot.join(Department_.school, JoinType.INNER);
+            Join<Department, Group> joinGroupToDepartment = dptRoot.join(Department_.groups);
+            criteriaQuery.multiselect(dptRoot, schoolRoot, groupRoot).distinct(true);
+            criteriaQuery.where(
+                    builder.and(
+                            builder.equal(dptRoot.get(Department_.name), filter.getStudentFilter().getDptName()),
+                            builder.equal(schoolRoot.get(School_.name), filter.getStudentFilter().getSchoolName()),
+                            builder.equal(groupRoot.get(Group_.name), filter.getStudentFilter().getGroupName())
+                    ));
+            Tuple schoolDepartment = entityManager.createQuery(criteriaQuery).getSingleResult();
 
-        Human human = new Human();
-        human.setFullName(filter.getStudentFullName());
-        human.setBirthDate(LocalDate.parse(filter.getBirthDate()));
-        HumanInUniversity employee = new HumanInUniversity();
-        employee.setHuman(human);
-        employee.setRole(role);
-        employee.setDepartment(schoolDepartment.get(dptRoot));
-        StudentsInGroups student = new StudentsInGroups();
-        student.setStudent(employee);
-        student.setGroup(schoolDepartment.get(groupRoot));
-        studentInGroupRepository.save(student);
+            Human human = new Human();
+            human.setFullName(filter.getStudentFullName());
+            human.setBirthDate(LocalDate.parse(filter.getBirthDate()));
+            HumanInUniversity employee = new HumanInUniversity();
+            employee.setHuman(human);
+            employee.setRole(role);
+            employee.setDepartment(schoolDepartment.get(dptRoot));
+            StudentsInGroups student = new StudentsInGroups();
+            student.setStudent(employee);
+            student.setGroup(schoolDepartment.get(groupRoot));
+            studentInGroupRepository.save(student);
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
+        }
     }
 
     @Override
     public List<StudentGradeDTO> getStudentGradesCriteria(StudentFilterRequest filter) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
-        Root<StudentGrade> studentGradeRoot = criteriaQuery.from(StudentGrade.class);
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
+            Root<StudentGrade> studentGradeRoot = criteriaQuery.from(StudentGrade.class);
 
-        Join<StudentGrade, Course> joinCourseToStudentGrade = studentGradeRoot.join(StudentGrade_.course);
-        Join<StudentGrade, StudentsInGroups> joinStudentsInGroupsToStudentGrade = studentGradeRoot.join(StudentGrade_.student);
-        Join<StudentsInGroups, Group> joinGroupToStudentsInGroups = joinStudentsInGroupsToStudentGrade.join(StudentsInGroups_.group);
-        Join<StudentsInGroups, HumanInUniversity> joinHumanInUniversityToStudentsInGroups = joinStudentsInGroupsToStudentGrade.join(StudentsInGroups_.student);
-        Join<HumanInUniversity, Human> joinHumanToHumanInUniversity = joinHumanInUniversityToStudentsInGroups.join(HumanInUniversity_.human);
-        Join<Course, Department> joinDepartmentToCourse = joinCourseToStudentGrade.join(Course_.department);
-        Predicate courseNameRestriction = filter.getCourseName() != null ?
-                builder.like(joinCourseToStudentGrade.get(Course_.name), "%" + filter.getCourseName() + "%") :
-                builder.like(joinCourseToStudentGrade.get(Course_.name), "%");
-        Predicate fullNameRestriction = filter.getStudentFullName() != null ?
-                builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
-                builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%");
-        Predicate groupNameRestriction = filter.getGroupName() != null ?
-                builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%" + filter.getGroupName() + "%") :
-                builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%");
-        Predicate gradeLowerBound = filter.getGradeLowerBound() != 0 ?
-                builder.greaterThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), filter.getGradeLowerBound()) :
-                builder.greaterThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), 2);
-        Predicate gradeUpperBound = filter.getGradeUpperBound() != 0 ?
-                builder.lessThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), filter.getGradeUpperBound()) :
-                builder.lessThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), 5);
-        Predicate studentDptRestriction =  filter.getDptName() != null ?
-                builder.like(joinDepartmentToCourse.get(Department_.name), "%" + filter.getDptName() + "%") :
-                builder.like(joinDepartmentToCourse.get(Department_.name), "%");
+            Join<StudentGrade, Course> joinCourseToStudentGrade = studentGradeRoot.join(StudentGrade_.course);
+            Join<StudentGrade, StudentsInGroups> joinStudentsInGroupsToStudentGrade = studentGradeRoot.join(StudentGrade_.student);
+            Join<StudentsInGroups, Group> joinGroupToStudentsInGroups = joinStudentsInGroupsToStudentGrade.join(StudentsInGroups_.group);
+            Join<StudentsInGroups, HumanInUniversity> joinHumanInUniversityToStudentsInGroups = joinStudentsInGroupsToStudentGrade.join(StudentsInGroups_.student);
+            Join<HumanInUniversity, Human> joinHumanToHumanInUniversity = joinHumanInUniversityToStudentsInGroups.join(HumanInUniversity_.human);
+            Join<Course, Department> joinDepartmentToCourse = joinCourseToStudentGrade.join(Course_.department);
+            Predicate courseNameRestriction = filter.getCourseName() != null ?
+                    builder.like(joinCourseToStudentGrade.get(Course_.name), "%" + filter.getCourseName() + "%") :
+                    builder.like(joinCourseToStudentGrade.get(Course_.name), "%");
+            Predicate fullNameRestriction = filter.getStudentFullName() != null ?
+                    builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%" + filter.getStudentFullName() + "%") :
+                    builder.like(joinHumanToHumanInUniversity.get(Human_.fullName), "%");
+            Predicate groupNameRestriction = filter.getGroupName() != null ?
+                    builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%" + filter.getGroupName() + "%") :
+                    builder.like(joinGroupToStudentsInGroups.get(Group_.name), "%");
+            Predicate gradeLowerBound = filter.getGradeLowerBound() != 0 ?
+                    builder.greaterThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), filter.getGradeLowerBound()) :
+                    builder.greaterThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), 2);
+            Predicate gradeUpperBound = filter.getGradeUpperBound() != 0 ?
+                    builder.lessThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), filter.getGradeUpperBound()) :
+                    builder.lessThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), 5);
+            Predicate studentDptRestriction =  filter.getDptName() != null ?
+                    builder.like(joinDepartmentToCourse.get(Department_.name), "%" + filter.getDptName() + "%") :
+                    builder.like(joinDepartmentToCourse.get(Department_.name), "%");
 
 
-        Path<String> studentFullNamePath = joinHumanToHumanInUniversity.get(Human_.fullName);
-        Path<String> courseNamePath = joinCourseToStudentGrade.get(Course_.name);
+            Path<String> studentFullNamePath = joinHumanToHumanInUniversity.get(Human_.fullName);
+            Path<String> courseNamePath = joinCourseToStudentGrade.get(Course_.name);
 
-        criteriaQuery.multiselect(studentFullNamePath, courseNamePath, studentGradeRoot).where(builder.and(courseNameRestriction,
-                groupNameRestriction,
-                fullNameRestriction,
-                gradeLowerBound,
-                gradeUpperBound,
-                studentDptRestriction)).distinct(true);
+            criteriaQuery.multiselect(studentFullNamePath, courseNamePath, studentGradeRoot).where(builder.and(courseNameRestriction,
+                    groupNameRestriction,
+                    fullNameRestriction,
+                    gradeLowerBound,
+                    gradeUpperBound,
+                    studentDptRestriction)).distinct(true);
 
-        List<Tuple> gradesRaw = entityManager.createQuery(criteriaQuery).getResultList();
-        List<StudentGradeDTO> grades = gradesRaw
-                .stream()
-                .map(gradeRaw -> new StudentGradeDTO(gradeRaw.get(studentGradeRoot).getId(), gradeRaw.get(studentGradeRoot).getGrade(),
-                        gradeRaw.get(studentFullNamePath),
-                        gradeRaw.get(courseNamePath))).collect(Collectors.toList());
+            List<Tuple> gradesRaw = entityManager.createQuery(criteriaQuery).getResultList();
+            List<StudentGradeDTO> grades = gradesRaw
+                    .stream()
+                    .map(gradeRaw -> new StudentGradeDTO(gradeRaw.get(studentGradeRoot).getId(), gradeRaw.get(studentGradeRoot).getGrade(),
+                            gradeRaw.get(studentFullNamePath),
+                            gradeRaw.get(courseNamePath))).collect(Collectors.toList());
 
-        return grades;
+            return grades;
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
+        }
     }
 
     @Override
@@ -401,6 +421,8 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
             grade.setStudent(tuple.get(studentsInGroupsRoot));
             grade.setCourse(course);
             studentGradesRepository.save(grade);
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (NoResultException e) {
             System.out.println("404 - Not Found");
         }

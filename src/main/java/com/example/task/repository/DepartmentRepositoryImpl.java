@@ -4,6 +4,9 @@ import com.example.task.entity.Department;
 import com.example.task.entity.Department_;
 import com.example.task.entity.School;
 import com.example.task.entity.School_;
+import com.example.task.exception.custom.DeleteOrUpdateException;
+import com.example.task.exception.custom.InternalException;
+import com.example.task.exception.custom.SchoolNotFoundException;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
 import com.example.task.repository.custom.DepartmentRepositoryCustom;
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.*;
 import java.util.List;
 
@@ -64,6 +69,10 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
                     entityManager.persist(department);
                 }
             }
+        } catch (NoResultException e) {
+            throw new SchoolNotFoundException();
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
             throw new RuntimeException("Save failed");
         }
@@ -95,9 +104,11 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
                 departmentCriteriaDelete.where(dptNameRestriction);
                 entityManager.createQuery(departmentCriteriaDelete).executeUpdate();
             }
+        }  catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Delete failed");
+            throw new DeleteOrUpdateException();
         }
     }
 
@@ -139,8 +150,10 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
                     entityManager.createQuery(departmentCriteriaUpdate).executeUpdate();
                 }
             }
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
-            throw new RuntimeException("Update Failed");
+            throw new DeleteOrUpdateException();
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.*;
+import com.example.task.exception.custom.CourseNotFoundException;
 import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.requests.save_or_update.CourseAddRequest;
 import com.example.task.repository.default_repos.CourseRepository;
@@ -23,7 +24,11 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> findCoursesCriteria(CourseFilterRequest filter) {
-        return courseRepository.findCoursesCriteria(filter);
+        List<Course> courses = courseRepository.findCoursesCriteria(filter);
+        if (courses.size() == 0) {
+            throw new CourseNotFoundException(filter);
+        }
+        return courses;
     }
 
     @Override

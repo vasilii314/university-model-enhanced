@@ -1,7 +1,5 @@
 package com.example.task.json.requests.filters;
 
-import com.example.task.json.updates.Updates;
-
 public class GroupFilterRequest {
     private String groupName;
     private String dptName;

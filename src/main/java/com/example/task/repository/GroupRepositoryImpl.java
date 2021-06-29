@@ -4,6 +4,7 @@ import com.example.task.entity.Department;
 import com.example.task.entity.Department_;
 import com.example.task.entity.Group;
 import com.example.task.entity.Group_;
+import com.example.task.exception.custom.InternalException;
 import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.requests.save_or_update.GroupAddRequest;
 import com.example.task.repository.custom.GroupRepositoryCustom;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.*;
 import java.util.List;
 
@@ -64,6 +66,8 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
                     entityManager.persist(group);
                 }
             }
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Save failed");
@@ -96,6 +100,8 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
                 groupCriteriaDelete.where(groupNameRestriction);
                 entityManager.createQuery(groupCriteriaDelete).executeUpdate();
             }
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Delete failed");
@@ -140,6 +146,8 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
                     entityManager.createQuery(groupCriteriaUpdate).executeUpdate();
                 }
             }
+        } catch (NonUniqueResultException e) {
+            throw new InternalException();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Update failed");

@@ -41,12 +41,8 @@ public class StudentController {
 
     @DeleteMapping("/students")
     public ResponseEntity<StudentDTO> deleteStudentCriteria(@RequestBody @Valid EmployeeFilterRequest req) {
-        try {
             humanService.deleteEmployeeOrStudentCriteria(req);
             return ResponseEntity.status(204).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @PatchMapping("/students")

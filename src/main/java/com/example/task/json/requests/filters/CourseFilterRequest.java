@@ -1,7 +1,6 @@
 package com.example.task.json.requests.filters;
 
 import com.example.task.entity.CourseTypeEnum;
-import com.example.task.json.updates.Updates;
 
 import javax.validation.constraints.Positive;
 
@@ -77,5 +76,18 @@ public class CourseFilterRequest {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "courseName='" + courseName + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", dptName='" + dptName + '\'' +
+                ", courseType=" + courseType +
+                ", durationUpperBound=" + durationUpperBound +
+                ", DurationLowerBound=" + DurationLowerBound +
+                ", duration=" + duration +
+                '}';
     }
 }

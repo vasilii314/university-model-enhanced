@@ -1,7 +1,5 @@
 package com.example.task.json.requests.filters;
 
-import com.example.task.json.updates.Updates;
-
 import javax.validation.constraints.NotBlank;
 
 public class SchoolFilterRequest {
@@ -18,5 +16,12 @@ public class SchoolFilterRequest {
 
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "schoolName='" + schoolName + '\'' +
+                '}';
     }
 }

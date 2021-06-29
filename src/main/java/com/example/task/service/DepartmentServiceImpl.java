@@ -1,6 +1,7 @@
 package com.example.task.service;
 
 import com.example.task.entity.Department;
+import com.example.task.exception.custom.DepartmentNotFoundException;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
 import com.example.task.repository.default_repos.DepartmentRepository;
@@ -15,7 +16,6 @@ import java.util.Optional;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private DepartmentRepository departmentRepository;
-//    private EntityManager entityManager;
 
     @Autowired
     public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
@@ -46,7 +46,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<Department> findDepartmentsCriteria(DepartmentFilterRequest filter) {
-        return departmentRepository.findDepartmentsCriteria(filter);
+        List<Department> departments = departmentRepository.findDepartmentsCriteria(filter);
+        if (departments.size() == 0) {
+            throw new DepartmentNotFoundException();
+        }
+        return departments;
     }
 
     @Override

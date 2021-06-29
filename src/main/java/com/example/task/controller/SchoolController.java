@@ -5,6 +5,7 @@ import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.json.responses.SchoolDTO;
 import com.example.task.repository.default_repos.SchoolRepository;
+import com.example.task.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +18,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class SchoolController {
 
-    private final SchoolRepository schoolService;
+    private final SchoolService schoolService;
 
     @Autowired
-    public SchoolController(SchoolRepository schoolService) {
+    public SchoolController(SchoolService schoolService) {
         this.schoolService = schoolService;
     }
 
@@ -30,7 +31,7 @@ public class SchoolController {
                 .stream()
                 .map(SchoolDTO::toSchoolDTO)
                 .collect(Collectors.toList());
-        return schoolDTOS.size() > 0 ? ResponseEntity.ok().body(schoolDTOS) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(schoolDTOS);
     }
 
     @PostMapping("/add-school")
