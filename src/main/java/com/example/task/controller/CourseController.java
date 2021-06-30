@@ -24,7 +24,7 @@ public class CourseController {
     }
 
     @PostMapping("/courses")
-    private ResponseEntity<List<CourseDTO>> getCoursesCriteria(@RequestBody CourseFilterRequest req) {
+    public ResponseEntity<List<CourseDTO>> getCoursesCriteria(@RequestBody CourseFilterRequest req) {
         List<Course> coursesRaw = courseService.findCoursesCriteria(req);
         List<CourseDTO> courses = coursesRaw
                 .stream()
@@ -34,20 +34,26 @@ public class CourseController {
     }
 
     @PostMapping("/add-course")
-    private ResponseEntity<CourseDTO> addCourseCriteria(@RequestBody CourseAddRequest req) {
+    public ResponseEntity<CourseDTO> addCourseCriteria(@RequestBody CourseAddRequest req) {
             courseService.addCourseCriteria(req);
             return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/courses")
-    private ResponseEntity<CourseDTO> deleteCourseCriteria(@RequestBody CourseFilterRequest req) {
+    public ResponseEntity<CourseDTO> deleteCourseCriteria(@RequestBody CourseFilterRequest req) {
             courseService.deleteCourseCriteria(req);
-            return ResponseEntity.status(201).build();
+            return ResponseEntity.status(204).build();
     }
 
     @PatchMapping("/courses")
-    private ResponseEntity<CourseDTO> updateCourseCriteria(@RequestBody CourseAddRequest req) {
+    public ResponseEntity<CourseDTO> updateCourseCriteria(@RequestBody CourseAddRequest req) {
             courseService.updateCourseCriteria(req);
             return ResponseEntity.status(204).build();
+    }
+
+    @DeleteMapping("/courses/{id}")
+    public ResponseEntity<CourseDTO> deleteCourseById(@PathVariable Integer id) {
+        courseService.deleteById(id);
+        return ResponseEntity.status(204).build();
     }
 }

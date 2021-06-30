@@ -56,4 +56,10 @@ public class SchoolController {
         int status = schoolService.updateSchoolByName(req);
         return status > 0 ?  ResponseEntity.status(204).build() : ResponseEntity.badRequest().build();
     }
+
+    @DeleteMapping("/schools/{id}")
+    public ResponseEntity<SchoolDTO> deleteSchoolById(@PathVariable Integer id) {
+        schoolService.deleteById(id);
+        return ResponseEntity.status(204).build();
+    }
 }

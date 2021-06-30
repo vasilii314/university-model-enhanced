@@ -50,4 +50,10 @@ public class StudentController {
             humanService.updateEmployeeOrStudentCriteria(req);
             return ResponseEntity.status(204).build();
     }
+
+    @DeleteMapping("/students/{id}")
+    public ResponseEntity<StudentDTO> deleteStudentById(@PathVariable Integer id) {
+        humanService.deleteById(id);
+        return ResponseEntity.status(204).build();
+    }
 }

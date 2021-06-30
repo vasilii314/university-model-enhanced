@@ -1,10 +1,7 @@
 package com.example.task.repository;
 
 import com.example.task.entity.*;
-import com.example.task.exception.custom.CourseNotFoundException;
-import com.example.task.exception.custom.CourseTypeNotFoundException;
-import com.example.task.exception.custom.DeleteOrUpdateException;
-import com.example.task.exception.custom.InternalException;
+import com.example.task.exception.custom.*;
 import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.CourseAddRequest;
@@ -89,6 +86,8 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
             } catch (NoResultException e) {
                 throw new CourseTypeNotFoundException();
             }
+        } else {
+            throw new DepartmentNotFoundException();
         }
     }
 

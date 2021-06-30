@@ -20,14 +20,14 @@ public class Course {
     @Positive
     private int duration;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "course_type_id")
     private CourseType courseType;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<StudentGrade> grades;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "department_id")
     private Department department;
 

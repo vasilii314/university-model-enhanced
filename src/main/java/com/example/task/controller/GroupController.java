@@ -46,4 +46,10 @@ public class GroupController {
             groupService.updateGroupCriteria(req);
             return ResponseEntity.status(204).build();
     }
+
+    @DeleteMapping("/groups/{id}")
+    public ResponseEntity<GroupDTO> deleteGroupById(@PathVariable Integer id) {
+        groupService.deleteById(id);
+        return ResponseEntity.status(204).build();
+    }
 }

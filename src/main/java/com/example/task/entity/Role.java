@@ -17,7 +17,7 @@ public class Role {
     @Column(length = 50)
     private RoleEnum roleDescription;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "role", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<HumanInUniversity> peopleWithRoles;
 
     public Role() {

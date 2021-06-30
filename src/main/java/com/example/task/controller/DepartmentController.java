@@ -52,4 +52,10 @@ public class DepartmentController {
             departmentService.updateDepartmentCriteria(req);
             return ResponseEntity.status(204).build();
     }
+
+    @DeleteMapping("/departments/{id}")
+    public ResponseEntity<DepartmentDTO> deleteDepartmentById(@PathVariable Integer id) {
+        departmentService.deleteById(id);
+        return ResponseEntity.status(204).build();
+    }
 }

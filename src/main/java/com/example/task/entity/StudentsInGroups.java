@@ -15,7 +15,7 @@ public class StudentsInGroups {
     @JoinColumn(name = "student_id")
     private HumanInUniversity student;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "group_id")
     private Group group;
 
