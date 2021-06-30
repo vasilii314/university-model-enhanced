@@ -24,10 +24,41 @@
             	<constraints nullable="true"/>
             </column>
         </createTable>
-        <sql>
-        	ALTER TABLE people_in_university ADD CONSTRAINT fk_people_in_uni_human_id FOREIGN KEY (human_id) REFERENCES people (id) ON UPDATE CASCADE ON DELETE CASCADE;
-        	ALTER TABLE people_in_university ADD CONSTRAINT fk_people_in_uni_role FOREIGN KEY (role_id) REFERENCES roles (id) ON UPDATE CASCADE ON DELETE SET NULL;
-        	ALTER TABLE people_in_university ADD CONSTRAINT fk_people_in_uni_dpt FOREIGN KEY (department_id) REFERENCES departments (id) ON UPDATE CASCADE ON DELETE SET NULL;
-        </sql>
+    </changeSet>
+    <changeSet id="28" author="admin">
+        <addForeignKeyConstraint baseColumnNames="human_id"
+                                 baseTableName="people_in_university"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_people_in_uni_human_id"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="people"
+                                 referencedTableSchemaName="public"
+        />
+    </changeSet>
+    <changeSet id="29" author="admin">
+        <addForeignKeyConstraint baseColumnNames="role_id"
+                                 baseTableName="people_in_university"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_people_in_uni_role"
+                                 onUpdate="CASCADE"
+                                 onDelete="SET NULL"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roles"
+                                 referencedTableSchemaName="public"
+        />
+    </changeSet>
+    <changeSet id="30" author="admin">
+        <addForeignKeyConstraint baseColumnNames="department_id"
+                                 baseTableName="people_in_university"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_people_in_uni_dpt"
+                                 onUpdate="CASCADE"
+                                 onDelete="SET NULL"
+                                 referencedColumnNames="id"
+                                 referencedTableName="departments"
+                                 referencedTableSchemaName="public"
+        />
     </changeSet>
 </databaseChangeLog>

@@ -21,8 +21,17 @@
             	<constraints nullable="true"/>
             </column>
         </createTable>
-        <sql>
-        	ALTER TABLE groups ADD CONSTRAINT fk_group_dpt FOREIGN KEY (department_id) REFERENCES departments (id) ON UPDATE CASCADE ON DELETE SET NULL
-        </sql>
+    </changeSet>
+    <changeSet id="27" author="admin">
+        <addForeignKeyConstraint baseColumnNames="department_id"
+                                 baseTableName="groups"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_group_dpt"
+                                 onUpdate="CASCADE"
+                                 onDelete="SET NULL"
+                                 referencedColumnNames="id"
+                                 referencedTableName="departments"
+                                 referencedTableSchemaName="public"
+        />
     </changeSet>
 </databaseChangeLog>

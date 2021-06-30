@@ -6,29 +6,42 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <changeSet author="admin" id="7">
         <preConditions onFail="HALT">
-        	<and>
-        		<not>
-                	<tableExists tableName="departments"/>
-           	 	</not>
-           	 	<not>
-           	 		<indexExists indexName="idx_department_name"/>
-           	 	</not>
-        	</and>
+            <and>
+                <not>
+                    <tableExists tableName="departments"/>
+                </not>
+                <not>
+                    <indexExists indexName="idx_department_name"/>
+                </not>
+            </and>
         </preConditions>
         <createTable tableName="departments">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(100)">
-                <constraints  nullable="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="school_id" type="int">
-            	<constraints nullable="true"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
-        <sql>
-        	ALTER TABLE departments ADD CONSTRAINT fk_department_school FOREIGN KEY (school_id) REFERENCES schools (id) ON UPDATE CASCADE ON DELETE SET NULL;
-        	CREATE INDEX idx_department_name ON departments (name);
-        </sql>
+    </changeSet>
+    <changeSet id="22" author="admin">
+        <addForeignKeyConstraint baseColumnNames="school_id"
+                                 baseTableName="departments"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_department_school"
+                                 onUpdate="CASCADE"
+                                 onDelete="SET NULL"
+                                 referencedColumnNames="id"
+                                 referencedTableName="schools"
+                                 referencedTableSchemaName="public"
+        />
+    </changeSet>
+    <changeSet id="23" author="admin">
+        <createIndex tableName="departments" indexName="idx_department_name">
+            <column name="name"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

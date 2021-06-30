@@ -101,4 +101,12 @@ public class ExceptionHandler {
         body.put("message", "Grades not found");
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(UpdatesObjectMissingException.class)
+    public ResponseEntity<?> handleUpdatesObjectMissingException(UpdatesObjectMissingException e, WebRequest request) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "Bad request");
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }

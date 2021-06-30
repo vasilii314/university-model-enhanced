@@ -26,8 +26,10 @@
                 <constraints  nullable="false"/>
             </column>
         </createTable>
-        <sql>
-        	CREATE INDEX idx_people_names ON people (full_name)
-        </sql>
+    </changeSet>
+    <changeSet id="20" author="admin">
+        <createIndex tableName="people" indexName="idx_people_names">
+            <column name="full_name"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

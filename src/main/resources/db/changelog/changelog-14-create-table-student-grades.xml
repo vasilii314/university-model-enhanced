@@ -25,9 +25,31 @@
             </column>
         </createTable>
         <sql>
-        	ALTER TABLE student_grades ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id) REFERENCES students_in_groups (id) ON UPDATE CASCADE ON DELETE CASCADE;
-        	ALTER TABLE student_grades ADD CONSTRAINT fk_course_id FOREIGN KEY (course_id) REFERENCES courses (id) ON UPDATE CASCADE ON DELETE CASCADE;
-        	ALTER TABLE student_grades ADD CONSTRAINT valid_duration CHECK(grade BETWEEN 2 AND 5);
+        	ALTER TABLE student_grades ADD CONSTRAINT valid_grade CHECK(grade BETWEEN 2 AND 5);
         </sql>
+    </changeSet>
+    <changeSet id="33" author="admin">
+        <addForeignKeyConstraint baseColumnNames="student_id"
+                                 baseTableName="student_grades"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_student_id"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="students_in_groups"
+                                 referencedTableSchemaName="public"
+        />
+    </changeSet>
+    <changeSet id="34" author="admin">
+        <addForeignKeyConstraint baseColumnNames="course_id"
+                                 baseTableName="student_grades"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_course_id"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="courses"
+                                 referencedTableSchemaName="public"
+        />
     </changeSet>
 </databaseChangeLog>

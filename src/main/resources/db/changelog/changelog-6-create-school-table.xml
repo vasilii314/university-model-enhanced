@@ -23,8 +23,10 @@
                 <constraints  nullable="false"/>
             </column>
         </createTable>
-        <sql>
-        	CREATE INDEX idx_school_name ON schools (name)
-        </sql>
+    </changeSet>
+    <changeSet id="21" author="admin">
+        <createIndex tableName="schools" indexName="idx_school_name">
+            <column name="name"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

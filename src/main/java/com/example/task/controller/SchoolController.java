@@ -1,6 +1,7 @@
 package com.example.task.controller;
 
 import com.example.task.entity.School;
+import com.example.task.exception.custom.UpdatesObjectMissingException;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.json.responses.SchoolDTO;
@@ -50,7 +51,7 @@ public class SchoolController {
     @PatchMapping("/schools")
     public ResponseEntity<SchoolDTO> updateSchoolByName(@Valid @RequestBody SchoolAddRequest req) {
         if (req.getUpdates() == null) {
-            return ResponseEntity.badRequest().build();
+            throw new UpdatesObjectMissingException();
         }
         int status = schoolService.updateSchoolByName(req);
         return status > 0 ?  ResponseEntity.status(204).build() : ResponseEntity.badRequest().build();
