@@ -71,8 +71,8 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
     @Override
     @Transactional
     public void addCourseCriteria(CourseAddRequest filter) {
-        DepartmentFilterRequest dptFilter = new DepartmentFilterRequest();
-        dptFilter.setDptName(filter.getDptName());
+        DepartmentFilterRequest dptFilter = new DepartmentFilterRequest(filter.getDptName(), null);
+//        dptFilter.setDptName(filter.getDptName());
         List<Department> departments = departmentRepository.findDepartmentsCriteria(dptFilter);
         if (departments.size() == 1) {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();

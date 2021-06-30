@@ -1,63 +1,51 @@
 package com.example.task.json.requests.filters;
 
 import com.example.task.entity.RoleEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EmployeeFilterRequest {
-    private String employeeFullName;
-    private String dptName;
-    private RoleEnum role;
-    private String birthDateUpperBound;
-    private String birthDateLowerBound;
-    private String groupName;
+    private final String employeeFullName;
+    private final String dptName;
+    private final RoleEnum role;
+    private final String birthDateUpperBound;
+    private final String birthDateLowerBound;
+    private final String groupName;
 
-    public EmployeeFilterRequest() {
+    public EmployeeFilterRequest(@JsonProperty(value = "employeeFullName") String employeeFullName,
+                                 @JsonProperty(value = "dptName") String dptName,
+                                 @JsonProperty(value = "role") RoleEnum role,
+                                 @JsonProperty(value = "birthDateUpperBound") String birthDateUpperBound,
+                                 @JsonProperty(value = "birthDateLowerBound") String birthDateLowerBound,
+                                 @JsonProperty(value = "groupName") String groupName) {
+        this.employeeFullName = employeeFullName;
+        this.dptName = dptName;
+        this.role = role;
+        this.birthDateUpperBound = birthDateUpperBound;
+        this.birthDateLowerBound = birthDateLowerBound;
+        this.groupName = groupName;
     }
 
     public String getEmployeeFullName() {
         return employeeFullName;
     }
 
-    public void setEmployeeFullName(String employeeFullName) {
-        this.employeeFullName = employeeFullName;
-    }
-
     public String getDptName() {
         return dptName;
-    }
-
-    public void setDptName(String dptName) {
-        this.dptName = dptName;
     }
 
     public RoleEnum getRole() {
         return role;
     }
 
-    public void setRole(RoleEnum role) {
-        this.role = role;
-    }
-
     public String getBirthDateUpperBound() {
         return birthDateUpperBound;
-    }
-
-    public void setBirthDateUpperBound(String birthDateUpperBound) {
-        this.birthDateUpperBound = birthDateUpperBound;
     }
 
     public String getBirthDateLowerBound() {
         return birthDateLowerBound;
     }
 
-    public void setBirthDateLowerBound(String birthDateLowerBound) {
-        this.birthDateLowerBound = birthDateLowerBound;
-    }
-
     public String getGroupName() {
         return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
     }
 }

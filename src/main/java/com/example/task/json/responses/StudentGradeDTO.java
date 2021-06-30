@@ -7,10 +7,10 @@ import com.example.task.entity.StudentGrade;
 
 public class StudentGradeDTO {
 
-    private Integer id;
-    private Integer grade;
-    private String studentName;
-    private String courseName;
+    private final Integer id;
+    private final Integer grade;
+    private final String studentName;
+    private final String courseName;
 
     public StudentGradeDTO(Integer id, Integer grade, String studentName, String courseName) {
         this.id = id;

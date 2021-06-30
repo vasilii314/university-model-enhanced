@@ -1,25 +1,23 @@
 package com.example.task.json.requests.filters;
 
-public class DepartmentFilterRequest {
-    private String dptName;
-    private String schoolName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    public DepartmentFilterRequest() {
+public class DepartmentFilterRequest {
+    private final String dptName;
+    private final String schoolName;
+
+    public DepartmentFilterRequest(@JsonProperty(value = "dptName") String dptName,
+                                   @JsonProperty(value = "schoolName") String schoolName) {
+        this.dptName = dptName;
+        this.schoolName = schoolName;
     }
+
 
     public String getDptName() {
         return dptName;
     }
 
-    public void setDptName(String dptName) {
-        this.dptName = dptName;
-    }
-
     public String getSchoolName() {
         return schoolName;
-    }
-
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
     }
 }

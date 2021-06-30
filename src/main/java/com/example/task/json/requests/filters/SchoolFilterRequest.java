@@ -1,21 +1,20 @@
 package com.example.task.json.requests.filters;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotBlank;
 
 public class SchoolFilterRequest {
 
     @NotBlank
-    private String schoolName;
+    private final String schoolName;
 
-    public SchoolFilterRequest() {
+    public SchoolFilterRequest(@JsonProperty(value = "schoolName") String schoolName) {
+        this.schoolName = schoolName;
     }
 
     public String getSchoolName() {
         return schoolName;
-    }
-
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
     }
 
     @Override

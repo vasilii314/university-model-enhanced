@@ -3,72 +3,58 @@ package com.example.task.json.requests.save_or_update;
 import com.example.task.entity.RoleEnum;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.updates.Updates;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EmployeeAddRequest {
-    private String employeeFullName;
-    private RoleEnum role;
-    private String birthDate;
-    private String dptName;
-    private String schoolName;
-    private Updates updates;
-    private EmployeeFilterRequest employeeFilter;
+    private final String employeeFullName;
+    private final RoleEnum role;
+    private final String birthDate;
+    private final String dptName;
+    private final String schoolName;
+    private final Updates updates;
+    private final EmployeeFilterRequest employeeFilter;
 
-    public EmployeeAddRequest() {
+    public EmployeeAddRequest(@JsonProperty(value = "employeeFullName") String employeeFullName,
+                              @JsonProperty(value = "role") RoleEnum role,
+                              @JsonProperty(value = "birthDate") String birthDate,
+                              @JsonProperty(value = "dptName") String dptName,
+                              @JsonProperty(value = "schoolName") String schoolName,
+                              @JsonProperty(value = "updates") Updates updates,
+                              @JsonProperty(value = "employeeFilter") EmployeeFilterRequest employeeFilter) {
+        this.employeeFullName = employeeFullName;
+        this.role = role;
+        this.birthDate = birthDate;
+        this.dptName = dptName;
+        this.schoolName = schoolName;
+        this.updates = updates;
+        this.employeeFilter = employeeFilter;
     }
 
     public String getEmployeeFullName() {
         return employeeFullName;
     }
 
-    public void setEmployeeFullName(String employeeFullName) {
-        this.employeeFullName = employeeFullName;
-    }
-
     public RoleEnum getRole() {
         return role;
-    }
-
-    public void setRole(RoleEnum role) {
-        this.role = role;
     }
 
     public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public String getDptName() {
         return dptName;
-    }
-
-    public void setDptName(String dptName) {
-        this.dptName = dptName;
     }
 
     public String getSchoolName() {
         return schoolName;
     }
 
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
-    }
-
     public Updates getUpdates() {
         return updates;
     }
 
-    public void setUpdates(Updates updates) {
-        this.updates = updates;
-    }
-
     public EmployeeFilterRequest getEmployeeFilter() {
         return employeeFilter;
-    }
-
-    public void setEmployeeFilter(EmployeeFilterRequest employeeFilter) {
-        this.employeeFilter = employeeFilter;
     }
 }

@@ -2,45 +2,37 @@ package com.example.task.json.requests.save_or_update;
 
 import com.example.task.json.requests.filters.StudentFilterRequest;
 import com.example.task.json.updates.Updates;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StudentAddRequest {
-    private String studentFullName;
-    private String birthDate;
-    private StudentFilterRequest studentFilter;
-    private Updates updates;
+    private final String studentFullName;
+    private final String birthDate;
+    private final StudentFilterRequest studentFilter;
+    private final Updates updates;
 
-    public StudentAddRequest() {
+    public StudentAddRequest(@JsonProperty(value = "studentFullName") String studentFullName,
+                             @JsonProperty(value = "birthDate") String birthDate,
+                             @JsonProperty(value = "studentFilter") StudentFilterRequest studentFilter,
+                             @JsonProperty(value = "updates") Updates updates) {
+        this.studentFullName = studentFullName;
+        this.birthDate = birthDate;
+        this.studentFilter = studentFilter;
+        this.updates = updates;
     }
 
     public String getStudentFullName() {
         return studentFullName;
     }
 
-    public void setStudentFullName(String studentFullName) {
-        this.studentFullName = studentFullName;
-    }
-
     public String getBirthDate() {
         return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
     }
 
     public StudentFilterRequest getStudentFilter() {
         return studentFilter;
     }
 
-    public void setStudentFilter(StudentFilterRequest studentFilter) {
-        this.studentFilter = studentFilter;
-    }
-
     public Updates getUpdates() {
         return updates;
-    }
-
-    public void setUpdates(Updates updates) {
-        this.updates = updates;
     }
 }
