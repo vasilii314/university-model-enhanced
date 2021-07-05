@@ -1,7 +1,8 @@
-package com.example.task.service;
+package com.example.task.service.impl;
 
 import com.example.task.entity.StudentsInGroups;
-import com.example.task.repository.default_repos.StudentInGroupRepository;
+import com.example.task.repository.StudentInGroupRepository;
+import com.example.task.service.StudentInGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

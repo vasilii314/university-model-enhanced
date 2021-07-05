@@ -5,7 +5,6 @@ import com.example.task.exception.custom.UpdatesObjectMissingException;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.json.responses.SchoolDTO;
-import com.example.task.repository.default_repos.SchoolRepository;
 import com.example.task.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +53,7 @@ public class SchoolController {
             throw new UpdatesObjectMissingException();
         }
         int status = schoolService.updateSchoolByName(req);
-        return status > 0 ?  ResponseEntity.status(204).build() : ResponseEntity.badRequest().build();
+        return status > 0 ? ResponseEntity.status(204).build() : ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/schools/{id}")

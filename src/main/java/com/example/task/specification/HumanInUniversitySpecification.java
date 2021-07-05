@@ -13,7 +13,7 @@ import java.util.List;
 
 public class HumanInUniversitySpecification implements Specification<HumanInUniversity> {
 
-    private List<SearchCriteria> criteriaList;
+    private final List<SearchCriteria> criteriaList;
 
     public HumanInUniversitySpecification() {
         this.criteriaList = new ArrayList<>();

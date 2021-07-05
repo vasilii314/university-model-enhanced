@@ -1,4 +1,4 @@
-package com.example.task.repository;
+package com.example.task.repository.custom.impl;
 
 import com.example.task.entity.Department;
 import com.example.task.entity.Department_;

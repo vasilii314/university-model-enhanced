@@ -1,4 +1,4 @@
-package com.example.task.repository.default_repos;
+package com.example.task.repository;
 
 import com.example.task.entity.CourseType;
 import org.springframework.data.repository.CrudRepository;

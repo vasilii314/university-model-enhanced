@@ -1,4 +1,4 @@
-package com.example.task.repository.default_repos;
+package com.example.task.repository;
 
 import com.example.task.entity.Human;
 import com.example.task.repository.custom.HumanRepositoryCustom;

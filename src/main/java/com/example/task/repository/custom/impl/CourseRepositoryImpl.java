@@ -1,4 +1,4 @@
-package com.example.task.repository;
+package com.example.task.repository.custom.impl;
 
 import com.example.task.entity.*;
 import com.example.task.exception.custom.*;
@@ -6,7 +6,7 @@ import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.CourseAddRequest;
 import com.example.task.repository.custom.CourseRepositoryCustom;
-import com.example.task.repository.default_repos.DepartmentRepository;
+import com.example.task.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

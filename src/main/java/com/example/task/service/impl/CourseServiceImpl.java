@@ -1,10 +1,11 @@
-package com.example.task.service;
+package com.example.task.service.impl;
 
 import com.example.task.entity.*;
 import com.example.task.exception.custom.CourseNotFoundException;
 import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.requests.save_or_update.CourseAddRequest;
-import com.example.task.repository.default_repos.CourseRepository;
+import com.example.task.repository.CourseRepository;
+import com.example.task.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

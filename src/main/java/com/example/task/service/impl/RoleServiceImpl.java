@@ -1,7 +1,8 @@
-package com.example.task.service;
+package com.example.task.service.impl;
 
 import com.example.task.entity.Role;
-import com.example.task.repository.default_repos.RoleRepository;
+import com.example.task.repository.RoleRepository;
+import com.example.task.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
     private RoleRepository roleRepository;
 

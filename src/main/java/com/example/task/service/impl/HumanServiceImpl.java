@@ -1,4 +1,4 @@
-package com.example.task.service;
+package com.example.task.service.impl;
 
 import com.example.task.entity.*;
 import com.example.task.exception.custom.EmployeeNotFoundException;
@@ -9,7 +9,8 @@ import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
 import com.example.task.json.requests.save_or_update.StudentAddRequest;
 import com.example.task.json.responses.StudentGradeDTO;
-import com.example.task.repository.default_repos.HumanRepository;
+import com.example.task.repository.HumanRepository;
+import com.example.task.service.HumanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

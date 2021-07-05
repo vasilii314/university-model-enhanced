@@ -1,10 +1,11 @@
-package com.example.task.service;
+package com.example.task.service.impl;
 
 import com.example.task.entity.Group;
 import com.example.task.exception.custom.GroupNotFoundException;
 import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.requests.save_or_update.GroupAddRequest;
-import com.example.task.repository.default_repos.GroupRepository;
+import com.example.task.repository.GroupRepository;
+import com.example.task.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

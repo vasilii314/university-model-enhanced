@@ -1,4 +1,4 @@
-package com.example.task.repository;
+package com.example.task.repository.custom.impl;
 
 import com.example.task.entity.*;
 import com.example.task.exception.custom.InternalException;
@@ -8,9 +8,9 @@ import com.example.task.json.requests.filters.StudentFilterRequest;
 import com.example.task.json.requests.save_or_update.StudentAddRequest;
 import com.example.task.json.responses.StudentGradeDTO;
 import com.example.task.repository.custom.HumanRepositoryCustom;
-import com.example.task.repository.default_repos.HumanInUniversityRepository;
-import com.example.task.repository.default_repos.StudentGradesRepository;
-import com.example.task.repository.default_repos.StudentInGroupRepository;
+import com.example.task.repository.HumanInUniversityRepository;
+import com.example.task.repository.StudentGradesRepository;
+import com.example.task.repository.StudentInGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

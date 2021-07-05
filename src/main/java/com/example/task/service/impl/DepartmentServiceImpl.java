@@ -1,10 +1,11 @@
-package com.example.task.service;
+package com.example.task.service.impl;
 
 import com.example.task.entity.Department;
 import com.example.task.exception.custom.DepartmentNotFoundException;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
-import com.example.task.repository.default_repos.DepartmentRepository;
+import com.example.task.repository.DepartmentRepository;
+import com.example.task.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,12 @@
-package com.example.task.service;
+package com.example.task.service.impl;
 
 import com.example.task.entity.School;
 import com.example.task.exception.custom.DeleteOrUpdateException;
 import com.example.task.exception.custom.SchoolNotFoundException;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.json.requests.save_or_update.SchoolAddRequest;
-import com.example.task.repository.default_repos.SchoolRepository;
+import com.example.task.repository.SchoolRepository;
+import com.example.task.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
