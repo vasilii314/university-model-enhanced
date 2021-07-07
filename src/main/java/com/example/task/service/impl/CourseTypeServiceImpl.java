@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class CourseTypeServiceImpl implements CourseTypeService {
 
-    private CourseTypeRepository courseTypeRepository;
+    private final CourseTypeRepository courseTypeRepository;
 
     @Autowired
     public CourseTypeServiceImpl(CourseTypeRepository courseTypeRepository) {

@@ -26,10 +26,10 @@ import java.util.stream.Collectors;
 
 @Repository
 public class HumanRepositoryImpl implements HumanRepositoryCustom {
-    private EntityManager entityManager;
-    private HumanInUniversityRepository humanInUniversityRepository;
-    private StudentInGroupRepository studentInGroupRepository;
-    private StudentGradesRepository studentGradesRepository;
+    private final EntityManager entityManager;
+    private final HumanInUniversityRepository humanInUniversityRepository;
+    private final StudentInGroupRepository studentInGroupRepository;
+    private final StudentGradesRepository studentGradesRepository;
 
     @Autowired
     public HumanRepositoryImpl(EntityManager entityManager,
@@ -43,7 +43,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     }
 
     @Override
-    public List<Human> findEmployeesCriteria(EmployeeFilterRequest filter) {
+    public List<Human> findEmployees(EmployeeFilterRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Human> criteriaQuery = builder.createQuery(Human.class);
         Root<Human> humanRoot = criteriaQuery.from(Human.class);
@@ -64,7 +64,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     }
 
     @Override
-    public void addEmployeeCriteria(EmployeeAddRequest filter) {
+    public void addEmployee(EmployeeAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
@@ -106,7 +106,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
 
     @Override
     @Transactional
-    public void deleteEmployeeOrStudentCriteria(EmployeeFilterRequest filter) {
+    public void deleteEmployeeOrStudent(EmployeeFilterRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaDelete<Human> criteriaDelete = builder.createCriteriaDelete(Human.class);
@@ -155,7 +155,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
 
     @Override
     @Transactional
-    public void updateEmployeeOrStudentCriteria(EmployeeAddRequest filter) {
+    public void updateEmployeeOrStudent(EmployeeAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Human> humanCriteriaQuery= builder.createQuery(Human.class);
@@ -275,7 +275,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     }
 
     @Override
-    public List<Human> findStudentsCriteria(StudentFilterRequest filter) {
+    public List<Human> findStudents(StudentFilterRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Human> criteriaQuery = builder.createQuery(Human.class);
@@ -309,7 +309,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     }
 
     @Override
-    public void addStudentCriteria(StudentAddRequest filter) {
+    public void addStudent(StudentAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
@@ -351,7 +351,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     }
 
     @Override
-    public List<StudentGradeDTO> getStudentGradesCriteria(StudentFilterRequest filter) {
+    public List<StudentGradeDTO> getStudentGrades(StudentFilterRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
@@ -407,7 +407,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     }
 
     @Override
-    public void addStudentGradeCriteria(StudentAddRequest filter) {
+    public void addStudentGrade(StudentAddRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> criteriaQuery = builder.createQuery(Tuple.class);
         CriteriaQuery<Course> courseCriteriaQuery = builder.createQuery(Course.class);

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class CourseController {
 
-    private CourseService courseService;
+    private final CourseService courseService;
 
     @Autowired
     public CourseController(CourseService courseService) {
@@ -24,30 +24,25 @@ public class CourseController {
     }
 
     @PostMapping("/courses")
-    public ResponseEntity<List<CourseDTO>> getCoursesCriteria(@RequestBody CourseFilterRequest req) {
-        List<Course> coursesRaw = courseService.findCoursesCriteria(req);
-        List<CourseDTO> courses = coursesRaw
-                .stream()
-                .map(course -> new CourseDTO(course.getId(), course.getName(), course.getDuration(), course.getDepartment().getName()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(courses);
+    public ResponseEntity<List<CourseDTO>> getCourses(@RequestBody CourseFilterRequest req) {
+        return ResponseEntity.ok(courseService.findCourses(req));
     }
 
     @PostMapping("/add-course")
-    public ResponseEntity<CourseDTO> addCourseCriteria(@RequestBody CourseAddRequest req) {
-            courseService.addCourseCriteria(req);
+    public ResponseEntity<CourseDTO> addCourse(@RequestBody CourseAddRequest req) {
+            courseService.addCourse(req);
             return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/courses")
-    public ResponseEntity<CourseDTO> deleteCourseCriteria(@RequestBody CourseFilterRequest req) {
-            courseService.deleteCourseCriteria(req);
+    public ResponseEntity<CourseDTO> deleteCourse(@RequestBody CourseFilterRequest req) {
+            courseService.deleteCourse(req);
             return ResponseEntity.status(204).build();
     }
 
     @PatchMapping("/courses")
-    public ResponseEntity<CourseDTO> updateCourseCriteria(@RequestBody CourseAddRequest req) {
-            courseService.updateCourseCriteria(req);
+    public ResponseEntity<CourseDTO> updateCourse(@RequestBody CourseAddRequest req) {
+            courseService.updateCourse(req);
             return ResponseEntity.status(204).build();
     }
 

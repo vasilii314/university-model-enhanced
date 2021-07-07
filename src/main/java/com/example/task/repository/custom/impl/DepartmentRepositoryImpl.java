@@ -23,7 +23,7 @@ import java.util.List;
 @Repository
 public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Autowired
     public DepartmentRepositoryImpl(EntityManager entityManager) {
@@ -31,7 +31,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
     }
 
     @Override
-    public List<Department> findDepartmentsCriteria(DepartmentFilterRequest filter) {
+    public List<Department> findDepartments(DepartmentFilterRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Department> criteriaQuery = builder.createQuery(Department.class);
         Root<Department> departmentRoot = criteriaQuery.from(Department.class);
@@ -52,7 +52,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
 
     @Override
     @Transactional
-    public void addDepartmentCriteria(DepartmentAddRequest filter) {
+    public void addDepartment(DepartmentAddRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<School> schoolCriteriaQuery = builder.createQuery(School.class);
         Root<School> schoolRoot = schoolCriteriaQuery.from(School.class);
@@ -80,7 +80,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
 
     @Override
     @Transactional
-    public void deleteDepartmentCriteria(DepartmentFilterRequest filter) {
+    public void deleteDepartment(DepartmentFilterRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaDelete<Department> departmentCriteriaDelete = builder.createCriteriaDelete(Department.class);
@@ -114,7 +114,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
 
     @Override
     @Transactional
-    public void updateDepartmentCriteria(DepartmentAddRequest filter) {
+    public void updateDepartment(DepartmentAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaUpdate<Department> departmentCriteriaUpdate = builder.createCriteriaUpdate(Department.class);

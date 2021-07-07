@@ -9,7 +9,15 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
-public class Updates {
+
+/*
+    This class represents a set of updates.
+    Each field of this class is prefixed with respective entity name.
+    Thus, some of these fields may be null. It depends on which
+    entity will be updated.
+*/
+
+public class UpdatesForEntity {
     private final String schoolName;
     private final String dptName;
     private final String groupName;
@@ -27,16 +35,16 @@ public class Updates {
     @Positive
     private final Integer duration;
 
-    public Updates(@JsonProperty(value = "schoolName") String schoolName,
-                   @JsonProperty(value = "dptName") String dptName,
-                   @JsonProperty(value = "groupName") String groupName,
-                   @JsonProperty(value = "courseName") String courseName,
-                   @JsonProperty(value = "courseType") CourseTypeEnum courseType,
-                   @JsonProperty(value = "role") RoleEnum role,
-                   @JsonProperty(value = "fullName") String fullName,
-                   @JsonProperty(value = "birthDate") LocalDate birthDate,
-                   @JsonProperty(value = "grade") Integer grade,
-                   @JsonProperty(value = "duration") Integer duration) {
+    public UpdatesForEntity(@JsonProperty(value = "schoolName") String schoolName,
+                            @JsonProperty(value = "dptName") String dptName,
+                            @JsonProperty(value = "groupName") String groupName,
+                            @JsonProperty(value = "courseName") String courseName,
+                            @JsonProperty(value = "courseType") CourseTypeEnum courseType,
+                            @JsonProperty(value = "role") RoleEnum role,
+                            @JsonProperty(value = "fullName") String fullName,
+                            @JsonProperty(value = "birthDate") LocalDate birthDate,
+                            @JsonProperty(value = "grade") Integer grade,
+                            @JsonProperty(value = "duration") Integer duration) {
         this.schoolName = schoolName;
         this.dptName = dptName;
         this.groupName = groupName;

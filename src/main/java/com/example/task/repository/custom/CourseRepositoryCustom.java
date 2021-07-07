@@ -7,8 +7,8 @@ import com.example.task.json.requests.save_or_update.CourseAddRequest;
 import java.util.List;
 
 public interface CourseRepositoryCustom {
-    List<Course> findCoursesCriteria(CourseFilterRequest filter);
-    void addCourseCriteria(CourseAddRequest filter);
-    void deleteCourseCriteria(CourseFilterRequest filter);
-    void updateCourseCriteria(CourseAddRequest filter);
+    List<Course> findCourses(CourseFilterRequest filter);
+    void addCourse(CourseAddRequest filter);
+    void deleteCourse(CourseFilterRequest filter);
+    void updateCourse(CourseAddRequest filter);
 }

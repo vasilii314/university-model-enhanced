@@ -46,79 +46,39 @@ public class StudentFilterRequest {
         return studentFullName;
     }
 
-//    public void setStudentFullName(String studentFullName) {
-//        this.studentFullName = studentFullName;
-//    }
-
     public String getBirthDateUpperBound() {
         return birthDateUpperBound;
     }
-
-//    public void setBirthDateUpperBound(String birthDateUpperBound) {
-//        this.birthDateUpperBound = birthDateUpperBound;
-//    }
 
     public String getBirthDateLowerBound() {
         return birthDateLowerBound;
     }
 
-//    public void setBirthDateLowerBound(String birthDateLowerBound) {
-//        this.birthDateLowerBound = birthDateLowerBound;
-//    }
-
     public Integer getGradeUpperBound() {
         return gradeUpperBound;
     }
-
-//    public void setGradeUpperBound(int gradeUpperBound) {
-//        this.gradeUpperBound = gradeUpperBound;
-//    }
 
     public Integer getGradeLowerBound() {
         return gradeLowerBound;
     }
 
-//    public void setGradeLowerBound(int gradeLowerBound) {
-//        this.gradeLowerBound = gradeLowerBound;
-//    }
-
     public String getDptName() {
         return dptName;
     }
-
-//    public void setDptName(String dptName) {
-//        this.dptName = dptName;
-//    }
 
     public String getSchoolName() {
         return schoolName;
     }
 
-//    public void setSchoolName(String schoolName) {
-//        this.schoolName = schoolName;
-//    }
-
     public String getBirthDate() {
         return birthDate;
     }
-
-//    public void setBirthDate(String birthDate) {
-//        this.birthDate = birthDate;
-//    }
 
     public String getCourseName() {
         return courseName;
     }
 
-//    public void setCourseName(String courseName) {
-//        this.courseName = courseName;
-//    }
-
     public String getGroupName() {
         return groupName;
     }
-
-//    public void setGroupName(String groupName) {
-//        this.groupName = groupName;
-//    }
 }

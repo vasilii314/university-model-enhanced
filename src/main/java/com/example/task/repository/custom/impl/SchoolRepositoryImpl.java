@@ -19,7 +19,7 @@ import java.util.List;
 @Repository
 public class SchoolRepositoryImpl implements SchoolRepositoryCustom {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Autowired
     public SchoolRepositoryImpl(EntityManager entityManager) {

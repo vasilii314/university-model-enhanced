@@ -5,6 +5,7 @@ import com.example.task.exception.custom.DeleteOrUpdateException;
 import com.example.task.exception.custom.SchoolNotFoundException;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.json.requests.save_or_update.SchoolAddRequest;
+import com.example.task.json.responses.SchoolDTO;
 import com.example.task.repository.SchoolRepository;
 import com.example.task.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SchoolServiceImpl implements SchoolService {
 
-    private SchoolRepository schoolRepository;
+    private final SchoolRepository schoolRepository;
 
     @Autowired
     public SchoolServiceImpl(SchoolRepository schoolRepository) {
@@ -47,12 +49,12 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public List<School> findSchoolsByName(SchoolFilterRequest filter) {
-       List<School> schools = schoolRepository.findSchoolsByName(filter);
-       if (schools.size() == 0) {
-           throw new SchoolNotFoundException();
-       }
-       return schools;
+    public List<SchoolDTO> findSchoolsByName(SchoolFilterRequest filter) {
+        return schoolRepository
+                .findSchoolsByName(filter)
+                .stream()
+                .map(SchoolDTO::toSchoolDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

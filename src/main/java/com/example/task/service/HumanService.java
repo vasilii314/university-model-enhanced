@@ -5,17 +5,19 @@ import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
 import com.example.task.json.requests.save_or_update.StudentAddRequest;
+import com.example.task.json.responses.EmployeeDTO;
+import com.example.task.json.responses.StudentDTO;
 import com.example.task.json.responses.StudentGradeDTO;
 
 import java.util.List;
 
 public interface HumanService extends Service<Human> {
-    List<Human> findEmployeesCriteria(EmployeeFilterRequest filter);
-    void addEmployeeCriteria(EmployeeAddRequest filter);
-    void deleteEmployeeOrStudentCriteria(EmployeeFilterRequest filter);
-    void updateEmployeeOrStudentCriteria(EmployeeAddRequest filter);
-    List<Human> findStudentsCriteria(StudentFilterRequest filter);
-    void addStudentCriteria(StudentAddRequest filter);
-    List<StudentGradeDTO> getStudentGradesCriteria(StudentFilterRequest filter);
-    void addStudentGradeCriteria(StudentAddRequest filter);
+    List<EmployeeDTO> findEmployees(EmployeeFilterRequest filter);
+    void addEmployee(EmployeeAddRequest filter);
+    void deleteEmployeeOrStudent(EmployeeFilterRequest filter);
+    void updateEmployeeOrStudent(EmployeeAddRequest filter);
+    List<StudentDTO> findStudents(StudentFilterRequest filter);
+    void addStudent(StudentAddRequest filter);
+    List<StudentGradeDTO> getStudentGrades(StudentFilterRequest filter);
+    void addStudentGrade(StudentAddRequest filter);
 }

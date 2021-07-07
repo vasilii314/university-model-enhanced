@@ -11,14 +11,14 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank
     @Column(length = 100)
     private String name;
 
     @Positive
-    private int duration;
+    private Integer duration;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "course_type_id")
@@ -41,12 +41,16 @@ public class Course {
         this.department = department;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public String getName() {
@@ -73,12 +77,8 @@ public class Course {
         this.grades = grades;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 
     public Department getDepartment() {

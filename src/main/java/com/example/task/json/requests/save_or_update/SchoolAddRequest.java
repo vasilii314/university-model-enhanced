@@ -1,20 +1,20 @@
 package com.example.task.json.requests.save_or_update;
 
 import com.example.task.json.requests.filters.SchoolFilterRequest;
-import com.example.task.json.updates.Updates;
+import com.example.task.json.updates.UpdatesForEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SchoolAddRequest {
     private final String schoolName;
     private final SchoolFilterRequest schoolFilter;
-    private final Updates updates;
+    private final UpdatesForEntity updatesForEntity;
 
     public SchoolAddRequest(@JsonProperty(value = "schoolName") String schoolName,
                             @JsonProperty(value = "schoolFilter") SchoolFilterRequest schoolFilter,
-                            @JsonProperty(value = "updates") Updates updates) {
+                            @JsonProperty(value = "updates") UpdatesForEntity updatesForEntity) {
         this.schoolName = schoolName;
         this.schoolFilter = schoolFilter;
-        this.updates = updates;
+        this.updatesForEntity = updatesForEntity;
     }
 
     public String getSchoolName() {
@@ -26,7 +26,7 @@ public class SchoolAddRequest {
         return schoolFilter;
     }
 
-    public Updates getUpdates() {
-        return updates;
+    public UpdatesForEntity getUpdates() {
+        return updatesForEntity;
     }
 }

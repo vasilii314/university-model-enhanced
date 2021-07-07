@@ -4,6 +4,7 @@ import com.example.task.entity.Group;
 import com.example.task.exception.custom.GroupNotFoundException;
 import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.requests.save_or_update.GroupAddRequest;
+import com.example.task.json.responses.GroupDTO;
 import com.example.task.repository.GroupRepository;
 import com.example.task.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupServiceImpl implements GroupService {
 
-    private GroupRepository groupRepository;
+    private final GroupRepository groupRepository;
 
     @Autowired
     public GroupServiceImpl(GroupRepository groupRepository) {
@@ -46,26 +48,26 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<Group> findGroupsCriteria(GroupFilterRequest filter) {
-        List<Group> groups = groupRepository.findGroupsCriteria(filter);
-        if (groups.size() == 0) {
-            throw new GroupNotFoundException();
-        }
-        return groups;
+    public List<GroupDTO> findGroups(GroupFilterRequest filter) {
+        return groupRepository
+                .findGroups(filter)
+                .stream()
+                .map(GroupDTO::toGroupDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void addGroupCriteria(GroupAddRequest filter) {
-        groupRepository.addGroupCriteria(filter);
+    public void addGroup(GroupAddRequest filter) {
+        groupRepository.addGroup(filter);
     }
 
     @Override
-    public void deleteGroupCriteria(GroupFilterRequest filter) {
-        groupRepository.deleteGroupCriteria(filter);
+    public void deleteGroup(GroupFilterRequest filter) {
+        groupRepository.deleteGroup(filter);
     }
 
     @Override
-    public void updateGroupCriteria(GroupAddRequest filter) {
-        groupRepository.updateGroupCriteria(filter);
+    public void updateGroup(GroupAddRequest filter) {
+        groupRepository.updateGroup(filter);
     }
 }

@@ -1,23 +1,23 @@
 package com.example.task.json.requests.save_or_update;
 
 import com.example.task.json.requests.filters.GroupFilterRequest;
-import com.example.task.json.updates.Updates;
+import com.example.task.json.updates.UpdatesForEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GroupAddRequest {
     private final String groupName;
     private final String dptName;
     private final GroupFilterRequest groupFilter;
-    private final Updates updates;
+    private final UpdatesForEntity updatesForEntity;
 
     public GroupAddRequest(@JsonProperty(value = "groupName") String groupName,
                            @JsonProperty(value = "dptName") String dptName,
                            @JsonProperty(value = "groupFilter") GroupFilterRequest groupFilter,
-                           @JsonProperty(value = "updates") Updates updates) {
+                           @JsonProperty(value = "updates") UpdatesForEntity updatesForEntity) {
         this.groupName = groupName;
         this.dptName = dptName;
         this.groupFilter = groupFilter;
-        this.updates = updates;
+        this.updatesForEntity = updatesForEntity;
     }
 
     public String getGroupName() {
@@ -32,7 +32,7 @@ public class GroupAddRequest {
         return groupFilter;
     }
 
-    public Updates getUpdates() {
-        return updates;
+    public UpdatesForEntity getUpdates() {
+        return updatesForEntity;
     }
 }

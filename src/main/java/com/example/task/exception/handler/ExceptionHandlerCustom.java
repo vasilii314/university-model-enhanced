@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
@@ -13,9 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class ExceptionHandler {
+public class ExceptionHandlerCustom {
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(SchoolNotFoundException.class)
+    @ExceptionHandler(SchoolNotFoundException.class)
     public ResponseEntity<?> handleSchoolNotFoundException(SchoolNotFoundException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -25,7 +26,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(InternalException.class)
+    @ExceptionHandler(InternalException.class)
     public ResponseEntity<?> handleInternalException(InternalException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -35,7 +36,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(DeleteOrUpdateException.class)
+    @ExceptionHandler(DeleteOrUpdateException.class)
     public ResponseEntity<?> handleSchoolDeleteOrUpdateException(DeleteOrUpdateException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -45,7 +46,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(CourseNotFoundException.class)
+    @ExceptionHandler(CourseNotFoundException.class)
     public ResponseEntity<?> handleCourseNotFoundException(CourseNotFoundException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -55,7 +56,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -65,7 +66,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(NullPointerException.class)
+    @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<?> handleNullPointerException(NullPointerException e, WebRequest request) {
 
         e.printStackTrace();
@@ -76,7 +77,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(DepartmentNotFoundException.class)
+    @ExceptionHandler(DepartmentNotFoundException.class)
     public ResponseEntity<?> handleDepartmentNotFoundException(DepartmentNotFoundException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -86,7 +87,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(GroupNotFoundException.class)
+    @ExceptionHandler(GroupNotFoundException.class)
     public ResponseEntity<?> handleGroupNotFoundException(GroupNotFoundException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -96,7 +97,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(StudentNotFoundException.class)
+    @ExceptionHandler(StudentNotFoundException.class)
     public ResponseEntity<?> handleStudentNotFoundException(StudentNotFoundException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -106,7 +107,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(EmployeeNotFoundException.class)
+    @ExceptionHandler(EmployeeNotFoundException.class)
     public ResponseEntity<?> handleEmployeeNotFoundException(EmployeeNotFoundException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -116,7 +117,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(StudentGradeNotFoundException.class)
+    @ExceptionHandler(StudentGradeNotFoundException.class)
     public ResponseEntity<?> handleStudentGradeNotFoundException(StudentGradeNotFoundException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -126,7 +127,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(UpdatesObjectMissingException.class)
+    @ExceptionHandler(UpdatesObjectMissingException.class)
     public ResponseEntity<?> handleUpdatesObjectMissingException(UpdatesObjectMissingException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();
@@ -136,7 +137,7 @@ public class ExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(HttpMessageNotReadableException.class)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, WebRequest request) {
         e.printStackTrace();
         Map<String, Object> body = new HashMap<>();

@@ -26,23 +26,19 @@ public class SchoolController {
     }
 
     @PostMapping("/schools")
-    public ResponseEntity<List<SchoolDTO>> getSchoolsCriteria(@Valid @RequestBody SchoolFilterRequest req) {
-        List<SchoolDTO> schoolDTOS = schoolService.findSchoolsByName(req)
-                .stream()
-                .map(SchoolDTO::toSchoolDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok().body(schoolDTOS);
+    public ResponseEntity<List<SchoolDTO>> getSchools(@Valid @RequestBody SchoolFilterRequest req) {
+        return ResponseEntity.ok().body(schoolService.findSchoolsByName(req));
     }
 
     @PostMapping("/add-school")
-    public ResponseEntity<SchoolDTO> addSchoolCriteria(@Valid @RequestBody SchoolAddRequest req) {
+    public ResponseEntity<SchoolDTO> addSchool(@Valid @RequestBody SchoolAddRequest req) {
         School school = new School(req.getSchoolName());
         schoolService.save(school);
         return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/schools")
-    public ResponseEntity<SchoolDTO> deleteSchoolCriteria(@Valid @RequestBody SchoolFilterRequest req) {
+    public ResponseEntity<SchoolDTO> deleteSchool(@Valid @RequestBody SchoolFilterRequest req) {
         int status = schoolService.deleteSchoolByName(req);
         return status > 0 ? ResponseEntity.status(204).build() : ResponseEntity.badRequest().build();
     }

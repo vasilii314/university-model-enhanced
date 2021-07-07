@@ -1,23 +1,23 @@
 package com.example.task.json.requests.save_or_update;
 
 import com.example.task.json.requests.filters.StudentFilterRequest;
-import com.example.task.json.updates.Updates;
+import com.example.task.json.updates.UpdatesForEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StudentAddRequest {
     private final String studentFullName;
     private final String birthDate;
     private final StudentFilterRequest studentFilter;
-    private final Updates updates;
+    private final UpdatesForEntity updatesForEntity;
 
     public StudentAddRequest(@JsonProperty(value = "studentFullName") String studentFullName,
                              @JsonProperty(value = "birthDate") String birthDate,
                              @JsonProperty(value = "studentFilter") StudentFilterRequest studentFilter,
-                             @JsonProperty(value = "updates") Updates updates) {
+                             @JsonProperty(value = "updates") UpdatesForEntity updatesForEntity) {
         this.studentFullName = studentFullName;
         this.birthDate = birthDate;
         this.studentFilter = studentFilter;
-        this.updates = updates;
+        this.updatesForEntity = updatesForEntity;
     }
 
     public String getStudentFullName() {
@@ -32,7 +32,7 @@ public class StudentAddRequest {
         return studentFilter;
     }
 
-    public Updates getUpdates() {
-        return updates;
+    public UpdatesForEntity getUpdates() {
+        return updatesForEntity;
     }
 }

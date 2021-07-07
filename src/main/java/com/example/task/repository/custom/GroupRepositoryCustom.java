@@ -7,8 +7,8 @@ import com.example.task.json.requests.save_or_update.GroupAddRequest;
 import java.util.List;
 
 public interface GroupRepositoryCustom {
-    List<Group> findGroupsCriteria(GroupFilterRequest filter);
-    void addGroupCriteria(GroupAddRequest filter);
-    void deleteGroupCriteria(GroupFilterRequest filter);
-    void updateGroupCriteria(GroupAddRequest filter);
+    List<Group> findGroups(GroupFilterRequest filter);
+    void addGroup(GroupAddRequest filter);
+    void deleteGroup(GroupFilterRequest filter);
+    void updateGroup(GroupAddRequest filter);
 }

@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class HumanInUniversityServiceImpl implements HumanInUniversityService {
 
-    private HumanInUniversityRepository humanInUniversityRepository;
+    private final HumanInUniversityRepository humanInUniversityRepository;
 
     @Autowired
     public HumanInUniversityServiceImpl(HumanInUniversityRepository humanInUniversityRepository) {

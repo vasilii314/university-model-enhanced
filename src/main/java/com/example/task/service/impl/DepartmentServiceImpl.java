@@ -4,6 +4,7 @@ import com.example.task.entity.Department;
 import com.example.task.exception.custom.DepartmentNotFoundException;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
+import com.example.task.json.responses.DepartmentDTO;
 import com.example.task.repository.DepartmentRepository;
 import com.example.task.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    private DepartmentRepository departmentRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Autowired
     public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
@@ -46,26 +48,26 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<Department> findDepartmentsCriteria(DepartmentFilterRequest filter) {
-        List<Department> departments = departmentRepository.findDepartmentsCriteria(filter);
-        if (departments.size() == 0) {
-            throw new DepartmentNotFoundException();
-        }
-        return departments;
+    public List<DepartmentDTO> findDepartments(DepartmentFilterRequest filter) {
+        return departmentRepository
+                .findDepartments(filter)
+                .stream()
+                .map(DepartmentDTO::toDepartmentDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void addDepartmentCriteria(DepartmentAddRequest filter) {
-        departmentRepository.addDepartmentCriteria(filter);
+    public void addDepartment(DepartmentAddRequest filter) {
+        departmentRepository.addDepartment(filter);
     }
 
     @Override
-    public void deleteDepartmentCriteria(DepartmentFilterRequest filter) {
-        departmentRepository.deleteDepartmentCriteria(filter);
+    public void deleteDepartment(DepartmentFilterRequest filter) {
+        departmentRepository.deleteDepartment(filter);
     }
 
     @Override
-    public void updateDepartmentCriteria(DepartmentAddRequest filter) {
-        departmentRepository.updateDepartmentCriteria(filter);
+    public void updateDepartment(DepartmentAddRequest filter) {
+        departmentRepository.updateDepartment(filter);
     }
 }

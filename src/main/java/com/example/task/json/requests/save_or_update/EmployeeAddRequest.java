@@ -2,7 +2,7 @@ package com.example.task.json.requests.save_or_update;
 
 import com.example.task.entity.RoleEnum;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
-import com.example.task.json.updates.Updates;
+import com.example.task.json.updates.UpdatesForEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EmployeeAddRequest {
@@ -11,7 +11,7 @@ public class EmployeeAddRequest {
     private final String birthDate;
     private final String dptName;
     private final String schoolName;
-    private final Updates updates;
+    private final UpdatesForEntity updatesForEntity;
     private final EmployeeFilterRequest employeeFilter;
 
     public EmployeeAddRequest(@JsonProperty(value = "employeeFullName") String employeeFullName,
@@ -19,14 +19,14 @@ public class EmployeeAddRequest {
                               @JsonProperty(value = "birthDate") String birthDate,
                               @JsonProperty(value = "dptName") String dptName,
                               @JsonProperty(value = "schoolName") String schoolName,
-                              @JsonProperty(value = "updates") Updates updates,
+                              @JsonProperty(value = "updates") UpdatesForEntity updatesForEntity,
                               @JsonProperty(value = "employeeFilter") EmployeeFilterRequest employeeFilter) {
         this.employeeFullName = employeeFullName;
         this.role = role;
         this.birthDate = birthDate;
         this.dptName = dptName;
         this.schoolName = schoolName;
-        this.updates = updates;
+        this.updatesForEntity = updatesForEntity;
         this.employeeFilter = employeeFilter;
     }
 
@@ -50,8 +50,8 @@ public class EmployeeAddRequest {
         return schoolName;
     }
 
-    public Updates getUpdates() {
-        return updates;
+    public UpdatesForEntity getUpdates() {
+        return updatesForEntity;
     }
 
     public EmployeeFilterRequest getEmployeeFilter() {

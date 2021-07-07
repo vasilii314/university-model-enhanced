@@ -12,7 +12,6 @@ public class DepartmentFilterRequest {
         this.schoolName = schoolName;
     }
 
-
     public String getDptName() {
         return dptName;
     }

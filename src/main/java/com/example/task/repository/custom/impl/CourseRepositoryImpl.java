@@ -20,8 +20,8 @@ import java.util.List;
 @Repository
 public class CourseRepositoryImpl implements CourseRepositoryCustom {
 
-    private EntityManager entityManager;
-    private DepartmentRepository departmentRepository;
+    private final EntityManager entityManager;
+    private final DepartmentRepository departmentRepository;
 
     @Autowired
     public CourseRepositoryImpl(EntityManager entityManager, DepartmentRepository departmentRepository) {
@@ -30,7 +30,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
     }
 
     @Override
-    public List<Course> findCoursesCriteria(CourseFilterRequest filter) {
+    public List<Course> findCourses(CourseFilterRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Course> courseCriteriaQuery = builder.createQuery(Course.class);
         Root<Course> courseRoot = courseCriteriaQuery.from(Course.class);
@@ -67,10 +67,9 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
 
     @Override
     @Transactional
-    public void addCourseCriteria(CourseAddRequest filter) {
+    public void addCourse(CourseAddRequest filter) {
         DepartmentFilterRequest dptFilter = new DepartmentFilterRequest(filter.getDptName(), null);
-//        dptFilter.setDptName(filter.getDptName());
-        List<Department> departments = departmentRepository.findDepartmentsCriteria(dptFilter);
+        List<Department> departments = departmentRepository.findDepartments(dptFilter);
         if (departments.size() == 1) {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<CourseType> courseTypeCriteriaQuery = builder.createQuery(CourseType.class);
@@ -93,7 +92,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
 
     @Override
     @Transactional
-    public void deleteCourseCriteria(CourseFilterRequest filter) {
+    public void deleteCourse(CourseFilterRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaDelete<Course> courseCriteriaDelete = builder.createCriteriaDelete(Course.class);
@@ -138,7 +137,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
 
     @Override
     @Transactional
-    public void updateCourseCriteria(CourseAddRequest filter) {
+    public void updateCourse(CourseAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaUpdate<Course> courseCriteriaUpdate = builder.createCriteriaUpdate(Course.class);
@@ -166,7 +165,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
                     courseType = entityManager.createQuery(courseTypeCriteriaQuery).getSingleResult();
                 }
 
-                List<Course> courses = findCoursesCriteria(filter.getCourseFilter());
+                List<Course> courses = findCourses(filter.getCourseFilter());
                 if (courses.size() == 1) {
                     Course course = courses.get(0);
                     boolean flag = false;

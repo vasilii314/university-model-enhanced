@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class EmployeeController {
 
-    private HumanService humanService;
+    private final HumanService humanService;
 
     @Autowired
     public EmployeeController(HumanService humanService) {
@@ -24,31 +24,25 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
-    public ResponseEntity<List<EmployeeDTO>> getEmployeesCriteria(@RequestBody EmployeeFilterRequest req) {
-
-        List<Human> peopleInUniversity = humanService.findEmployeesCriteria(req);
-        List<EmployeeDTO> employees =  peopleInUniversity
-                .stream()
-                .map(EmployeeDTO::toEmployeeDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(employees);
+    public ResponseEntity<List<EmployeeDTO>> getEmployees(@RequestBody EmployeeFilterRequest req) {
+        return ResponseEntity.ok(humanService.findEmployees(req));
     }
 
     @PostMapping("/add-employee")
-    public ResponseEntity<EmployeeDTO> addEmployeeCriteria(@RequestBody EmployeeAddRequest req) {
-            humanService.addEmployeeCriteria(req);
+    public ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeAddRequest req) {
+            humanService.addEmployee(req);
             return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/employees")
-    public ResponseEntity<EmployeeDTO> deleteEmployeeCriteria(@RequestBody EmployeeFilterRequest req) {
-            humanService.deleteEmployeeOrStudentCriteria(req);
+    public ResponseEntity<EmployeeDTO> deleteEmployee(@RequestBody EmployeeFilterRequest req) {
+            humanService.deleteEmployeeOrStudent(req);
             return ResponseEntity.status(204).build();
     }
 
     @PatchMapping("/employees")
-    public ResponseEntity<EmployeeDTO> updateEmployeeCriteria(@RequestBody EmployeeAddRequest req) {
-            humanService.updateEmployeeOrStudentCriteria(req);
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeAddRequest req) {
+            humanService.updateEmployeeOrStudent(req);
             return ResponseEntity.status(204).build();
     }
 

@@ -10,12 +10,12 @@ import com.example.task.json.responses.StudentGradeDTO;
 import java.util.List;
 
 public interface HumanRepositoryCustom {
-    List<Human> findEmployeesCriteria(EmployeeFilterRequest filter);
-    void addEmployeeCriteria(EmployeeAddRequest filter);
-    void deleteEmployeeOrStudentCriteria(EmployeeFilterRequest filter);
-    void updateEmployeeOrStudentCriteria(EmployeeAddRequest filter);
-    List<Human> findStudentsCriteria(StudentFilterRequest filter);
-    void addStudentCriteria(StudentAddRequest filter);
-    List<StudentGradeDTO> getStudentGradesCriteria(StudentFilterRequest filter);
-    void addStudentGradeCriteria(StudentAddRequest filter);
+    List<Human> findEmployees(EmployeeFilterRequest filter);
+    void addEmployee(EmployeeAddRequest filter);
+    void deleteEmployeeOrStudent(EmployeeFilterRequest filter);
+    void updateEmployeeOrStudent(EmployeeAddRequest filter);
+    List<Human> findStudents(StudentFilterRequest filter);
+    void addStudent(StudentAddRequest filter);
+    List<StudentGradeDTO> getStudentGrades(StudentFilterRequest filter);
+    void addStudentGrade(StudentAddRequest filter);
 }

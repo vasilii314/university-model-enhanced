@@ -8,6 +8,8 @@ import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
 import com.example.task.json.requests.save_or_update.StudentAddRequest;
+import com.example.task.json.responses.EmployeeDTO;
+import com.example.task.json.responses.StudentDTO;
 import com.example.task.json.responses.StudentGradeDTO;
 import com.example.task.repository.HumanRepository;
 import com.example.task.service.HumanService;
@@ -17,11 +19,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HumanServiceImpl implements HumanService {
 
-    private HumanRepository humanRepository;
+    private final HumanRepository humanRepository;
 
     @Autowired
     public HumanServiceImpl(HumanRepository humanRepository) {
@@ -51,22 +54,27 @@ public class HumanServiceImpl implements HumanService {
     }
 
     @Override
-    public List<Human> findStudentsCriteria(StudentFilterRequest filter) {
-        List<Human> students = humanRepository.findStudentsCriteria(filter);
-        if (students.size() == 0) {
-            throw new StudentNotFoundException();
-        }
-        return students;
+    public List<StudentDTO> findStudents(StudentFilterRequest filter) {
+//        List<Human> students = humanRepository.findStudentsCriteria(filter);
+//        if (students.size() == 0) {
+//            throw new StudentNotFoundException();
+//        }
+//        return students;
+        return humanRepository
+                .findStudents(filter)
+                .stream()
+                .map(StudentDTO::toStudentDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void addStudentCriteria(StudentAddRequest filter) {
-        humanRepository.addStudentCriteria(filter);
+    public void addStudent(StudentAddRequest filter) {
+        humanRepository.addStudent(filter);
     }
 
     @Override
-    public List<StudentGradeDTO> getStudentGradesCriteria(StudentFilterRequest filter) {
-        List<StudentGradeDTO> studentGrades = humanRepository.getStudentGradesCriteria(filter);
+    public List<StudentGradeDTO> getStudentGrades(StudentFilterRequest filter) {
+        List<StudentGradeDTO> studentGrades = humanRepository.getStudentGrades(filter);
         if (studentGrades.size() == 0) {
             throw new StudentGradeNotFoundException();
         }
@@ -74,31 +82,31 @@ public class HumanServiceImpl implements HumanService {
     }
 
     @Override
-    public void addStudentGradeCriteria(StudentAddRequest filter) {
-        humanRepository.addStudentGradeCriteria(filter);
+    public void addStudentGrade(StudentAddRequest filter) {
+        humanRepository.addStudentGrade(filter);
     }
 
     @Override
-    public List<Human> findEmployeesCriteria(EmployeeFilterRequest filter) {
-        List<Human> employees = humanRepository.findEmployeesCriteria(filter);
-        if (employees.size() == 0) {
-            throw new EmployeeNotFoundException();
-        }
-        return employees;
+    public List<EmployeeDTO> findEmployees(EmployeeFilterRequest filter) {
+        return humanRepository
+                .findEmployees(filter)
+                .stream()
+                .map(EmployeeDTO::toEmployeeDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void addEmployeeCriteria(EmployeeAddRequest filter) {
-        humanRepository.addEmployeeCriteria(filter);
+    public void addEmployee(EmployeeAddRequest filter) {
+        humanRepository.addEmployee(filter);
     }
 
     @Override
-    public void deleteEmployeeOrStudentCriteria(EmployeeFilterRequest filter) {
-        humanRepository.deleteEmployeeOrStudentCriteria(filter);
+    public void deleteEmployeeOrStudent(EmployeeFilterRequest filter) {
+        humanRepository.deleteEmployeeOrStudent(filter);
     }
 
     @Override
-    public void updateEmployeeOrStudentCriteria(EmployeeAddRequest filter) {
-        humanRepository.updateEmployeeOrStudentCriteria(filter);
+    public void updateEmployeeOrStudent(EmployeeAddRequest filter) {
+        humanRepository.updateEmployeeOrStudent(filter);
     }
 }

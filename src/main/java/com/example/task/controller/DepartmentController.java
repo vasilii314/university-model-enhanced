@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class DepartmentController {
 
-    private DepartmentService departmentService;
+    private final DepartmentService departmentService;
 
     @Autowired
     public DepartmentController(DepartmentService departmentService) {
@@ -25,31 +25,25 @@ public class DepartmentController {
     }
 
     @PostMapping("/departments")
-    public ResponseEntity<List<DepartmentDTO>> findDepartmentsCriteria(@RequestBody DepartmentFilterRequest req) {
-        List<Department> departmentsRaw = departmentService.findDepartmentsCriteria(req);
-        System.out.println(departmentsRaw.get(0).getId());
-        List<DepartmentDTO> departments =  departmentsRaw
-                .stream()
-                .map(DepartmentDTO::toDepartmentDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(departments);
+    public ResponseEntity<List<DepartmentDTO>> findDepartments(@RequestBody DepartmentFilterRequest req) {
+        return ResponseEntity.ok(departmentService.findDepartments(req));
     }
 
     @PostMapping("/add-department")
-    public ResponseEntity<DepartmentDTO> addDepartmentCriteria(@RequestBody DepartmentAddRequest req) {
-            departmentService.addDepartmentCriteria(req);
+    public ResponseEntity<DepartmentDTO> addDepartment(@RequestBody DepartmentAddRequest req) {
+            departmentService.addDepartment(req);
             return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/departments")
-    public ResponseEntity<DepartmentDTO> deleteDepartmentCriteria(@RequestBody DepartmentFilterRequest req) {
-            departmentService.deleteDepartmentCriteria(req);
+    public ResponseEntity<DepartmentDTO> deleteDepartment(@RequestBody DepartmentFilterRequest req) {
+            departmentService.deleteDepartment(req);
             return ResponseEntity.status(204).build();
     }
 
     @PatchMapping("/departments")
-    public ResponseEntity<DepartmentDTO> updateDepartmentCriteria(@RequestBody DepartmentAddRequest req) {
-            departmentService.updateDepartmentCriteria(req);
+    public ResponseEntity<DepartmentDTO> updateDepartment(@RequestBody DepartmentAddRequest req) {
+            departmentService.updateDepartment(req);
             return ResponseEntity.status(204).build();
     }
 

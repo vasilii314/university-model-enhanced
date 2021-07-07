@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class StudentGradeController {
 
-    private HumanService humanService;
+    private final HumanService humanService;
 
     @Autowired
     public StudentGradeController(HumanService humanService) {
@@ -23,14 +23,13 @@ public class StudentGradeController {
     }
 
     @PostMapping("/grades")
-    public ResponseEntity<List<StudentGradeDTO>> getGradesCriteria(@RequestBody @Valid StudentFilterRequest req) {
-        List<StudentGradeDTO> grades = humanService.getStudentGradesCriteria(req);
-        return ResponseEntity.ok(grades);
+    public ResponseEntity<List<StudentGradeDTO>> getGrades(@RequestBody @Valid StudentFilterRequest req) {
+        return ResponseEntity.ok(humanService.getStudentGrades(req));
     }
 
     @PostMapping("/add-grade")
-    public ResponseEntity<StudentGradeDTO> addGradeCriteria(@RequestBody @Valid StudentAddRequest req) {
-            humanService.addStudentGradeCriteria(req);
+    public ResponseEntity<StudentGradeDTO> addGrade(@RequestBody @Valid StudentAddRequest req) {
+            humanService.addStudentGrade(req);
             return ResponseEntity.status(201).build();
     }
 }

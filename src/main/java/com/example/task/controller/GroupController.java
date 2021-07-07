@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/departments")
 public class GroupController {
-    private GroupService groupService;
+    private final GroupService groupService;
 
     @Autowired
     public GroupController(GroupService groupService) {
@@ -23,27 +23,25 @@ public class GroupController {
     }
 
     @PostMapping("/groups")
-    public ResponseEntity<List<GroupDTO>> getGroupsCriteria(@RequestBody GroupFilterRequest req) {
-        List<Group> groupsRaw = groupService.findGroupsCriteria(req);
-        List<GroupDTO> groups = groupsRaw.stream().map(GroupDTO::toGroupDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(groups);
+    public ResponseEntity<List<GroupDTO>> getGroups(@RequestBody GroupFilterRequest req) {
+        return ResponseEntity.ok(groupService.findGroups(req));
     }
 
     @PostMapping("/add-group")
-    public ResponseEntity<GroupDTO> addGroupCriteria(@RequestBody GroupAddRequest req) {
-            groupService.addGroupCriteria(req);
+    public ResponseEntity<GroupDTO> addGroup(@RequestBody GroupAddRequest req) {
+            groupService.addGroup(req);
             return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/groups")
-    public ResponseEntity<GroupDTO> deleteGroupCriteria(@RequestBody GroupFilterRequest req) {
-            groupService.deleteGroupCriteria(req);
+    public ResponseEntity<GroupDTO> deleteGroup(@RequestBody GroupFilterRequest req) {
+            groupService.deleteGroup(req);
             return ResponseEntity.status(204).build();
     }
 
     @PatchMapping("/groups")
-    public ResponseEntity<GroupDTO> updateGroupCriteria(@RequestBody GroupAddRequest req) {
-            groupService.updateGroupCriteria(req);
+    public ResponseEntity<GroupDTO> updateGroup(@RequestBody GroupAddRequest req) {
+            groupService.updateGroup(req);
             return ResponseEntity.status(204).build();
     }
 

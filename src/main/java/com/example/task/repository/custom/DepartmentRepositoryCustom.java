@@ -7,8 +7,8 @@ import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
 import java.util.List;
 
 public interface DepartmentRepositoryCustom {
-    List<Department> findDepartmentsCriteria(DepartmentFilterRequest filter);
-    void addDepartmentCriteria(DepartmentAddRequest filter);
-    void deleteDepartmentCriteria(DepartmentFilterRequest filter);
-    void updateDepartmentCriteria(DepartmentAddRequest filter);
+    List<Department> findDepartments(DepartmentFilterRequest filter);
+    void addDepartment(DepartmentAddRequest filter);
+    void deleteDepartment(DepartmentFilterRequest filter);
+    void updateDepartment(DepartmentAddRequest filter);
 }

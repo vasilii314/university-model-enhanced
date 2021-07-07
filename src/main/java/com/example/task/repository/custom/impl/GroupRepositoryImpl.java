@@ -20,7 +20,7 @@ import java.util.List;
 @Repository
 public class GroupRepositoryImpl implements GroupRepositoryCustom {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Autowired
     public GroupRepositoryImpl(EntityManager entityManager) {
@@ -28,7 +28,7 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
     }
 
     @Override
-    public List<Group> findGroupsCriteria(GroupFilterRequest filter) {
+    public List<Group> findGroups(GroupFilterRequest filter) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Group> groupCriteriaQuery = builder.createQuery(Group.class);
         Root<Group> groupRoot = groupCriteriaQuery.from(Group.class);
@@ -50,7 +50,7 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
 
     @Override
     @Transactional
-    public void addGroupCriteria(GroupAddRequest filter) {
+    public void addGroup(GroupAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Department> criteriaQuery = builder.createQuery(Department.class);
@@ -76,7 +76,7 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
 
     @Override
     @Transactional
-    public void deleteGroupCriteria(GroupFilterRequest filter) {
+    public void deleteGroup(GroupFilterRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaDelete<Group> groupCriteriaDelete = builder.createCriteriaDelete(Group.class);
@@ -110,7 +110,7 @@ public class GroupRepositoryImpl implements GroupRepositoryCustom {
 
     @Override
     @Transactional
-    public void updateGroupCriteria(GroupAddRequest filter) {
+    public void updateGroup(GroupAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaUpdate<Group> groupCriteriaUpdate = builder.createCriteriaUpdate(Group.class);

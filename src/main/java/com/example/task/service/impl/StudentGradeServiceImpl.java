@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class StudentGradeServiceImpl implements StudentGradeService {
 
-    private StudentGradesRepository studentGradesRepository;
+    private final StudentGradesRepository studentGradesRepository;
 
     @Autowired
     public StudentGradeServiceImpl(StudentGradesRepository studentGradesRepository) {

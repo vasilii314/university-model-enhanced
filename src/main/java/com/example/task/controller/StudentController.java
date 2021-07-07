@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class StudentController {
 
-    private HumanService humanService;
+    private final HumanService humanService;
 
     @Autowired
     public StudentController(HumanService humanService) {
@@ -27,27 +27,25 @@ public class StudentController {
     }
 
     @PostMapping("/students")
-    public ResponseEntity<List<StudentDTO>> getStudentsCriteria(@RequestBody @Valid StudentFilterRequest req) {
-        List<Human> studentsRaw = humanService.findStudentsCriteria(req);
-        List<StudentDTO> students = studentsRaw.stream().map(StudentDTO::toStudentDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(students);
+    public ResponseEntity<List<StudentDTO>> getStudents(@RequestBody @Valid StudentFilterRequest req) {
+        return ResponseEntity.ok(humanService.findStudents(req));
     }
 
     @PostMapping("/add-student")
-    public ResponseEntity<StudentDTO> addStudentCriteria(@RequestBody @Valid StudentAddRequest req) {
-            humanService.addStudentCriteria(req);
+    public ResponseEntity<StudentDTO> addStudent(@RequestBody @Valid StudentAddRequest req) {
+            humanService.addStudent(req);
             return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/students")
-    public ResponseEntity<StudentDTO> deleteStudentCriteria(@RequestBody @Valid EmployeeFilterRequest req) {
-            humanService.deleteEmployeeOrStudentCriteria(req);
+    public ResponseEntity<StudentDTO> deleteStudent(@RequestBody @Valid EmployeeFilterRequest req) {
+            humanService.deleteEmployeeOrStudent(req);
             return ResponseEntity.status(204).build();
     }
 
     @PatchMapping("/students")
-    public ResponseEntity<StudentDTO> updateStudentCriteria(@RequestBody @Valid EmployeeAddRequest req) {
-            humanService.updateEmployeeOrStudentCriteria(req);
+    public ResponseEntity<StudentDTO> updateStudent(@RequestBody @Valid EmployeeAddRequest req) {
+            humanService.updateEmployeeOrStudent(req);
             return ResponseEntity.status(204).build();
     }
 

@@ -11,7 +11,7 @@ public class StudentGrade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "course_id")
@@ -24,17 +24,21 @@ public class StudentGrade {
     @Positive
     @Min(2)
     @Max(5)
-    private int grade;
+    private Integer grade;
 
     public StudentGrade() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
     }
 
     public Course getCourse() {
@@ -53,12 +57,8 @@ public class StudentGrade {
         this.student = student;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
-    }
-
-    public void setGrade(int grade) {
-        this.grade = grade;
     }
 
     @Override
