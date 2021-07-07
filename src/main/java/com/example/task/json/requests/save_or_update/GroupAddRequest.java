@@ -3,7 +3,9 @@ package com.example.task.json.requests.save_or_update;
 import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.updates.UpdatesForEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class GroupAddRequest {
     private final String groupName;
     private final String dptName;

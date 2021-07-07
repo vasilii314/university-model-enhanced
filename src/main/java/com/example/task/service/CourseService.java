@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface CourseService extends Service<Course> {
     List<CourseDTO> findCourses(CourseFilterRequest filter);
+
     void addCourse(CourseAddRequest filter);
+
     void deleteCourse(CourseFilterRequest filter);
+
     void updateCourse(CourseAddRequest filter);
 }

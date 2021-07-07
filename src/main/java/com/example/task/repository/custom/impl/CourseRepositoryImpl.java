@@ -6,9 +6,8 @@ import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.CourseAddRequest;
 import com.example.task.repository.custom.CourseRepositoryCustom;
-import com.example.task.repository.DepartmentRepository;
+import com.example.task.repository.custom.DepartmentRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -17,16 +16,15 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.*;
 import java.util.List;
 
-@Repository
 public class CourseRepositoryImpl implements CourseRepositoryCustom {
 
     private final EntityManager entityManager;
-    private final DepartmentRepository departmentRepository;
+    private final DepartmentRepositoryCustom departmentRepositoryCustom;
 
     @Autowired
-    public CourseRepositoryImpl(EntityManager entityManager, DepartmentRepository departmentRepository) {
+    public CourseRepositoryImpl(EntityManager entityManager, DepartmentRepositoryCustom departmentRepositoryCustom) {
         this.entityManager = entityManager;
-        this.departmentRepository = departmentRepository;
+        this.departmentRepositoryCustom = departmentRepositoryCustom;
     }
 
     @Override
@@ -69,7 +67,7 @@ public class CourseRepositoryImpl implements CourseRepositoryCustom {
     @Transactional
     public void addCourse(CourseAddRequest filter) {
         DepartmentFilterRequest dptFilter = new DepartmentFilterRequest(filter.getDptName(), null);
-        List<Department> departments = departmentRepository.findDepartments(dptFilter);
+        List<Department> departments = departmentRepositoryCustom.findDepartments(dptFilter);
         if (departments.size() == 1) {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<CourseType> courseTypeCriteriaQuery = builder.createQuery(CourseType.class);

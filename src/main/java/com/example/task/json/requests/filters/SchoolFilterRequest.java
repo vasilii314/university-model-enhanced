@@ -1,9 +1,11 @@
 package com.example.task.json.requests.filters;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
 import javax.validation.constraints.NotBlank;
 
+@Immutable
 public class SchoolFilterRequest {
 
     @NotBlank

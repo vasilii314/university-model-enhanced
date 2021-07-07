@@ -1,11 +1,11 @@
 package com.example.task.service.impl;
 
 import com.example.task.entity.Group;
-import com.example.task.exception.custom.GroupNotFoundException;
 import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.requests.save_or_update.GroupAddRequest;
 import com.example.task.json.responses.GroupDTO;
 import com.example.task.repository.GroupRepository;
+import com.example.task.repository.custom.GroupRepositoryCustom;
 import com.example.task.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,12 @@ import java.util.stream.Collectors;
 public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
+    private final GroupRepositoryCustom groupRepositoryCustom;
 
     @Autowired
-    public GroupServiceImpl(GroupRepository groupRepository) {
+    public GroupServiceImpl(GroupRepository groupRepository, GroupRepositoryCustom groupRepositoryCustom) {
         this.groupRepository = groupRepository;
+        this.groupRepositoryCustom = groupRepositoryCustom;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDTO> findGroups(GroupFilterRequest filter) {
-        return groupRepository
+        return groupRepositoryCustom
                 .findGroups(filter)
                 .stream()
                 .map(GroupDTO::toGroupDTO)
@@ -58,16 +60,16 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void addGroup(GroupAddRequest filter) {
-        groupRepository.addGroup(filter);
+        groupRepositoryCustom.addGroup(filter);
     }
 
     @Override
     public void deleteGroup(GroupFilterRequest filter) {
-        groupRepository.deleteGroup(filter);
+        groupRepositoryCustom.deleteGroup(filter);
     }
 
     @Override
     public void updateGroup(GroupAddRequest filter) {
-        groupRepository.updateGroup(filter);
+        groupRepositoryCustom.updateGroup(filter);
     }
 }

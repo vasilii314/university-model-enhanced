@@ -13,11 +13,18 @@ import java.util.List;
 
 public interface HumanService extends Service<Human> {
     List<EmployeeDTO> findEmployees(EmployeeFilterRequest filter);
+
     void addEmployee(EmployeeAddRequest filter);
+
     void deleteEmployeeOrStudent(EmployeeFilterRequest filter);
+
     void updateEmployeeOrStudent(EmployeeAddRequest filter);
+
     List<StudentDTO> findStudents(StudentFilterRequest filter);
+
     void addStudent(StudentAddRequest filter);
+
     List<StudentGradeDTO> getStudentGrades(StudentFilterRequest filter);
+
     void addStudentGrade(StudentAddRequest filter);
 }

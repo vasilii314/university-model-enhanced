@@ -4,9 +4,11 @@ import com.example.task.entity.CourseTypeEnum;
 import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.updates.UpdatesForEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
 import javax.validation.constraints.Positive;
 
+@Immutable
 public class CourseAddRequest {
     private final String courseName;
     private final String groupName;

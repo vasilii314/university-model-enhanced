@@ -7,7 +7,10 @@ import java.util.Optional;
 
 public interface CourseTypeService {
     List<CourseType> findAll();
+
     Optional<CourseType> findById(int id);
+
     void save(CourseType courseType);
+
     void deleteById(int id);
 }

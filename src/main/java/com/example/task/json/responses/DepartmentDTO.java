@@ -1,7 +1,9 @@
 package com.example.task.json.responses;
 
 import com.example.task.entity.Department;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class DepartmentDTO {
 
     private final Integer id;

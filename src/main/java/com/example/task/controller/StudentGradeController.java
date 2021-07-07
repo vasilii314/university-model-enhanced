@@ -29,7 +29,7 @@ public class StudentGradeController {
 
     @PostMapping("/add-grade")
     public ResponseEntity<StudentGradeDTO> addGrade(@RequestBody @Valid StudentAddRequest req) {
-            humanService.addStudentGrade(req);
-            return ResponseEntity.status(201).build();
+        humanService.addStudentGrade(req);
+        return ResponseEntity.status(201).build();
     }
 }

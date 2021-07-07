@@ -1,9 +1,7 @@
 package com.example.task.service.impl;
 
 import com.example.task.entity.*;
-import com.example.task.exception.custom.EmployeeNotFoundException;
 import com.example.task.exception.custom.StudentGradeNotFoundException;
-import com.example.task.exception.custom.StudentNotFoundException;
 import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
@@ -12,11 +10,11 @@ import com.example.task.json.responses.EmployeeDTO;
 import com.example.task.json.responses.StudentDTO;
 import com.example.task.json.responses.StudentGradeDTO;
 import com.example.task.repository.HumanRepository;
+import com.example.task.repository.custom.HumanRepositoryCustom;
 import com.example.task.service.HumanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,10 +23,12 @@ import java.util.stream.Collectors;
 public class HumanServiceImpl implements HumanService {
 
     private final HumanRepository humanRepository;
+    private final HumanRepositoryCustom humanRepositoryCustom;
 
     @Autowired
-    public HumanServiceImpl(HumanRepository humanRepository) {
+    public HumanServiceImpl(HumanRepository humanRepository, HumanRepositoryCustom humanRepositoryCustom) {
         this.humanRepository = humanRepository;
+        this.humanRepositoryCustom = humanRepositoryCustom;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class HumanServiceImpl implements HumanService {
 
     @Override
     public List<StudentDTO> findStudents(StudentFilterRequest filter) {
-        return humanRepository
+        return humanRepositoryCustom
                 .findStudents(filter)
                 .stream()
                 .map(StudentDTO::toStudentDTO)
@@ -62,12 +62,12 @@ public class HumanServiceImpl implements HumanService {
 
     @Override
     public void addStudent(StudentAddRequest filter) {
-        humanRepository.addStudent(filter);
+        humanRepositoryCustom.addStudent(filter);
     }
 
     @Override
     public List<StudentGradeDTO> getStudentGrades(StudentFilterRequest filter) {
-        List<StudentGradeDTO> studentGrades = humanRepository.getStudentGrades(filter);
+        List<StudentGradeDTO> studentGrades = humanRepositoryCustom.getStudentGrades(filter);
         if (studentGrades.size() == 0) {
             throw new StudentGradeNotFoundException();
         }
@@ -76,12 +76,12 @@ public class HumanServiceImpl implements HumanService {
 
     @Override
     public void addStudentGrade(StudentAddRequest filter) {
-        humanRepository.addStudentGrade(filter);
+        humanRepositoryCustom.addStudentGrade(filter);
     }
 
     @Override
     public List<EmployeeDTO> findEmployees(EmployeeFilterRequest filter) {
-        return humanRepository
+        return humanRepositoryCustom
                 .findEmployees(filter)
                 .stream()
                 .map(EmployeeDTO::toEmployeeDTO)
@@ -90,16 +90,16 @@ public class HumanServiceImpl implements HumanService {
 
     @Override
     public void addEmployee(EmployeeAddRequest filter) {
-        humanRepository.addEmployee(filter);
+        humanRepositoryCustom.addEmployee(filter);
     }
 
     @Override
     public void deleteEmployeeOrStudent(EmployeeFilterRequest filter) {
-        humanRepository.deleteEmployeeOrStudent(filter);
+        humanRepositoryCustom.deleteEmployeeOrStudent(filter);
     }
 
     @Override
     public void updateEmployeeOrStudent(EmployeeAddRequest filter) {
-        humanRepository.updateEmployeeOrStudent(filter);
+        humanRepositoryCustom.updateEmployeeOrStudent(filter);
     }
 }

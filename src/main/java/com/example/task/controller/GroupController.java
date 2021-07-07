@@ -1,6 +1,5 @@
 package com.example.task.controller;
 
-import com.example.task.entity.Group;
 import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.requests.save_or_update.GroupAddRequest;
 import com.example.task.json.responses.GroupDTO;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/departments")
@@ -29,20 +27,20 @@ public class GroupController {
 
     @PostMapping("/add-group")
     public ResponseEntity<GroupDTO> addGroup(@RequestBody GroupAddRequest req) {
-            groupService.addGroup(req);
-            return ResponseEntity.status(201).build();
+        groupService.addGroup(req);
+        return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/groups")
     public ResponseEntity<GroupDTO> deleteGroup(@RequestBody GroupFilterRequest req) {
-            groupService.deleteGroup(req);
-            return ResponseEntity.status(204).build();
+        groupService.deleteGroup(req);
+        return ResponseEntity.status(204).build();
     }
 
     @PatchMapping("/groups")
     public ResponseEntity<GroupDTO> updateGroup(@RequestBody GroupAddRequest req) {
-            groupService.updateGroup(req);
-            return ResponseEntity.status(204).build();
+        groupService.updateGroup(req);
+        return ResponseEntity.status(204).build();
     }
 
     @DeleteMapping("/groups/{id}")

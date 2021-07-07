@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface GroupService extends Service<Group> {
     List<GroupDTO> findGroups(GroupFilterRequest filter);
+
     void addGroup(GroupAddRequest filter);
+
     void deleteGroup(GroupFilterRequest filter);
+
     void updateGroup(GroupAddRequest filter);
 }

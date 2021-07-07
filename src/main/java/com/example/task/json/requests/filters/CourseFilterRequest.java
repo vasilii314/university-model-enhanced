@@ -2,9 +2,11 @@ package com.example.task.json.requests.filters;
 
 import com.example.task.entity.CourseTypeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
 import javax.validation.constraints.Positive;
 
+@Immutable
 public class CourseFilterRequest {
     private final String courseName;
     private final String groupName;

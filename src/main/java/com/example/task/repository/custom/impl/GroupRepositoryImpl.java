@@ -9,7 +9,6 @@ import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.requests.save_or_update.GroupAddRequest;
 import com.example.task.repository.custom.GroupRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -17,7 +16,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.*;
 import java.util.List;
 
-@Repository
 public class GroupRepositoryImpl implements GroupRepositoryCustom {
 
     private final EntityManager entityManager;

@@ -1,10 +1,12 @@
 package com.example.task.json.responses;
 
 import com.example.task.entity.School;
+import org.hibernate.annotations.Immutable;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Immutable
 public class SchoolDTO {
 
     private final Integer id;

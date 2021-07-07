@@ -3,7 +3,9 @@ package com.example.task.json.requests.save_or_update;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.json.updates.UpdatesForEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class SchoolAddRequest {
     private final String schoolName;
     private final SchoolFilterRequest schoolFilter;

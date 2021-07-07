@@ -1,5 +1,8 @@
 package com.example.task.json.responses;
 
+import org.hibernate.annotations.Immutable;
+
+@Immutable
 public class CourseDTO {
     private final Integer id;
     private final String courseName;

@@ -12,7 +12,6 @@ import com.example.task.repository.HumanInUniversityRepository;
 import com.example.task.repository.StudentGradesRepository;
 import com.example.task.repository.StudentInGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -24,7 +23,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Repository
 public class HumanRepositoryImpl implements HumanRepositoryCustom {
     private final EntityManager entityManager;
     private final HumanInUniversityRepository humanInUniversityRepository;
@@ -128,7 +126,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                     (filter.getRole().equals(RoleEnum.POSTGRADUATE) || filter.getRole().equals(RoleEnum.PROFESSOR)) ?
                     builder.equal(joinRoleToHumanInUniversity.get(Role_.roleDescription), filter.getRole()) :
                     joinRoleToHumanInUniversity.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
-            Predicate dptRestriction =  filter.getDptName() != null ?
+            Predicate dptRestriction = filter.getDptName() != null ?
                     builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%" + filter.getDptName() + "%") :
                     builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%");
             Predicate birthDateUpperBound = filter.getBirthDateUpperBound() != null ?
@@ -158,7 +156,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
     public void updateEmployeeOrStudent(EmployeeAddRequest filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Human> humanCriteriaQuery= builder.createQuery(Human.class);
+            CriteriaQuery<Human> humanCriteriaQuery = builder.createQuery(Human.class);
             CriteriaQuery<Role> roleCriteriaQuery = builder.createQuery(Role.class);
             CriteriaQuery<Department> departmentCriteriaQuery = builder.createQuery(Department.class);
             CriteriaQuery<Group> groupCriteriaQuery = builder.createQuery(Group.class);
@@ -202,7 +200,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                     (filter.getEmployeeFilter().getRole().equals(RoleEnum.POSTGRADUATE) || filter.getEmployeeFilter().getRole().equals(RoleEnum.PROFESSOR)) ?
                     builder.equal(joinRoleToHumanInUniversity.get(Role_.roleDescription), filter.getEmployeeFilter().getRole()) :
                     joinRoleToHumanInUniversity.get(Role_.roleDescription).in(RoleEnum.PROFESSOR, RoleEnum.POSTGRADUATE, RoleEnum.STUDENT);
-            Predicate humanDptRestriction =  filter.getEmployeeFilter().getDptName() != null ?
+            Predicate humanDptRestriction = filter.getEmployeeFilter().getDptName() != null ?
                     builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%" + filter.getEmployeeFilter().getDptName() + "%") :
                     builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%");
             Predicate birthDateUpperBound = filter.getEmployeeFilter().getBirthDateUpperBound() != null ?
@@ -227,7 +225,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
             occupation.setHuman(human);
             if (filter.getUpdates().getFullName() != null) {
                 human.setFullName(filter.getUpdates().getFullName());
-                if(department != null) {
+                if (department != null) {
                     occupation.setDepartment(department);
                     if (role != null) {
                         occupation.setRole(role);
@@ -247,7 +245,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                     }
                 }
                 entityManager.persist(human);
-            } else if(department != null) {
+            } else if (department != null) {
                 occupation.setDepartment(department);
                 if (role != null) {
                     occupation.setRole(role);
@@ -293,7 +291,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
                     builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse(filter.getBirthDateLowerBound())) :
                     builder.greaterThanOrEqualTo(humanRoot.get(Human_.birthDate), LocalDate.parse("1800-01-01"));
             Predicate roleRestriction = builder.equal(joinRoleToHumanInUniversity.get(Role_.roleDescription), RoleEnum.STUDENT);
-            Predicate humanDptRestriction =  filter.getDptName() != null ?
+            Predicate humanDptRestriction = filter.getDptName() != null ?
                     builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%" + filter.getDptName() + "%") :
                     builder.like(joinDepartmentToHumanInUniversity.get(Department_.name), "%");
             criteriaQuery.select(humanRoot).distinct(true);
@@ -378,7 +376,7 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
             Predicate gradeUpperBound = filter.getGradeUpperBound() != null ?
                     builder.lessThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), filter.getGradeUpperBound()) :
                     builder.lessThanOrEqualTo(studentGradeRoot.get(StudentGrade_.grade), 5);
-            Predicate studentDptRestriction =  filter.getDptName() != null ?
+            Predicate studentDptRestriction = filter.getDptName() != null ?
                     builder.like(joinDepartmentToCourse.get(Department_.name), "%" + filter.getDptName() + "%") :
                     builder.like(joinDepartmentToCourse.get(Department_.name), "%");
 

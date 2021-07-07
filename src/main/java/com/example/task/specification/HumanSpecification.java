@@ -46,7 +46,7 @@ public class HumanSpecification implements Specification<Human> {
 
                 case LESS_THAN_EQUAL:
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(
-                            root.get(criteria.getKey()),  LocalDate.parse(criteria.getValue().toString())));
+                            root.get(criteria.getKey()), LocalDate.parse(criteria.getValue().toString())));
                     break;
 
                 case NOT_EQUAL:

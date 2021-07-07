@@ -9,14 +9,12 @@ import com.example.task.operations.SearchOperation;
 import com.example.task.repository.custom.SchoolRepositoryCustom;
 import com.example.task.specification.SchoolSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import java.util.List;
 
-@Repository
 public class SchoolRepositoryImpl implements SchoolRepositoryCustom {
 
     private final EntityManager entityManager;

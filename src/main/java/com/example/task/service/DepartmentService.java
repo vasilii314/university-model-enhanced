@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface DepartmentService extends Service<Department> {
     List<DepartmentDTO> findDepartments(DepartmentFilterRequest filter);
+
     void addDepartment(DepartmentAddRequest filter);
+
     void deleteDepartment(DepartmentFilterRequest filter);
+
     void updateDepartment(DepartmentAddRequest filter);
 }

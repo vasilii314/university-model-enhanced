@@ -1,7 +1,9 @@
 package com.example.task.json.requests.filters;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class DepartmentFilterRequest {
     private final String dptName;
     private final String schoolName;

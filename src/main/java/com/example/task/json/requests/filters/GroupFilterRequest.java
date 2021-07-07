@@ -1,7 +1,9 @@
 package com.example.task.json.requests.filters;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class GroupFilterRequest {
     private final String groupName;
     private final String dptName;

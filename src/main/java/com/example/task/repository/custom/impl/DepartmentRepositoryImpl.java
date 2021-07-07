@@ -11,7 +11,6 @@ import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
 import com.example.task.repository.custom.DepartmentRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -20,7 +19,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.criteria.*;
 import java.util.List;
 
-@Repository
 public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
 
     private final EntityManager entityManager;
@@ -104,7 +102,7 @@ public class DepartmentRepositoryImpl implements DepartmentRepositoryCustom {
                 departmentCriteriaDelete.where(dptNameRestriction);
                 entityManager.createQuery(departmentCriteriaDelete).executeUpdate();
             }
-        }  catch (NonUniqueResultException e) {
+        } catch (NonUniqueResultException e) {
             throw new InternalException();
         } catch (Exception e) {
             e.printStackTrace();

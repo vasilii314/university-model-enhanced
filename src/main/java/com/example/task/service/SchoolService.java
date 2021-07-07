@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface SchoolService extends Service<School> {
     List<SchoolDTO> findSchoolsByName(SchoolFilterRequest filter);
+
     int deleteSchoolByName(SchoolFilterRequest filter);
+
     int updateSchoolByName(SchoolAddRequest filter);
 }

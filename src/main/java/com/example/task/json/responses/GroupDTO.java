@@ -1,7 +1,9 @@
 package com.example.task.json.responses;
 
 import com.example.task.entity.Group;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class GroupDTO {
     private final Integer id;
     private final String groupName;

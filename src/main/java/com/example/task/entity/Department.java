@@ -77,7 +77,7 @@ public class Department {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", school=" + school +
-                ", people=" + people+
+                ", people=" + people +
                 '}';
     }
 }

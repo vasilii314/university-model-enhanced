@@ -1,6 +1,5 @@
 package com.example.task.controller;
 
-import com.example.task.entity.Course;
 import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.requests.save_or_update.CourseAddRequest;
 import com.example.task.json.responses.CourseDTO;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -30,20 +28,20 @@ public class CourseController {
 
     @PostMapping("/add-course")
     public ResponseEntity<CourseDTO> addCourse(@RequestBody CourseAddRequest req) {
-            courseService.addCourse(req);
-            return ResponseEntity.status(201).build();
+        courseService.addCourse(req);
+        return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/courses")
     public ResponseEntity<CourseDTO> deleteCourse(@RequestBody CourseFilterRequest req) {
-            courseService.deleteCourse(req);
-            return ResponseEntity.status(204).build();
+        courseService.deleteCourse(req);
+        return ResponseEntity.status(204).build();
     }
 
     @PatchMapping("/courses")
     public ResponseEntity<CourseDTO> updateCourse(@RequestBody CourseAddRequest req) {
-            courseService.updateCourse(req);
-            return ResponseEntity.status(204).build();
+        courseService.updateCourse(req);
+        return ResponseEntity.status(204).build();
     }
 
     @DeleteMapping("/courses/{id}")

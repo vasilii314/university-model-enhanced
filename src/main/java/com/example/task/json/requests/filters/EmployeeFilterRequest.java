@@ -2,7 +2,9 @@ package com.example.task.json.requests.filters;
 
 import com.example.task.entity.RoleEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class EmployeeFilterRequest {
     private final String employeeFullName;
     private final String dptName;

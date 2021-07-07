@@ -1,9 +1,11 @@
 package com.example.task.json.requests.filters;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
 import javax.validation.constraints.Min;
 
+@Immutable
 public class StudentFilterRequest {
     private final String studentFullName;
     private final String birthDateUpperBound;

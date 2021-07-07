@@ -1,10 +1,11 @@
 package com.example.task.json.responses;
 
-
 import com.example.task.entity.Course;
 import com.example.task.entity.Human;
 import com.example.task.entity.StudentGrade;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class StudentGradeDTO {
 
     private final Integer id;

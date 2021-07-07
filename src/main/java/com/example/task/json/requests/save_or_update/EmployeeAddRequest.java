@@ -4,7 +4,9 @@ import com.example.task.entity.RoleEnum;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.updates.UpdatesForEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class EmployeeAddRequest {
     private final String employeeFullName;
     private final RoleEnum role;

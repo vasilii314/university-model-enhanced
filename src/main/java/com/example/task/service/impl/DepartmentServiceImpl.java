@@ -1,11 +1,11 @@
 package com.example.task.service.impl;
 
 import com.example.task.entity.Department;
-import com.example.task.exception.custom.DepartmentNotFoundException;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
 import com.example.task.json.responses.DepartmentDTO;
 import com.example.task.repository.DepartmentRepository;
+import com.example.task.repository.custom.DepartmentRepositoryCustom;
 import com.example.task.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,12 @@ import java.util.stream.Collectors;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final DepartmentRepositoryCustom departmentRepositoryCustom;
 
     @Autowired
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository, DepartmentRepositoryCustom departmentRepositoryCustom) {
         this.departmentRepository = departmentRepository;
+        this.departmentRepositoryCustom = departmentRepositoryCustom;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentDTO> findDepartments(DepartmentFilterRequest filter) {
-        return departmentRepository
+        return departmentRepositoryCustom
                 .findDepartments(filter)
                 .stream()
                 .map(DepartmentDTO::toDepartmentDTO)
@@ -58,16 +60,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void addDepartment(DepartmentAddRequest filter) {
-        departmentRepository.addDepartment(filter);
+        departmentRepositoryCustom.addDepartment(filter);
     }
 
     @Override
     public void deleteDepartment(DepartmentFilterRequest filter) {
-        departmentRepository.deleteDepartment(filter);
+        departmentRepositoryCustom.deleteDepartment(filter);
     }
 
     @Override
     public void updateDepartment(DepartmentAddRequest filter) {
-        departmentRepository.updateDepartment(filter);
+        departmentRepositoryCustom.updateDepartment(filter);
     }
 }

@@ -2,16 +2,15 @@ package com.example.task.service.impl;
 
 import com.example.task.entity.School;
 import com.example.task.exception.custom.DeleteOrUpdateException;
-import com.example.task.exception.custom.SchoolNotFoundException;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.json.responses.SchoolDTO;
 import com.example.task.repository.SchoolRepository;
+import com.example.task.repository.custom.SchoolRepositoryCustom;
 import com.example.task.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,10 +19,12 @@ import java.util.stream.Collectors;
 public class SchoolServiceImpl implements SchoolService {
 
     private final SchoolRepository schoolRepository;
+    private final SchoolRepositoryCustom schoolRepositoryCustom;
 
     @Autowired
-    public SchoolServiceImpl(SchoolRepository schoolRepository) {
+    public SchoolServiceImpl(SchoolRepository schoolRepository, SchoolRepositoryCustom schoolRepositoryCustom) {
         this.schoolRepository = schoolRepository;
+        this.schoolRepositoryCustom = schoolRepositoryCustom;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public List<SchoolDTO> findSchoolsByName(SchoolFilterRequest filter) {
-        return schoolRepository
+        return schoolRepositoryCustom
                 .findSchoolsByName(filter)
                 .stream()
                 .map(SchoolDTO::toSchoolDTO)
@@ -57,7 +58,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public int deleteSchoolByName(SchoolFilterRequest filter) {
-        int status = schoolRepository.deleteSchoolByName(filter);
+        int status = schoolRepositoryCustom.deleteSchoolByName(filter);
         if (status == 0) {
             throw new DeleteOrUpdateException();
         }
@@ -66,7 +67,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public int updateSchoolByName(SchoolAddRequest filter) {
-        int status = schoolRepository.updateSchoolByName(filter);
+        int status = schoolRepositoryCustom.updateSchoolByName(filter);
         if (status == 0) {
             throw new DeleteOrUpdateException();
         }
