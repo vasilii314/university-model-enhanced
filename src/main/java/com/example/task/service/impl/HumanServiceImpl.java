@@ -33,9 +33,7 @@ public class HumanServiceImpl implements HumanService {
 
     @Override
     public List<Human> findAll() {
-        List<Human> people = new ArrayList<>();
-        humanRepository.findAll().forEach(people::add);
-        return people;
+        return humanRepository.findAll();
     }
 
     @Override
@@ -55,11 +53,6 @@ public class HumanServiceImpl implements HumanService {
 
     @Override
     public List<StudentDTO> findStudents(StudentFilterRequest filter) {
-//        List<Human> students = humanRepository.findStudentsCriteria(filter);
-//        if (students.size() == 0) {
-//            throw new StudentNotFoundException();
-//        }
-//        return students;
         return humanRepository
                 .findStudents(filter)
                 .stream()

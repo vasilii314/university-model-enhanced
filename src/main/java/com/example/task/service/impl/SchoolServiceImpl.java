@@ -28,9 +28,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public List<School> findAll() {
-        List<School> schools = new ArrayList<>();
-        schoolRepository.findAll().forEach(schools::add);
-        return schools;
+        return schoolRepository.findAll();
     }
 
     @Override
