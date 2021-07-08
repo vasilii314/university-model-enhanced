@@ -1,6 +1,5 @@
 package com.example.task.json.responses;
 
-import com.example.task.entity.Human;
 import org.hibernate.annotations.Immutable;
 
 @Immutable
@@ -26,9 +25,5 @@ public class StudentDTO {
 
     public String getBirthDate() {
         return birthDate;
-    }
-
-    public static StudentDTO toStudentDTO(Human student) {
-        return new StudentDTO(student.getId(), student.getFullName(), student.getBirthDate().toString());
     }
 }

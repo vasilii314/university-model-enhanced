@@ -1,6 +1,5 @@
 package com.example.task.json.responses;
 
-import com.example.task.entity.Group;
 import org.hibernate.annotations.Immutable;
 
 @Immutable
@@ -23,10 +22,6 @@ public class GroupDTO {
 
     public String getGroupName() {
         return groupName;
-    }
-
-    public static GroupDTO toGroupDTO(Group group) {
-        return new GroupDTO(group.getId(), group.getName(), group.getDepartment().getName(), group.getStudents().size());
     }
 
     public String getDptName() {

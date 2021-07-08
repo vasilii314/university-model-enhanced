@@ -1,6 +1,7 @@
 package com.example.task.service.impl;
 
 import com.example.task.entity.Department;
+import com.example.task.json.mapper.DepartmentDtoMapper;
 import com.example.task.json.requests.filters.DepartmentFilterRequest;
 import com.example.task.json.requests.save_or_update.DepartmentAddRequest;
 import com.example.task.json.responses.DepartmentDTO;
@@ -54,7 +55,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepositoryCustom
                 .findDepartments(filter)
                 .stream()
-                .map(DepartmentDTO::toDepartmentDTO)
+                .map(DepartmentDtoMapper.INSTANCE::convert)
                 .collect(Collectors.toList());
     }
 

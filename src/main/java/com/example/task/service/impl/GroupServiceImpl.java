@@ -1,6 +1,7 @@
 package com.example.task.service.impl;
 
 import com.example.task.entity.Group;
+import com.example.task.json.mapper.GroupDtoMapper;
 import com.example.task.json.requests.filters.GroupFilterRequest;
 import com.example.task.json.requests.save_or_update.GroupAddRequest;
 import com.example.task.json.responses.GroupDTO;
@@ -54,7 +55,7 @@ public class GroupServiceImpl implements GroupService {
         return groupRepositoryCustom
                 .findGroups(filter)
                 .stream()
-                .map(GroupDTO::toGroupDTO)
+                .map(GroupDtoMapper.INSTANCE::convert)
                 .collect(Collectors.toList());
     }
 

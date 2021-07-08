@@ -1,6 +1,7 @@
 package com.example.task.service.impl;
 
 import com.example.task.entity.*;
+import com.example.task.json.mapper.CourseDtoMapper;
 import com.example.task.json.requests.filters.CourseFilterRequest;
 import com.example.task.json.requests.save_or_update.CourseAddRequest;
 import com.example.task.json.responses.CourseDTO;
@@ -32,10 +33,7 @@ public class CourseServiceImpl implements CourseService {
         return courseRepositoryCustom
                 .findCourses(filter)
                 .stream()
-                .map(course -> new CourseDTO(course.getId(),
-                        course.getName(),
-                        course.getDuration(),
-                        course.getDepartment().getName()))
+                .map(CourseDtoMapper.INSTANCE::convert)
                 .collect(Collectors.toList());
     }
 

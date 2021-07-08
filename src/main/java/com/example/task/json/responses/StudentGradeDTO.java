@@ -1,8 +1,5 @@
 package com.example.task.json.responses;
 
-import com.example.task.entity.Course;
-import com.example.task.entity.Human;
-import com.example.task.entity.StudentGrade;
 import org.hibernate.annotations.Immutable;
 
 @Immutable
@@ -34,16 +31,6 @@ public class StudentGradeDTO {
 
     public String getCourseName() {
         return courseName;
-    }
-
-    public static StudentGradeDTO toStudentGradeDTO(Human student, StudentGrade grade, Course course) {
-        return new StudentGradeDTO(grade.getId(), grade.getGrade(), student.getFullName(), course.getName());
-    }
-
-    public static StudentGradeDTO toStudentGradeDTO(StudentGrade grade) {
-        return new StudentGradeDTO(grade.getId(), grade.getGrade(),
-                grade.getStudent().getStudent().getHuman().getFullName(),
-                grade.getCourse().getName());
     }
 
     @Override

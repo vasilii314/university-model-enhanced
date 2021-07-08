@@ -2,6 +2,7 @@ package com.example.task.service.impl;
 
 import com.example.task.entity.School;
 import com.example.task.exception.custom.DeleteOrUpdateException;
+import com.example.task.json.mapper.SchoolDtoMapper;
 import com.example.task.json.requests.filters.SchoolFilterRequest;
 import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.json.responses.SchoolDTO;
@@ -52,7 +53,7 @@ public class SchoolServiceImpl implements SchoolService {
         return schoolRepositoryCustom
                 .findSchoolsByName(filter)
                 .stream()
-                .map(SchoolDTO::toSchoolDTO)
+                .map(SchoolDtoMapper.INSTANCE::convert)
                 .collect(Collectors.toList());
     }
 

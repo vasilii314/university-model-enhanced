@@ -2,6 +2,7 @@ package com.example.task.repository.custom.impl;
 
 import com.example.task.entity.*;
 import com.example.task.exception.custom.InternalException;
+import com.example.task.json.mapper.StudentGradeDtoMapper;
 import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
@@ -394,9 +395,8 @@ public class HumanRepositoryImpl implements HumanRepositoryCustom {
             List<Tuple> gradesRaw = entityManager.createQuery(criteriaQuery).getResultList();
             List<StudentGradeDTO> grades = gradesRaw
                     .stream()
-                    .map(gradeRaw -> new StudentGradeDTO(gradeRaw.get(studentGradeRoot).getId(), gradeRaw.get(studentGradeRoot).getGrade(),
-                            gradeRaw.get(studentFullNamePath),
-                            gradeRaw.get(courseNamePath))).collect(Collectors.toList());
+                    .map(gradeRaw -> StudentGradeDtoMapper.INSTANCE.convert(gradeRaw.get(studentGradeRoot)))
+                    .collect(Collectors.toList());
 
             return grades;
         } catch (NonUniqueResultException e) {

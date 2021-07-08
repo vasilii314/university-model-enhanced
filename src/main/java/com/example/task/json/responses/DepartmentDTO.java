@@ -1,6 +1,5 @@
 package com.example.task.json.responses;
 
-import com.example.task.entity.Department;
 import org.hibernate.annotations.Immutable;
 
 @Immutable
@@ -20,9 +19,5 @@ public class DepartmentDTO {
 
     public String getDepartmentName() {
         return departmentName;
-    }
-
-    public static DepartmentDTO toDepartmentDTO(Department department) {
-        return new DepartmentDTO(department.getId(), department.getName());
     }
 }

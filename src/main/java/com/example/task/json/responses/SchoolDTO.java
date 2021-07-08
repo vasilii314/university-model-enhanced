@@ -1,10 +1,8 @@
 package com.example.task.json.responses;
 
-import com.example.task.entity.School;
 import org.hibernate.annotations.Immutable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Immutable
 public class SchoolDTO {
@@ -30,11 +28,5 @@ public class SchoolDTO {
 
     public List<DepartmentDTO> getDepartments() {
         return departments;
-    }
-
-    public static SchoolDTO toSchoolDTO(School school) {
-        List<DepartmentDTO> departmentDTOS;
-        departmentDTOS = school.getDepartments().stream().map(DepartmentDTO::toDepartmentDTO).collect(Collectors.toList());
-        return new SchoolDTO(school.getId(), school.getName(), departmentDTOS);
     }
 }

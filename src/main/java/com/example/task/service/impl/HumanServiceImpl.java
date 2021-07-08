@@ -2,6 +2,8 @@ package com.example.task.service.impl;
 
 import com.example.task.entity.*;
 import com.example.task.exception.custom.StudentGradeNotFoundException;
+import com.example.task.json.mapper.EmployeeDtoMapper;
+import com.example.task.json.mapper.StudentDtoMapper;
 import com.example.task.json.requests.save_or_update.EmployeeAddRequest;
 import com.example.task.json.requests.filters.EmployeeFilterRequest;
 import com.example.task.json.requests.filters.StudentFilterRequest;
@@ -56,7 +58,7 @@ public class HumanServiceImpl implements HumanService {
         return humanRepositoryCustom
                 .findStudents(filter)
                 .stream()
-                .map(StudentDTO::toStudentDTO)
+                .map(StudentDtoMapper.INSTANCE::convert)
                 .collect(Collectors.toList());
     }
 
@@ -68,9 +70,6 @@ public class HumanServiceImpl implements HumanService {
     @Override
     public List<StudentGradeDTO> getStudentGrades(StudentFilterRequest filter) {
         List<StudentGradeDTO> studentGrades = humanRepositoryCustom.getStudentGrades(filter);
-        if (studentGrades.size() == 0) {
-            throw new StudentGradeNotFoundException();
-        }
         return studentGrades;
     }
 
@@ -84,7 +83,7 @@ public class HumanServiceImpl implements HumanService {
         return humanRepositoryCustom
                 .findEmployees(filter)
                 .stream()
-                .map(EmployeeDTO::toEmployeeDTO)
+                .map(EmployeeDtoMapper.INSTANCE::convert)
                 .collect(Collectors.toList());
     }
 
