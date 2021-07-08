@@ -1,0 +1,870 @@
+swagger: "2.0"
+info:
+  description: "I haven't thought of any description yet :("
+  version: "1.0.0"
+  title: "University Model"
+host: "localhost:8083"
+basePath: "/api"
+tags:
+- name: "student"
+  description: "Everything about students"
+- name: "employee"
+  description: "Everything about employees"
+- name: "school"
+  description: "Everything about schools"
+- name: "course"
+  description: "Everything about schools"
+- name: "department"
+  description: "Everything about departments"  
+schemes:
+- "http"
+paths:
+  /students:
+    post:
+      tags:
+      - "student"
+      summary: "Add a new student"
+      description: ""
+      operationId: "addStudent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Student object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/StudentFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "201": 
+          description: "Successful operation"
+    get:
+      tags: 
+        - "student"
+      summary: "Get a list of all students or one student"
+      description: ""
+      operationId: "getStudent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: false
+        schema:
+          $ref: "#/definitions/StudentFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "200": 
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StudentDTO"
+    delete:
+      tags: 
+        - "student"
+      summary: "Delete student"
+      description: ""
+      operationId: "delStudent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/EmployeeFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "204": 
+          description: "Successful operation"
+    patch:
+      tags: 
+        - "student"
+      summary: "Update student"
+      description: ""
+      operationId: "updateStudent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/EmployeeFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+              
+  /student/grades:
+    get:
+      tags: 
+      - "student"
+      summary: "Get student grades"
+      description: ""
+      operationId: "getGrades"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/StudentFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "200": 
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StudentGradeDTO"
+    post:
+      tags:
+      - "student"
+      summary: "Add grade"
+      description: ""
+      operationId: "addGrade"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/StudentFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "201": 
+          description: "Successful operation"
+      
+  /courses:
+    get:
+      tags:
+        - "course"
+      summary: "Get a list of courses"
+      description: ""
+      operationId: "getCourses"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/CourseFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "200": 
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/CourseDTO"
+    post:
+      tags:
+        - "course"
+      summary: "Add course"
+      description: ""
+      operationId: "addCourse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/CourseFilterRequest"
+      responses:
+        "400":
+          description: "Bad Request"
+        "201": 
+          description: "Successful operation"
+    delete:
+      tags:
+        - "course"
+      summary: "Delete course"
+      description: ""
+      operationId: "delCourse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/CourseFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+    patch:
+      tags: 
+        - "course"
+      summary: "Update course"
+      description: ""
+      operationId: "updateCourse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/CourseFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+    
+  /schools:
+    get:
+      tags:
+        - "school"
+      summary: "Get a list of schools"
+      description: ""
+      operationId: "getSchools"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/SchoolFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "200": 
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/SchoolDTO"
+    post:
+      tags:
+        - "school"
+      summary: "Add school"
+      description: ""
+      operationId: "addSchool"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/SchoolFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "201": 
+          description: "Successful operation"
+    delete:
+      tags:
+        - "school"
+      summary: "Delete school"
+      description: ""
+      operationId: "delSchool"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/SchoolFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+    patch:
+      tags: 
+        - "school"
+      summary: "Update school"
+      description: ""
+      operationId: "updateSchool"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/SchoolFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+            
+  /employees:
+    get:
+      tags:
+        - "employee"
+      summary: "Get a list of employees"
+      description: ""
+      operationId: "getEmployees"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/EmployeeFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "200": 
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/EmployeeDTO"
+    post:
+      tags:
+        - "employee"
+      summary: "Add employee"
+      description: ""
+      operationId: "addEmployee"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/EmployeeAddRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "201": 
+          description: "Successful operation"
+    delete:
+      tags:
+        - "employee"
+      summary: "Delete employee"
+      description: ""
+      operationId: "delEmployee"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/EmployeeFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+    patch:
+      tags: 
+        - "employee"
+      summary: ""
+      description: "Update employee"
+      operationId: "updateEmployee"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/EmployeeFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+      
+  /departments:
+    get:
+      tags:
+        - "department"
+      summary: "Get a list of departments"
+      description: ""
+      operationId: "getDepartments"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/DepartmentFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "200": 
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/DepartmentDTO"
+    post:
+      tags:
+        - "department"
+      summary: "Add department"
+      description: ""
+      operationId: "addDepartment"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/DepartmentFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "200": 
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/DepartmentDTO"
+    delete:
+      tags:
+        - "department"
+      summary: "Delete department"
+      description: ""
+      operationId: "delDepartment"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/DepartmentFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+    patch:
+      tags: 
+        - "department"
+      summary: "Update department"
+      description: ""
+      operationId: "updateDepartment"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/DepartmentFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+            
+  /department/groups:
+    get:
+      tags:
+        - "department"
+      summary: "Get a list of groups"
+      description: ""
+      operationId: "getGroups"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/GroupFilterRequest"
+      responses:
+        "404":
+          description: "Not Found"
+        "200": 
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/GroupDTO"
+    post:
+      tags:
+        - "department"
+      summary: "Add group to an existing department"
+      description: ""
+      operationId: "addGroup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/GroupFilterRequest"
+      responses:
+        "400":
+          description: "Bad requset"
+        "201": 
+          description: "Successful operation"
+    delete:
+      tags:
+        - "department"
+      summary: "Delete group from an existing department"
+      description: ""
+      operationId: "delGroup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "******"
+        required: true
+        schema:
+          $ref: "#/definitions/GroupFilterRequest"
+      responses:
+        "400":
+          description: "Bad requset"
+        "204": 
+          description: "Successful operation"
+    patch:
+      tags: 
+        - "department"
+      summary: "Update group in an existing department"
+      description: ""
+      operationId: "updateGroup"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/GroupFilterRequest"
+      responses:
+        "400":
+          description: "Bad request"
+        "204": 
+          description: "Successful operation"
+
+definitions:
+  StudentDTO:
+    required:
+    - "fullName"
+    - "birthDate"
+    properties:
+      fullName:
+        type: "string"
+        example: "Cressida Wells"
+      birthDate:
+        type: "string"
+        format: "date"
+        example: "1999-07-15"
+        
+  CourseDTO:
+    type: "object"
+    required:
+    - "courseName"
+    - "duration"
+    - "department"
+    properties:
+      courseName:
+        type: "string"
+      duration:
+        type: "integer"
+        format: "int64"
+      department:
+        type: "string"
+        
+  SchoolDTO:
+    type: "object"
+    required:
+    - "schoolName"
+    properties:
+      schoolName:
+        type: "string"
+      departments:
+        type: "array"
+        items:
+          $ref: "#/definitions/DepartmentDTO"
+          
+  GroupDTO:
+    type: "object"
+    required:
+    - "groupName"
+    properties:
+      groupName:
+        type: "string"
+      dptName:
+        type: "string"
+      numOfStudents:
+        type: "integer"
+        minimum: 0
+          
+  DepartmentDTO:
+    type: "object"
+    required:
+    - "dptName"
+    properties:
+      dptName:
+        type: "string"
+        
+  DepartmentFilterRequest:
+    type: "object"
+    properties:
+      dptName:
+        type: "string"
+      schoolName:
+        type: "string"
+      updates:
+        $ref: "#/definitions/Updates"
+    
+  SchoolFilterRequest:
+    type: "object"
+    properties:
+      schoolName:
+        type: "string"
+      updates:
+        $ref: "#/definitions/Updates"
+      
+  GroupFilterRequest:
+    type: "object"
+    properties:
+      groupName:
+        type: "string"
+      dptName:
+        type: "string"
+      updates:
+        $ref: "#/definitions/Updates"
+      
+  StudentFilterRequest:
+    type: "object"
+    properties:
+      studentFullName:
+        type: "string"
+      birthDateUpperBound:
+        type: "string"
+        format: "date"
+      birthDateLowerBound:
+        type: "string"
+        format: "date"
+      birthDate:
+        type: "string"
+        format: "date"
+      dptName:
+        type: "string"
+      schoolName:
+        type: "string"
+      courseName:
+        type: "string"
+      groupName:
+        type: "string"
+      gradeLowerBound:
+        type: "integer"
+        minimum: 2
+        maximum: 5
+      gradeUpperBound:
+        type: "integer"
+        minimum: 2
+        maximum: 5
+      updates:
+        $ref: "#/definitions/Updates"
+            
+  EmployeeFilterRequest:
+    type: "object"
+    properties:
+      employeeFullName:
+        type: "string"
+      dptName:
+        type: "string"
+      role:
+        type: "string"
+        pattern: '(PROFESSOR|POSTGRADUATE)'
+      birthDateUpperBound:
+        type: "string"
+        format: "date"
+      birthDateLowerBound:
+        type: "string"
+        format: "date"
+      updates:
+        $ref: "#/definitions/Updates"
+        
+  EmployeeAddRequest:
+    type: "object"
+    properties:
+      employeeFullName:
+        type: "string"
+      dptName:
+        type: "string"
+      role:
+        type: "string"
+        pattern: '(PROFESSOR|POSTGRADUATE)'
+      birthDate:
+        type: "string"
+        format: "date"
+      schoolName:
+        type: "string"  
+        
+  EmployeeDTO:
+    type: "object"
+    properties:
+      fullName:
+        type: "string"
+        
+  StudentGradeDTO:
+    type: "object"
+    properties:
+      grade:
+        type: "integer"
+        maximum: 5
+        minimum: 0
+      studentFullName:
+        type: "string"
+      courseName:
+        type: "string"
+            
+  Updates:
+    type: "object"
+    properties:
+      schoolName:
+        type: "string"
+      dptName:
+        type: "string"
+      groupName:
+        type: "string"
+      courseName:
+        type: "string"
+      courseType:
+        type: "string"
+        pattern: '(SOCIAL|MATHEMATICAL)'
+      role:
+        type: "string"
+        pattern: '(PROFESSOR|POSTGRADUATE)'
+      fullName:
+        type: "string"
+      birthDate:
+        type: "string"
+        format: "date"
+      duration:
+        type: "integer"
+        minimum: 0
+      grade:
+        type: "integer"
+        minimum: 0
+        maximum: 5
+            
+  CourseFilterRequest:
+    type: "object"
+    properties:
+      courseName:
+        type: "string"
+      groupName:
+        type: "string"
+      dptName:
+        type: "string"
+      courseType:
+        type: "string"
+        pattern: '(SOCIAL|MATHEMATICAL)'
+      durationLowerBound:
+        type: "integer"
+        minimum: 0
+      durationUpperBound:
+        type: "integer"
+        minimum: 0
+      duration:
+        type: "integer"
+        minimum: 0
+      updates:
+        $ref: "#/definitions/Updates"
+    
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

@@ -21,9 +21,28 @@
             	<constraints nullable="false"/>
             </column>
         </createTable>
-        <sql>
-        	ALTER TABLE students_in_groups ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id) REFERENCES people_in_university (id) ON UPDATE CASCADE;
-        	ALTER TABLE students_in_groups ADD CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES groups (id) ON UPDATE CASCADE;
-        </sql>
+    </changeSet>
+    <changeSet id="31" author="admin">
+        <addForeignKeyConstraint baseColumnNames="student_id"
+                                 baseTableName="students_in_groups"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_student_id"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="people_in_university"
+                                 referencedTableSchemaName="public"
+        />
+    </changeSet>
+    <changeSet id="32" author="admin">
+        <addForeignKeyConstraint baseColumnNames="group_id"
+                                 baseTableName="students_in_groups"
+                                 baseTableSchemaName="public"
+                                 constraintName="fk_group_id"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="groups"
+                                 referencedTableSchemaName="public"
+        />
     </changeSet>
 </databaseChangeLog>

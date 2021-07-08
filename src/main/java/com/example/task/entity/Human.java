@@ -13,7 +13,7 @@ public class Human {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank
     @Size(max = 100, min = 1)
@@ -24,18 +24,6 @@ public class Human {
 
     @OneToMany(mappedBy = "human", cascade = CascadeType.ALL)
     List<HumanInUniversity> occupations;
-
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "employees",
-//            joinColumns = {@JoinColumn(name = "human_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "role_id")})
-//    private List<Role> roles;
-//
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "employees_in_schools",
-//            joinColumns = {@JoinColumn(name = "human_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "school_id")})
-//    private List<Department> departments;
 
     public Human() {
     }
@@ -49,11 +37,11 @@ public class Human {
         this.birthDate = birthDate;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

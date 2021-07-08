@@ -1,7 +1,9 @@
 package com.example.task.controller;
 
 import com.example.task.entity.School;
-import com.example.task.json.filters.SchoolFilterRequest;
+import com.example.task.exception.custom.UpdatesObjectMissingException;
+import com.example.task.json.requests.filters.SchoolFilterRequest;
+import com.example.task.json.requests.save_or_update.SchoolAddRequest;
 import com.example.task.json.responses.SchoolDTO;
 import com.example.task.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -23,34 +24,36 @@ public class SchoolController {
         this.schoolService = schoolService;
     }
 
-    @GetMapping("/schools")
+    @PostMapping("/schools")
     public ResponseEntity<List<SchoolDTO>> getSchools(@Valid @RequestBody SchoolFilterRequest req) {
-        List<SchoolDTO> schoolDTOS = schoolService.findSchoolsByName(req)
-                .stream()
-                .map(SchoolDTO::toSchoolDTO)
-                .collect(Collectors.toList());
-        return schoolDTOS.size() > 0 ? ResponseEntity.ok().body(schoolDTOS) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(schoolService.findSchoolsByName(req));
     }
 
-    @PostMapping("/schools")
-    public ResponseEntity<SchoolDTO> addSchool(@Valid @RequestBody SchoolFilterRequest req) {
+    @PostMapping("/add-school")
+    public ResponseEntity<SchoolDTO> addSchool(@Valid @RequestBody SchoolAddRequest req) {
         School school = new School(req.getSchoolName());
         schoolService.save(school);
-        return ResponseEntity.status(201).body(new SchoolDTO(school.getName(), null));
+        return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/schools")
-    public ResponseEntity<?> deleteSchool(@Valid @RequestBody SchoolFilterRequest req) {
+    public ResponseEntity<SchoolDTO> deleteSchool(@Valid @RequestBody SchoolFilterRequest req) {
         int status = schoolService.deleteSchoolByName(req);
         return status > 0 ? ResponseEntity.status(204).build() : ResponseEntity.badRequest().build();
     }
 
     @PatchMapping("/schools")
-    public ResponseEntity<?> updateSchoolByName(@Valid @RequestBody SchoolFilterRequest req) {
+    public ResponseEntity<SchoolDTO> updateSchoolByName(@Valid @RequestBody SchoolAddRequest req) {
         if (req.getUpdates() == null) {
-            return ResponseEntity.badRequest().build();
+            throw new UpdatesObjectMissingException();
         }
         int status = schoolService.updateSchoolByName(req);
-        return status > 0 ?  ResponseEntity.status(204).build() : ResponseEntity.badRequest().build();
+        return status > 0 ? ResponseEntity.status(204).build() : ResponseEntity.badRequest().build();
+    }
+
+    @DeleteMapping("/schools/{id}")
+    public ResponseEntity<SchoolDTO> deleteSchoolById(@PathVariable Integer id) {
+        schoolService.deleteById(id);
+        return ResponseEntity.status(204).build();
     }
 }

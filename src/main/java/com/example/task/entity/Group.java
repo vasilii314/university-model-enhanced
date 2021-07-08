@@ -9,7 +9,7 @@ import java.util.List;
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank
     @Column(length = 100)
@@ -25,11 +25,11 @@ public class Group {
     public Group() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -47,6 +47,14 @@ public class Group {
 
     public void setDepartment(Department department) {
         this.groupDepartment = department;
+    }
+
+    public List<StudentsInGroups> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<StudentsInGroups> students) {
+        this.students = students;
     }
 
     @Override

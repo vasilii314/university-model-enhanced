@@ -11,35 +11,46 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank
     @Column(length = 100)
     private String name;
 
     @Positive
-    private int duration;
+    private Integer duration;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "course_type_id")
     private CourseType courseType;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<StudentGrade> grades;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "department_id")
     private Department department;
 
     public Course() {
     }
 
-    public int getId() {
+    public Course(String name, int duration, CourseType courseType, Department department) {
+        this.name = name;
+        this.duration = duration;
+        this.courseType = courseType;
+        this.department = department;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public String getName() {
@@ -66,12 +77,8 @@ public class Course {
         this.grades = grades;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 
     public Department getDepartment() {

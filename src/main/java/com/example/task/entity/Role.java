@@ -10,14 +10,14 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private RoleEnum roleDescription;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "role", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<HumanInUniversity> peopleWithRoles;
 
     public Role() {
@@ -27,11 +27,11 @@ public class Role {
         this.roleDescription = roleDescription;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

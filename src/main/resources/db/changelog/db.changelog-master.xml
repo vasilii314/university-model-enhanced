@@ -15,8 +15,6 @@
     <include  file="db/changelog/changelog-8-create-course-table.xml"/>
     <include  file="db/changelog/changelog-9-create-groups-table.xml"/>
     <include  file="db/changelog/changelog-10-create-people-in-university-table.xml"/>
-    <include  file="db/changelog/changelog-11-create-people-in-departments-table.xml"/>
-    <include  file="db/changelog/changelog-12-create-people-roles-table.xml"/>
     <include  file="db/changelog/changelog-13-create-table-students-in-groups.xml"/>
     <include  file="db/changelog/changelog-14-create-table-student-grades.xml"/>
     <include  file="db/changelog/changelog-15-insert-schools.xml"/>

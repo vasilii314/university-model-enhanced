@@ -11,7 +11,7 @@ import java.util.List;
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank
     @Size(min = 1, max = 100)
@@ -39,11 +39,11 @@ public class Department {
         this.people = new ArrayList<>();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -77,7 +77,7 @@ public class Department {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", school=" + school +
-                ", people=" + people+
+                ", people=" + people +
                 '}';
     }
 }

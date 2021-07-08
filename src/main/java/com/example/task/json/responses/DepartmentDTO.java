@@ -1,24 +1,23 @@
 package com.example.task.json.responses;
 
-import com.example.task.entity.Department;
+import org.hibernate.annotations.Immutable;
 
+@Immutable
 public class DepartmentDTO {
 
-    private String departmentName;
+    private final Integer id;
+    private final String departmentName;
 
-    public DepartmentDTO(String departmentName) {
+    public DepartmentDTO(Integer id, String departmentName) {
+        this.id = id;
         this.departmentName = departmentName;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getDepartmentName() {
         return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-
-    public static DepartmentDTO toDepartmentDTO(Department department) {
-        return new DepartmentDTO(department.getName());
     }
 }
